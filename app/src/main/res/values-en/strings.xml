@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">PronuntiApp</string>
+    <string name="title_home">Home</string>
+    <string name="title_esercizi">Excercices</string>
+    <string name="title_account">Account</string>
+    <string name="title_aggiungi_figlio">Add child</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="codicefiscale">Tax ID code</string>
+    <string name="email_logopedista">Logopedista\'s email</string>
+    <string name="add">Add</string>
+    <string name="logout">Esci\n</string>
+    <string name="children">Your sons </string>
+    <string name="add_child">Add child</string>
+    <string name="logopedista">Logopedista</string>
+    <string name="child_name">Child name</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="not_registered">Not registered? Sign up now!\n</string>
+    <string name="parent_registration">Sign up\nparent</string>
+    <string name="registration_logopedista">Sign up\nlogopedista</string>
+    <string name="register_as_logopedista">Sign up as logopedista</string>
+    <string name="register_as_parent">Sign up as parent</string>
+
+</resources>

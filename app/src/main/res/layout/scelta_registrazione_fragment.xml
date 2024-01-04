@@ -12,7 +12,7 @@
         android:drawableLeft="@drawable/baseline_doctor_icon_24"
         android:drawableTint="@color/white"
         android:drawablePadding="8dp"
-        android:text="Registrati come logopedista"
+        android:text="@string/register_as_logopedista"
         android:textAlignment="viewStart" />
 
     <Button
@@ -23,7 +23,7 @@
         android:drawableLeft="@drawable/baseline_parents_icon_24"
         android:drawableTint="@color/white"
         android:drawablePadding="8dp"
-        android:text="Registrati come genitore"
+        android:text="@string/register_as_parent"
         android:textAlignment="viewStart" />
 
 

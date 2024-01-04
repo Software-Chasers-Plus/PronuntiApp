@@ -7,5 +7,24 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="codicefiscale">Codice Fiscale</string>
+    <string name="email_logopedista">Email logopedista</string>
+    <string name="add">Aggiungi</string>
+    <string name="logout">Esci\n</string>
+    <string name="children">I tuoi figli</string>
+    <string name="add_child">Aggiungi Figlio</string>
+    <string name="logopedista">Logopedista</string>
+    <string name="child_name">Nome Figlio</string>
+    <string name="login">Accedi</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Registrati</string>
+    <string name="not_registered">Non sei registrato? Registrati\n</string>
+    <string name="parent_registration">Registrazione\ngenitore</string>
+    <string name="registration_logopedista">Registrazione\nlogopedista</string>
+    <string name="register_as_logopedista">Registrati come logopedista</string>
+    <string name="register_as_parent">Registrati come genitore</string>
 
 </resources>

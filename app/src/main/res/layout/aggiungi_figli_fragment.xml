@@ -13,7 +13,7 @@
         android:background="@drawable/custom_edittext"
         android:layout_marginTop="20dp"
         android:padding="8dp"
-        android:hint="Nome"
+        android:hint="@string/name"
         android:textColor="@color/black"/>
 
     <EditText
@@ -23,7 +23,7 @@
         android:background="@drawable/custom_edittext"
         android:layout_marginTop="20dp"
         android:padding="8dp"
-        android:hint="Cognome"
+        android:hint="@string/surname"
         android:textColor="@color/black"/>
 
     <EditText
@@ -33,7 +33,7 @@
         android:background="@drawable/custom_edittext"
         android:layout_marginTop="20dp"
         android:padding="8dp"
-        android:hint="CodiceFiscale"
+        android:hint="@string/codicefiscale"
         android:textColor="@color/black"/>
 
     <EditText
@@ -43,7 +43,7 @@
         android:background="@drawable/custom_edittext"
         android:layout_marginTop="20dp"
         android:padding="8dp"
-        android:hint="Email logopedista"
+        android:hint="@string/email_logopedista"
         android:textColor="@color/black"/>
 
     <Button
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/conferma_aggiungi_figlio_button"
         android:layout_marginTop="30dp"
-        android:text="Aggiungi"
+        android:text="@string/add"
         android:textSize = "18dp"
         android:backgroundTint="@color/purple_700"/>
 

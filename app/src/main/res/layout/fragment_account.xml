@@ -49,7 +49,7 @@
         android:background="@drawable/ripple_effect"
         android:layout_marginTop="3dp"
         android:layout_marginLeft="3dp"
-        android:text="Logout"
+        android:text="@string/logout"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:drawableLeft="@drawable/baseline_logout_icon"

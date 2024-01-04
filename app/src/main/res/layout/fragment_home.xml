@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="I tuoi figli"
+        android:text="@string/children"
         android:textSize="20dp"
         android:textStyle="bold"/>
 
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/figli_recycler_view"
         android:layout_marginTop="30dp"
-        android:text="Aggiungi Figlio"
+        android:text="@string/add_child"
         android:textSize = "18dp"
         android:backgroundTint="@color/secondaryGenitore"/>
 </RelativeLayout>

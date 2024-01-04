@@ -19,7 +19,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20dp"
         android:textColor="@color/black"
-        android:text="Nome Figlio" />
+        android:text="@string/child_name" />
 
     <TextView
         android:id="@+id/logopedista_figlio"
@@ -28,7 +28,7 @@
         android:layout_toEndOf="@id/figlio_imageview"
         android:layout_below="@id/nome_figlio"
         android:textColor="@color/black"
-        android:text="Logopedista" />
+        android:text="@string/logopedista" />
 
 
 
