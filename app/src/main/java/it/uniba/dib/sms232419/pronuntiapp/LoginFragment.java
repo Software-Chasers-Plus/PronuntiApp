@@ -19,8 +19,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class loginFragment extends Fragment {
-    private accessoActivity mActivity;
+public class LoginFragment extends Fragment {
+    private AccessoActivity mActivity;
 
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
@@ -31,7 +31,7 @@ public class loginFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (accessoActivity) context;
+        mActivity = (AccessoActivity) context;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class loginFragment extends Fragment {
             public void onClick(View view) {
                 mActivity.getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true) // Imposta che le transazioni di frammenti possono essere riordinate  migliorare le animazioni
-                        .replace(R.id.login_signup_fragment, new sceltaRegistrazioneFragment(), null)
+                        .replace(R.id.login_signup_fragment, new SceltaRegistrazioneFragment(), null)
                         .addToBackStack(null)//aggiuge il fragment al back stack del fragment manager e permette agli utenti di navigare all'indietro
                         .commit();
             }

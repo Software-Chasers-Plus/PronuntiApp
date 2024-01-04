@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.accessoActivity;
+import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentAccountBinding;
 
 public class AccountFragment extends Fragment {
@@ -42,7 +42,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), accessoActivity.class));
+                startActivity(new Intent(getActivity(), AccessoActivity.class));
                 getActivity().finish();
             }
         });
