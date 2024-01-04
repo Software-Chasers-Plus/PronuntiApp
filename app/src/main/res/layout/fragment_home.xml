@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <TextView
+        android:id="@+id/intestazione_figli"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="I tuoi figli"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/figli_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/intestazione_figli"
+        android:layout_marginTop="-19dp"
+        android:maxHeight="690dp" />
+
+    <Button
+        android:id="@+id/aggiungi_figlio_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/figli_recycler_view"
+        android:layout_marginTop="30dp"
+        android:text="Aggiungi Figlio"
+        android:textSize = "18dp"
+        android:backgroundTint="@color/purple_700"/>
+</RelativeLayout>

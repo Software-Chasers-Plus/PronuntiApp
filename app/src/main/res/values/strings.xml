@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PronuntiApp</string>
+    <string name="title_home">Home</string>
+    <string name="title_esercizi">Esercizi</string>
+    <string name="title_account">Account</string>
+    <string name="title_aggiungi_figlio">Aggiungi Figlio</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+</resources>

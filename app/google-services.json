@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "112897864998",
+    "project_id": "pronuntiapp-bd774",
+    "storage_bucket": "pronuntiapp-bd774.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112897864998:android:82ebe8391423fd74de3de7",
+        "android_client_info": {
+          "package_name": "it.uniba.dib.sms232419.pronuntiapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo5gpl_nUHe8tI1REAVJQXuxKfUaztPUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

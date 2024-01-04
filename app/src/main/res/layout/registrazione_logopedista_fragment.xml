@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text = "Registrazione\nlogopedista"
+        android:textSize = "36dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/purple_700"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registrazione_logopedista_nome"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="Nome"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registrazione_logopedista_cognome"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="Cognome"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registrazione_logopedista_email"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="Email"
+        android:textColor="@color/black"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registrazione_genitore_password"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/regisrazione_genitore_button"
+        android:layout_marginTop="30dp"
+        android:text="Registarati"
+        android:textSize = "18dp"
+        android:backgroundTint="@color/purple_700"/>
+
+
+</LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.aggiungiFiglio.aggiungiFiglioFragment">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nome_figlio"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="Nome"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cognome_figlio"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="Cognome"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/codiFiscale_figlio"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="CodiceFiscale"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/email_logopedista_figlio"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:hint="Email logopedista"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/conferma_aggiungi_figlio_button"
+        android:layout_marginTop="30dp"
+        android:text="Aggiungi"
+        android:textSize = "18dp"
+        android:backgroundTint="@color/purple_700"/>
+
+</LinearLayout>
