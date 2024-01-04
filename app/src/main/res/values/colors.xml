@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#FF808080</color>
+    <color name="primaryGenitore">#92C7CF</color>
+    <color name="secondaryGenitore">#AAD7D9</color>
+    <color name="thirdGenitore">#FBF9F1</color>
+    <color name="fourthGenitore">#E5E1DA</color>
 </resources>

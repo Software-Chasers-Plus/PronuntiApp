@@ -31,5 +31,5 @@
         android:layout_marginTop="30dp"
         android:text="Aggiungi Figlio"
         android:textSize = "18dp"
-        android:backgroundTint="@color/purple_700"/>
+        android:backgroundTint="@color/secondaryGenitore"/>
 </RelativeLayout>
