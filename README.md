@@ -2,7 +2,23 @@
 <html>
 <body>
 <h1> 🎙️👦🏻 PronuntiApp </h1>
-<p>Progetto Sviluppo di mobile software a.a. 2023/2024
+<p>Official repo <strong><i>PronuntiApp</i></strong>, progetto Sviluppo di Mobile Software a.a. <i>2023/2023</i></p>
+
+ <p><strong>PronuntiApp</strong> è un applicazione sviluppata con l'intento di favorire la terapia a distanza, rivolta ad utenti con disturbi del linguaggio.
+L'applicazione si pone come obiettivo quello di aiutare nello svolgimento di esercizi logopedici utilizzando semplici meccaniche di gioco, intoltre l'applicazione è rivolta
+ad tre tipologie di utenti:
+	 <ol>
+		 <li>
+			Logopedista -> colui che crea e imposta le terapie 
+		 </li>
+		 <li>
+			 Bambino -> svolgono gli esercizi sottoforma di giochi
+		 </li>
+		 <li>
+			 Genitore -> Può monitorare lo svolgimento delle terapie e corregge gli esercizi di cui le terapie sono composte
+		 </li>
+	 </ol>
+ </p>
 </p>
 
 <h1>🌐 Collaborators:</h1>
