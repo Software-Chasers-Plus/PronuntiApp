@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class registrazioneGenitoreFragment extends Fragment{
+public class RegistrazioneGenitoreFragment extends Fragment{
 
     private FirebaseAuth auth;
 
@@ -31,12 +31,12 @@ public class registrazioneGenitoreFragment extends Fragment{
 
     private Button signUpButton;
 
-    private accessoActivity mActivity;
+    private AccessoActivity mActivity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (accessoActivity) context;
+        mActivity = (AccessoActivity) context;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class registrazioneGenitoreFragment extends Fragment{
                                                     Toast.makeText(mActivity, "Registrazione avvenuta con successo", Toast.LENGTH_SHORT).show();
                                                     mActivity.getSupportFragmentManager().beginTransaction()
                                                             .setReorderingAllowed(true)
-                                                            .replace(R.id.login_signup_fragment, new loginFragment(), null)
+                                                            .replace(R.id.login_signup_fragment, new LoginFragment(), null)
                                                             .commit();
                                                 }else{
                                                     Toast.makeText(mActivity, "Registrazione fallita", Toast.LENGTH_SHORT).show();

@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class sceltaRegistrazioneFragment extends Fragment {
-    private accessoActivity mActivity;
+public class SceltaRegistrazioneFragment extends Fragment {
+    private AccessoActivity mActivity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (accessoActivity) context;
+        mActivity = (AccessoActivity) context;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class sceltaRegistrazioneFragment extends Fragment {
             public void onClick(View view) {
                 mActivity.getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.login_signup_fragment, new registrazioneGenitoreFragment(), null)
+                        .replace(R.id.login_signup_fragment, new RegistrazioneGenitoreFragment(), null)
                         .addToBackStack(null)
                         .commit();
             }
@@ -40,7 +40,7 @@ public class sceltaRegistrazioneFragment extends Fragment {
             public void onClick(View view) {
                 mActivity.getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.login_signup_fragment, new registrazioneLogopedistaFragment(), null)
+                        .replace(R.id.login_signup_fragment, new RegistrazioneLogopedistaFragment(), null)
                         .addToBackStack(null)
                         .commit();
             }

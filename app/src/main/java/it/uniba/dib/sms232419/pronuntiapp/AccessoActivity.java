@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class accessoActivity extends AppCompatActivity {
+public class AccessoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class accessoActivity extends AppCompatActivity {
             //inserisco il fragment per il login
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.login_signup_fragment, loginFragment.class, null)
+                    .add(R.id.login_signup_fragment, LoginFragment.class, null)
                     .commit();
         }
     }
