@@ -9,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class accessoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
