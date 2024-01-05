@@ -26,5 +26,6 @@
     <string name="registration_logopedista">Registrazione\nlogopedista</string>
     <string name="register_as_logopedista">Registrati come logopedista</string>
     <string name="register_as_parent">Registrati come genitore</string>
+    <string name="required_field">*Campo obbligatorio</string>
 
 </resources>

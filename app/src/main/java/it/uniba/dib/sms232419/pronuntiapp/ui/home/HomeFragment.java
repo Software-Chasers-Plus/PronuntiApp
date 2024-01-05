@@ -1,6 +1,9 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,26 +21,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
+import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
+import it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio.aggiungiFiglioFragment;
 
 public class HomeFragment extends Fragment {
 
     private MainActivity mainActivity;
+
     private FragmentHomeBinding binding;
 
     private Button buttonAggiungiFiglio;
 
-    private String genitoreUid;
+    private Genitore genitore;
 
     private List<Figlio> figli = new ArrayList<>();
 
@@ -48,8 +58,35 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
-        genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         db = FirebaseFirestore.getInstance();
+        //creo un oggetto genitore con i dati dell'utente loggato
+        db.collection("genitori")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("HomeFragment", "Genitore Trovato");
+                                Map<String, Object> nuovoGenitore = document.getData();
+                                genitore = new Genitore(nuovoGenitore.get("Nome").toString(), nuovoGenitore.get("Cognome").toString(),
+                                        nuovoGenitore.get("CodiceFiscale").toString(), nuovoGenitore.get("Email").toString(),
+                                        FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                            } else {
+                                //stampa nel log un messaggio di errore
+                                Log.d("HomeFragment", "No genitore con id:"+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                startActivity(new Intent(mainActivity, AccessoActivity.class));
+                                mainActivity.finish();
+                            }
+                        } else {
+                            Log.d("HomeFragment", "Task fallito");
+                            startActivity(new Intent(mainActivity, AccessoActivity.class));
+                            mainActivity.finish();
+                        }
+                    }
+                });
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -66,22 +103,27 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if(savedInstanceState == null){
-            db.collection("/genitori/"+genitoreUid+"/figli")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                figli.clear();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    figli.add(new Figlio(document.getData().get("Nome").toString(),document.getData().get("Logopedista").toString()));
+                db.collection("figli")
+                        .whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("HomeFragment", "Figli trovati");
+                                    figli.clear();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Map<String, Object> nuovoFiglio = document.getData();
+                                        figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
+                                                nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
+                                                FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
+                                    }
+                                    RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
+                                    recyclerView.setAdapter(new figliAdapter(mainActivity.getApplicationContext(), figli));
                                 }
-                                RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
-                                recyclerView.setAdapter(new figliAdapter(mainActivity.getApplicationContext(), figli));
                             }
-                        }
-                    });
+                        });
         }
         buttonAggiungiFiglio = view.findViewById(R.id.aggiungi_figlio_button);
         buttonAggiungiFiglio.setOnClickListener(new View.OnClickListener() {

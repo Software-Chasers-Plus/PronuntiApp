@@ -2,8 +2,11 @@ package it.uniba.dib.sms232419.pronuntiapp.model;
 
 public class Genitore {
     private String nome;
+
     private String cognome;
+
     private String email;
+
     private String CodiceFiscale;
 
     private String UID;

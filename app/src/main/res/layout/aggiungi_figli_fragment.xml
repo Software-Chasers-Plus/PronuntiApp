@@ -16,6 +16,18 @@
         android:hint="@string/name"
         android:textColor="@color/black"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/err_nome"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/required_field"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,15 +38,73 @@
         android:hint="@string/surname"
         android:textColor="@color/black"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/err_cognome"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/required_field"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/data_nascita_figlio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:layout_marginTop="20dp"
+            android:padding="8dp"
+            android:hint="Data di nascita"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/imageViewCalendar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/baseline_calendar_month_24"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="55dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:clickable="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/err_dataNascita"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/required_field"
+            android:textColor="@color/red"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/codiFiscale_figlio"
         android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:padding="8dp"
         android:hint="@string/codicefiscale"
         android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/err_codiceFiscale"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/required_field"
+        android:textColor="@color/red"
+        android:visibility="gone" />
 
     <EditText
         android:layout_width="match_parent"
@@ -45,6 +115,17 @@
         android:padding="8dp"
         android:hint="@string/email_logopedista"
         android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/err_logopedista"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/required_field"
+        android:textColor="@color/red"
+        android:visibility="gone" />
 
     <Button
         android:layout_width="match_parent"

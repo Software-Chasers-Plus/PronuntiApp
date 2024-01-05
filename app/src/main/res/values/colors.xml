@@ -12,4 +12,5 @@
     <color name="secondaryGenitore">#AAD7D9</color>
     <color name="thirdGenitore">#FBF9F1</color>
     <color name="fourthGenitore">#E5E1DA</color>
+    <color name="red">#FF0000</color>
 </resources>

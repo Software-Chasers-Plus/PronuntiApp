@@ -31,7 +31,7 @@ public class figliAdapter extends RecyclerView.Adapter<figliHolderView>{
     @Override
     public void onBindViewHolder(@NonNull figliHolderView holder, int position) {
         holder.textViewNomeFiglio.setText(items.get(position).getNome());
-        holder.textViewLogopedistaFiglio.setText(items.get(position).getLogopedista());
+        holder.textViewLogopedistaFiglio.setText(items.get(position).getEmailLogopedista());
     }
 
     @Override
