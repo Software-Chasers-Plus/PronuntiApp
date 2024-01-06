@@ -51,6 +51,14 @@ public class aggiungiFiglioFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = (MainActivity) getActivity();
+
+        //recupero i figli dal bundle passato al fragment
+        if(getArguments() != null){
+            figli = getArguments().getParcelableArrayList("figli");
+            Log.d("aggiungiFiglioFragment", "Figli recuperati: "+figli.size());
+        }else{
+            Log.d("aggiungiFiglioFragment", "Bundle nullo");
+        }
     }
 
 
@@ -150,6 +158,9 @@ public class aggiungiFiglioFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if(task.isSuccessful()){
+                                    figli.add(new Figlio(nomeFiglio.getText().toString(), congnomeFiglio.getText().toString(),
+                                            codiceFiscaleFiglio.getText().toString(), emaillogopedista.getText().toString(),
+                                            FirebaseAuth.getInstance().getCurrentUser().getUid(), editTextDate.getText().toString()));
                                     Toast.makeText(mActivity, "Figlio aggiunto con successo", Toast.LENGTH_SHORT).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_home);

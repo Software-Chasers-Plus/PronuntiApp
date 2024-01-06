@@ -15,17 +15,22 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 public class figliAdapter extends RecyclerView.Adapter<figliHolderView>{
 
     Context context;
+
     List<Figlio> items;
 
-    public figliAdapter(Context context, List<Figlio> items) {
+    private ClickFigliListener clickFigliListener;
+
+    // Costruttore che riceve la lista di dati e un'istanza di ClickListener
+    public figliAdapter(Context context, List<Figlio> items, ClickFigliListener listener) {
         this.context = context;
         this.items = items;
+        this.clickFigliListener = listener;
     }
 
     @NonNull
     @Override
     public figliHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new figliHolderView(LayoutInflater.from(context).inflate(R.layout.item_figli_view, parent, false));
+        return new figliHolderView(LayoutInflater.from(context).inflate(R.layout.item_figli_view, parent, false), clickFigliListener);
     }
 
     @Override

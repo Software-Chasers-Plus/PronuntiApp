@@ -27,5 +27,6 @@
     <string name="register_as_logopedista">Sign up as logopedista</string>
     <string name="register_as_parent">Sign up as parent</string>
     <string name="required_field">*required field</string>
+    <string name="info_child">Information Child</string>
 
 </resources>

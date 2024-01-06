@@ -18,6 +18,12 @@
         tools:layout="@layout/aggiungi_figli_fragment" />
 
     <fragment
+        android:id="@+id/navigation_info_figlio"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.home.InfoFiglioFragment"
+        android:label="@string/info_child"
+        tools:layout="@layout/fragment_dettaglio_figlio" />
+
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.EserciziFragment"
         android:label="@string/title_esercizi"

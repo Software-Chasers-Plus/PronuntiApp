@@ -39,7 +39,7 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 import it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio.aggiungiFiglioFragment;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ClickFigliListener{
 
     private MainActivity mainActivity;
 
@@ -59,6 +59,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         db = FirebaseFirestore.getInstance();
+
         //creo un oggetto genitore con i dati dell'utente loggato
         db.collection("genitori")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -87,6 +88,28 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
+
+        //recupero i figli del genitore
+        db.collection("figli")
+                .whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("HomeFragment", "Figli trovati");
+                            figli.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> nuovoFiglio = document.getData();
+                                figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
+                                        nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
+                                        FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
+                            }
+                        }
+                    }
+                });
+
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -102,35 +125,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(savedInstanceState == null){
-                db.collection("figli")
-                        .whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("HomeFragment", "Figli trovati");
-                                    figli.clear();
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Map<String, Object> nuovoFiglio = document.getData();
-                                        figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
-                                                nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
-                                                FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
-                                    }
-                                    RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
-                                    recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
-                                    recyclerView.setAdapter(new figliAdapter(mainActivity.getApplicationContext(), figli));
-                                }
-                            }
-                        });
-        }
+        RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
+        recyclerView.setAdapter(new figliAdapter(mainActivity.getApplicationContext(), figli, HomeFragment.this));
+
         buttonAggiungiFiglio = view.findViewById(R.id.aggiungi_figlio_button);
         buttonAggiungiFiglio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.navigation_aggiungi_figlio);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
+                Log.d("HomeFragment", "Figli passati: "+figli.size());
+                navController.navigate(R.id.navigation_aggiungi_figlio, bundle);
             }
         });
     }
@@ -139,5 +146,15 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    // Metodo chiamato quando un elemento della RecyclerView viene cliccato
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("figlio", figli.get(position));
+        Log.d("HomeFragment", "Figlio passato: "+figli.get(position).getNome());
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.navigation_info_figlio, bundle);
     }
 }
