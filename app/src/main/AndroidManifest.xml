@@ -12,14 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PronuntiApp"
         tools:targetApi="31">
+
         <activity
-            android:name=".AccessoActivity"
-            android:exported="true">
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AccessoActivity"
+            android:exported="true">
         </activity>
 
         <activity
