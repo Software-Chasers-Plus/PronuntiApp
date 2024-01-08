@@ -1,5 +1,6 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,6 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +52,7 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
 
     private Genitore genitore;
 
-    private List<Figlio> figli = new ArrayList<>();
+    private List<Figlio> figli = new ArrayList<>() ;
 
 
     FirebaseFirestore db;
@@ -89,27 +92,13 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                     }
                 });
 
-        //recupero i figli del genitore
-        db.collection("figli")
-                .whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("HomeFragment", "Figli trovati");
-                            figli.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> nuovoFiglio = document.getData();
-                                figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
-                                        nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
-                                        FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
-                            }
-                        }
-                    }
-                });
-
-
+            //recupero i figli dall'activity
+            if(mainActivity.figli != null){
+                figli = mainActivity.figli;
+                Log.d("HomeFragment", "Figli recuperati: "+figli.size());
+            }else{
+                Log.d("HomeFragment", "Figli non recuperati");
+            }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -125,6 +114,8 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d("HomeFragment", "Figli stampati: "+figli.size());
         RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
         recyclerView.setAdapter(new figliAdapter(mainActivity.getApplicationContext(), figli, HomeFragment.this));
@@ -136,7 +127,6 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
-                Log.d("HomeFragment", "Figli passati: "+figli.size());
                 navController.navigate(R.id.navigation_aggiungi_figlio, bundle);
             }
         });

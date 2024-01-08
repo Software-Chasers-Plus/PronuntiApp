@@ -1,6 +1,8 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -10,15 +12,37 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.checkerframework.checker.index.qual.EnsuresLTLengthOfIf;
+
+import java.util.List;
+
 import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainBinding;
+import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+    public List<Figlio> figli ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //recupero i figli passati dall'activity precedente tramite il bundle
+        final Intent src = getIntent();
+        if (src != null) {
+            if(src.getExtras() != null){
+                Bundle bundle = src.getExtras();
+                figli = bundle.getParcelableArrayList("figli");
+                Log.d("MainActivity", "onCreate: " + figli.size());
+            }else{
+                Log.d("MainActivity", "PAR O PESC: src.getExtras() è null");
+            }
+        }else{
+            Log.d("MainActivity", "PAR O PESC: src è null");
+        }
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -29,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);

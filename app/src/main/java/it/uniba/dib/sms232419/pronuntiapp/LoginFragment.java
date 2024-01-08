@@ -3,6 +3,8 @@ package it.uniba.dib.sms232419.pronuntiapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +16,30 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
 public class LoginFragment extends Fragment {
     private AccessoActivity mActivity;
 
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private Button loginButton;
 
@@ -47,6 +63,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         //imposto sul bottone di registrazione il listener per passare al fragment di registrazione
         view.findViewById(R.id.scegli_registrazione).setOnClickListener(new View.OnClickListener() {
@@ -76,12 +93,63 @@ public class LoginFragment extends Fragment {
                     if(!password.isEmpty()){
                         //faccio il login con email e password
                         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(mActivity, new OnSuccessListener<AuthResult>() {
-                            //se il login è andato a buon fine faccio partire l'activity principale
+                            //se il login va a buon fine
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                Toast.makeText(mActivity, "Login effettuato", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(mActivity, MainActivity.class));
-                                mActivity.finish();
+                                //lancio la query per verificare se l'utente è un genitore
+                                db.collection("genitori")
+                                        .document(auth.getCurrentUser().getUid())
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()) {
+                                                        //se è un genitore recupero recuperaro i suoi figli
+                                                        List<Figlio> figli = new ArrayList<>();
+
+                                                        //lancio la query per recuperare i figli del genitore
+                                                        db.collection("figli")
+                                                                .whereEqualTo("genitore", auth.getCurrentUser().getUid())
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            //se i figli vengono trovati li passo all'activity principale e la faccio partire
+                                                                            Log.d("Accessoactivity", "Figli trovati con query");
+                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                Map<String, Object> nuovoFiglio = document.getData();
+                                                                                figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
+                                                                                        nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
+                                                                                        FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
+                                                                            }
+
+                                                                            //creo il bundle da passare all'activity principale
+                                                                            Bundle bundle = new Bundle();
+                                                                            bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
+
+                                                                            Log.d("Accessoactivity", "Figli grandezza" + figli.size());
+                                                                            Intent intent = new Intent(getContext(), MainActivity.class);
+                                                                            intent.putExtras(bundle);
+
+                                                                            //faccio partire l'activity principale
+                                                                            startActivity(intent);
+                                                                            mActivity.finish();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    } else {
+                                                        //TODO: fare l'activity del logopedista
+                                                    }
+                                                } else {
+                                                    //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
+                                                }
+                                            }
+                                        });
+
+
                             }
                         }).addOnFailureListener(mActivity, new OnFailureListener() {
                             @Override

@@ -12,7 +12,7 @@ public class Figlio implements Parcelable {
     private String cognome;
     private String codiceFiscale;
 
-    private Date dataNascita;
+    private String dataNascita;
     private String emailLogopedista;
 
     private String emailGenitore;
@@ -23,14 +23,14 @@ public class Figlio implements Parcelable {
         this.codiceFiscale = codiceFiscale;
         this.emailLogopedista = emailLogopedista;
         this.emailGenitore = emailGenitore;
-        this.dataNascita = new Date(dataNascita);
+        this.dataNascita = dataNascita;
     }
 
-    public Date getDataNascita() {
+    public String getDataNascita() {
         return dataNascita;
     }
 
-    public void setDataNascita(Date dataNascita) {
+    public void setDataNascita(String dataNascita) {
         this.dataNascita = dataNascita;
     }
 
@@ -40,6 +40,7 @@ public class Figlio implements Parcelable {
         codiceFiscale = in.readString();
         emailLogopedista = in.readString();
         emailGenitore = in.readString();
+        dataNascita = in.readString();
     }
 
     public static final Creator<Figlio> CREATOR = new Creator<Figlio>() {
@@ -106,5 +107,6 @@ public class Figlio implements Parcelable {
         parcel.writeString(codiceFiscale);
         parcel.writeString(emailLogopedista);
         parcel.writeString(emailGenitore);
+        parcel.writeString(dataNascita);
     }
 }
