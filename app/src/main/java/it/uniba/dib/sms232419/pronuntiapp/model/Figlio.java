@@ -75,23 +75,23 @@ public class Figlio implements Parcelable {
         return emailGenitore;
     }
 
-    public void setNome(String nome) {
+    private void setNome(String nome) {
         this.nome = nome;
     }
 
-    public void setCognome(String cognome) {
+    private void setCognome(String cognome) {
         this.cognome = cognome;
     }
 
-    public void setCodiceFiscale(String codiceFiscale) {
+    private void setCodiceFiscale(String codiceFiscale) {
         this.codiceFiscale = codiceFiscale;
     }
 
-    public void setEmailLogopedista(String emailLogopedista) {
+    private void setEmailLogopedista(String emailLogopedista) {
         this.emailLogopedista = emailLogopedista;
     }
 
-    public void setEmailGenitore(String emailGenitore) {
+    private void setEmailGenitore(String emailGenitore) {
         this.emailGenitore = emailGenitore;
     }
 

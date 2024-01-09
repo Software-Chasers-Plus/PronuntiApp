@@ -4,12 +4,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
-public class figliHolderView extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class FigliHolderView extends RecyclerView.ViewHolder implements View.OnClickListener{
     ImageView imageViewFiglio;
 
     TextView textViewNomeFiglio, textViewLogopedistaFiglio;
@@ -17,7 +16,7 @@ public class figliHolderView extends RecyclerView.ViewHolder implements View.OnC
     private ClickFigliListener clickFigliListener;
 
     // Costruttore che riceve un'istanza di ClickListener
-    public figliHolderView(View itemView, ClickFigliListener listener) {
+    public FigliHolderView(View itemView, ClickFigliListener listener) {
         super(itemView);
         // Imposta questo ViewHolder come gestore di clic
         itemView.setOnClickListener(this);

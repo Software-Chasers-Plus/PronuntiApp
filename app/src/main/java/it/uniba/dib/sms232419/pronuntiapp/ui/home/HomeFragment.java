@@ -1,6 +1,5 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,13 +23,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +34,6 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
-import it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio.aggiungiFiglioFragment;
 
 public class HomeFragment extends Fragment implements ClickFigliListener{
 
@@ -118,7 +111,7 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
         Log.d("HomeFragment", "Figli stampati: "+figli.size());
         RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
-        recyclerView.setAdapter(new figliAdapter(mainActivity.getApplicationContext(), figli, HomeFragment.this));
+        recyclerView.setAdapter(new FigliAdapter(mainActivity.getApplicationContext(), figli, HomeFragment.this));
 
         buttonAggiungiFiglio = view.findViewById(R.id.aggiungi_figlio_button);
         buttonAggiungiFiglio.setOnClickListener(new View.OnClickListener() {

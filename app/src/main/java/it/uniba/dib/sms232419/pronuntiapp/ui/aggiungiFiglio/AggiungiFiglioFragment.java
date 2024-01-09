@@ -2,7 +2,6 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio;
 
 
 import android.app.DatePickerDialog;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.time.temporal.Temporal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +35,7 @@ import it.uniba.dib.sms232419.pronuntiapp.MainActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
-public class aggiungiFiglioFragment extends Fragment {
+public class AggiungiFiglioFragment extends Fragment {
 
     List<Figlio> figli;
 

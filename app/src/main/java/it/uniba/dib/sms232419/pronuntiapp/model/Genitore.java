@@ -39,19 +39,19 @@ public class Genitore {
         return UID;
     }
 
-    public void setNome(String nome) {
+    private void setNome(String nome) {
         this.nome = nome;
     }
 
-    public void setCognome(String cognome) {
+    private void setCognome(String cognome) {
         this.cognome = cognome;
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         this.email = email;
     }
 
-    public void setCodiceFiscale(String CodiceFiscale) {
+    private void setCodiceFiscale(String CodiceFiscale) {
         this.CodiceFiscale = CodiceFiscale;
     }
 }

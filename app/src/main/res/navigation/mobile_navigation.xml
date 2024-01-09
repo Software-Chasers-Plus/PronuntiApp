@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_aggiungi_figlio"
-        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio.aggiungiFiglioFragment"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio.AggiungiFiglioFragment"
         android:label="@string/title_aggiungi_figlio"
         tools:layout="@layout/aggiungi_figli_fragment" />
 
