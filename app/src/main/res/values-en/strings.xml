@@ -28,5 +28,7 @@
     <string name="register_as_parent">Sign up as parent</string>
     <string name="required_field">*required field</string>
     <string name="info_child">Information Child</string>
+    <string name="request_for_logopedista_registration">To register as a speech therapist, send the request email to: pronuntiapp@info.com</string>
+
 
 </resources>

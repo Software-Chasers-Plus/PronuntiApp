@@ -28,5 +28,6 @@
     <string name="register_as_parent">Registrati come genitore</string>
     <string name="required_field">*Campo obbligatorio</string>
     <string name="info_child">Informazioni Figlio</string>
+    <string name="request_for_logopedista_registration">Per effettuare la registrazione come logopedista, inviare l\'email di richiesta a: pronuntiapp@info.com</string>
 
 </resources>
