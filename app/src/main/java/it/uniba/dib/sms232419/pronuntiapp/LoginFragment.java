@@ -140,8 +140,6 @@ public class LoginFragment extends Fragment {
                                                                         }
                                                                     }
                                                                 });
-                                                    } else {
-                                                        //TODO: fare l'activity del logopedista
                                                     }
                                                 } else {
                                                     //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
@@ -149,6 +147,35 @@ public class LoginFragment extends Fragment {
                                             }
                                         });
 
+                                db.collection("logopedisti")
+                                        .document(auth.getCurrentUser().getUid())
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()) {
+                                                        // Verifica se il campo "Abilitazione" è impostato a true
+                                                        boolean abilitazione = document.getBoolean("Abilitazione");
+                                                        if (abilitazione) {
+                                                            // Il logopedista è abilitato, puoi eseguire le azioni necessarie
+                                                            Intent intent = new Intent(getContext(), MainActivityLogopedista.class);
+
+                                                            //faccio partire l'activity principale
+                                                            startActivity(intent);
+                                                            mActivity.finish();
+
+                                                        } else {
+                                                            // Il logopedista non è stato abilitato
+                                                            Toast.makeText(mActivity, "Non sei stato ancora abilitato come locopedista", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                } else {
+                                                    // TODO: Gestire il caso in cui la query per verificare l'abilitazione non va a buon fine
+                                                }
+                                            }
+                                        });
 
                             }
                         }).addOnFailureListener(mActivity, new OnFailureListener() {
