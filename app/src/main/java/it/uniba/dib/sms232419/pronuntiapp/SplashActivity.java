@@ -39,12 +39,15 @@ public class SplashActivity extends AppCompatActivity {
     private static final int FECTH_TERMINATO = 2;
     private long mStartTime;
     private boolean mIsDone;
+    private boolean genitore = false;
+    private boolean logopedista = false;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case GO_AHEAD_WHAT:
-                    long elapsedTime = SystemClock.uptimeMillis() - mStartTime;
+                    long elapsedTime = SystemClock.uptimeMillis() -
+                            mStartTime;
                     if ((elapsedTime >= MIN_WAIT_INTERVAL && !mIsDone) && fecthCompletato) {
                         mIsDone = true;
                         startMainActivity();
@@ -56,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
                         startMainActivity();
                     }
                     break;
+
             }
         }
     };
@@ -74,17 +78,20 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mStartTime = SystemClock.uptimeMillis();
-        final Message goAheadMessage = mHandler.obtainMessage(GO_AHEAD_WHAT);
-        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
+        final Message goAheadMessage =
+                mHandler.obtainMessage(GO_AHEAD_WHAT);
+        mHandler.sendMessageAtTime(goAheadMessage, mStartTime +
+                MAX_WAIT_INTERVAL);
     }
+
 
     private void fetchDataFromdataBase() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Verifico se l'utente è già loggato
+        //verifico se l'utente è già loggato
         if (auth.getCurrentUser() != null) {
-            // Lancio la query per verificare se l'utente è un genitore
+            //lancio la query per verificare se l'utente è un genitore
             db.collection("genitori")
                     .document(auth.getCurrentUser().getUid())
                     .get()
@@ -94,7 +101,10 @@ public class SplashActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
-                                    // Se è un genitore, recupero i suoi figli
+                                    genitore = true;
+                                    //se è un genitore recupero recuperaro i suoi figli
+
+                                    //lancio la query per recuperare i figli del genitore
                                     db.collection("figli")
                                             .whereEqualTo("genitore", auth.getCurrentUser().getUid())
                                             .get()
@@ -102,30 +112,56 @@ public class SplashActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
+                                                        //se i figli vengono trovati li passo all'activity principale e la faccio partire
+                                                        Log.d("Accessoactivity", "Figli trovati con query");
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                                             Map<String, Object> nuovoFiglio = document.getData();
-                                                            figli.add(new Figlio(
-                                                                    nuovoFiglio.get("nome").toString(),
-                                                                    nuovoFiglio.get("cognome").toString(),
-                                                                    nuovoFiglio.get("codiceFiscale").toString(),
-                                                                    nuovoFiglio.get("logopedista").toString(),
-                                                                    FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                                                                    nuovoFiglio.get("dataNascita").toString()
-                                                            ));
+                                                            figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
+                                                                    nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
+                                                                    FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
                                                         }
                                                         loggato = true;
                                                         fecthCompletato = true;
-                                                        final Message goAheadMessage = mHandler.obtainMessage(FECTH_TERMINATO);
+                                                        final Message goAheadMessage =
+                                                                mHandler.obtainMessage(FECTH_TERMINATO);
                                                         mHandler.sendMessage(goAheadMessage);
                                                     }
                                                 }
                                             });
                                 } else {
-                                    // L'utente è un logopedista
-                                    handleLogopedista();
+                                    //l'utente è un logopedista
+                                    loggato = true;
+                                    fecthCompletato = true;
+                                    final Message goAheadMessage = mHandler.obtainMessage(FECTH_TERMINATO);
+                                    mHandler.sendMessage(goAheadMessage);
                                 }
                             } else {
-                                // TODO: Gestire il caso in cui la query per verificare che è un genitore non va a buon fine
+                                //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
+                            }
+                        }
+                    });
+
+            //lancio la query per verificare se l'utente è un logopedista
+            db.collection("logopedisti")
+                    .document(auth.getCurrentUser().getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    logopedista = true;
+                                    loggato = true;
+                                    fecthCompletato = true;
+                                    final Message goAheadMessage =
+                                            mHandler.obtainMessage(FECTH_TERMINATO);
+                                    mHandler.sendMessage(goAheadMessage);
+                                } else {
+
+                                }
+                            } else {
+                                //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
                             }
                         }
                     });
@@ -135,18 +171,9 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void handleLogopedista() {
-        // L'utente è un logopedista
-        // Avvia l'activity principale per il logopedista
-        Intent intent = new Intent(this, MainActivityLogopedista.class);
-        startActivity(intent);
-        finish();
-    }
-
-
     private void startMainActivity() {
-        if (loggato) {
-            // Creo il bundle da passare all'activity principale
+        if (loggato == true && genitore == true) {
+            //creo il bundle da passare all'activity principale
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
 
@@ -154,7 +181,14 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtras(bundle);
 
-            // Faccio partire l'activity principale
+            //faccio partire l'activity principale
+            startActivity(intent);
+            finish();
+        } else if (loggato == true && logopedista == true) {
+
+            Intent intent = new Intent(this, MainActivityLogopedista.class);
+
+            //faccio partire l'activity principale
             startActivity(intent);
             finish();
         } else {
