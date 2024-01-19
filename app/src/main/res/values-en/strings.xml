@@ -29,6 +29,8 @@
     <string name="required_field">*required field</string>
     <string name="info_child">Information Child</string>
     <string name="request_for_logopedista_registration">To be qualified as a speech therapist, send the request email with all certificates to: pronuntiapp@info.com</string>
+    <string name="bookings">Bookings</string>
+    <string name="logopedista_name">Logopedista name</string>
 
 
 </resources>

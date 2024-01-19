@@ -178,7 +178,7 @@ public class SplashActivity extends AppCompatActivity {
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
 
             Log.d("Accessoactivity", "Figli grandezza" + figli.size());
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, MainActivityGenitore.class);
             intent.putExtras(bundle);
 
             //faccio partire l'activity principale

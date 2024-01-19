@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
-import it.uniba.dib.sms232419.pronuntiapp.MainActivity;
+import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
@@ -37,7 +37,7 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 
 public class HomeFragment extends Fragment implements ClickFigliListener{
 
-    private MainActivity mainActivity;
+    private MainActivityGenitore mainActivityGenitore;
 
     private FragmentHomeBinding binding;
 
@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity) getActivity();
+        mainActivityGenitore = (MainActivityGenitore) getActivity();
         db = FirebaseFirestore.getInstance();
 
         //creo un oggetto genitore con i dati dell'utente loggato
@@ -74,20 +74,20 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                             } else {
                                 //stampa nel log un messaggio di errore
                                 Log.d("HomeFragment", "No genitore con id:"+FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                startActivity(new Intent(mainActivity, AccessoActivity.class));
-                                mainActivity.finish();
+                                startActivity(new Intent(mainActivityGenitore, AccessoActivity.class));
+                                mainActivityGenitore.finish();
                             }
                         } else {
                             Log.d("HomeFragment", "Task fallito");
-                            startActivity(new Intent(mainActivity, AccessoActivity.class));
-                            mainActivity.finish();
+                            startActivity(new Intent(mainActivityGenitore, AccessoActivity.class));
+                            mainActivityGenitore.finish();
                         }
                     }
                 });
 
             //recupero i figli dall'activity
-            if(mainActivity.figli != null){
-                figli = mainActivity.figli;
+            if(mainActivityGenitore.figli != null){
+                figli = mainActivityGenitore.figli;
                 Log.d("HomeFragment", "Figli recuperati: "+figli.size());
             }else{
                 Log.d("HomeFragment", "Figli non recuperati");
@@ -110,8 +110,8 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
 
         Log.d("HomeFragment", "Figli stampati: "+figli.size());
         RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity.getApplicationContext()));
-        recyclerView.setAdapter(new FigliAdapter(mainActivity.getApplicationContext(), figli, HomeFragment.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mainActivityGenitore.getApplicationContext()));
+        recyclerView.setAdapter(new FigliAdapter(mainActivityGenitore.getApplicationContext(), figli, HomeFragment.this));
 
         buttonAggiungiFiglio = view.findViewById(R.id.aggiungi_figlio_button);
         buttonAggiungiFiglio.setOnClickListener(new View.OnClickListener() {

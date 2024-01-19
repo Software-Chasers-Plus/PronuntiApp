@@ -30,6 +30,12 @@
         tools:layout="@layout/fragment_esercizi" />
 
     <fragment
+        android:id="@+id/navigation_prenotazioni"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PrenotazioniFragment"
+        android:label="@string/bookings"
+        tools:layout="@layout/fragment_prenotazioni" />
+
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.account.AccountFragment"
         android:label="@string/title_account"

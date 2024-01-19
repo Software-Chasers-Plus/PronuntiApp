@@ -131,7 +131,7 @@ public class LoginFragment extends Fragment {
                                                                             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
 
                                                                             Log.d("Accessoactivity", "Figli grandezza" + figli.size());
-                                                                            Intent intent = new Intent(getContext(), MainActivity.class);
+                                                                            Intent intent = new Intent(getContext(), MainActivityGenitore.class);
                                                                             intent.putExtras(bundle);
 
                                                                             //faccio partire l'activity principale

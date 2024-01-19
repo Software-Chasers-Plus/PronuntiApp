@@ -12,14 +12,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import org.checkerframework.checker.index.qual.EnsuresLTLengthOfIf;
-
 import java.util.List;
 
 import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityGenitore extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_prenotazioni, R.id.navigation_notifications)
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);

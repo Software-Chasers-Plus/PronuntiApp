@@ -29,5 +29,7 @@
     <string name="required_field">*Campo obbligatorio</string>
     <string name="info_child">Informazioni Figlio</string>
     <string name="request_for_logopedista_registration">Per essere abilitati come logopedista, inviare l\'email di richiesta con tutti i certificati a: pronuntiapp@info.com</string>
+    <string name="bookings">Prenotazioni</string>
+    <string name="logopedista_name">Nome Logopedista</string>
 
 </resources>

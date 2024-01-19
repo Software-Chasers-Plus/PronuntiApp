@@ -16,9 +16,6 @@
             android:name=".MainActivityLogopedista"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivityLogopedista"
-            android:exported="false" />
-        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Design.NoActionBar" >
@@ -33,7 +30,7 @@
             android:exported="true" >
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivityGenitore"
             android:exported="true"
             android:label="@string/app_name" >
         </activity>

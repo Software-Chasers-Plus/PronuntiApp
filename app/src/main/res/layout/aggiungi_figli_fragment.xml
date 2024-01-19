@@ -116,6 +116,16 @@
         android:hint="@string/email_logopedista"
         android:textColor="@color/black"/>
 
+    <!-- RecyclerView per visualizzare i risultati della query dei logopedisti -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/logopedistiSimiliRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

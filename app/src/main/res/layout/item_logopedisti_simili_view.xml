@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/ripple_effect"
+    >
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/logopedista_imageAccount"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:foreground="@drawable/baseline_account_circle_24"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nome_logopedista"
+        android:layout_toEndOf="@id/logopedista_imageAccount"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:text="@string/logopedista_name" />
+
+    <TextView
+        android:id="@+id/email_logopedista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/logopedista_imageAccount"
+        android:layout_below="@id/nome_logopedista"
+        android:textColor="@color/black"
+        android:text="@string/logopedista" />
+
+
+
+</RelativeLayout>
