@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
                 figli = bundle.getParcelableArrayList("figli");
                 Log.d("MainActivity", "onCreate: " + figli.size());
             }else{
-                Log.d("MainActivity", "PAR O PESC: src.getExtras() è null");
+                Log.d("MainActivity", "src.getExtras() è null");
             }
         }else{
-            Log.d("MainActivity", "PAR O PESC: src è null");
+            Log.d("MainActivity", "src è null");
         }
 
 

@@ -129,11 +129,7 @@ public class SplashActivity extends AppCompatActivity {
                                                 }
                                             });
                                 } else {
-                                    //l'utente è un logopedista
-                                    loggato = true;
-                                    fecthCompletato = true;
-                                    final Message goAheadMessage = mHandler.obtainMessage(FECTH_TERMINATO);
-                                    mHandler.sendMessage(goAheadMessage);
+
                                 }
                             } else {
                                 //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
@@ -151,12 +147,32 @@ public class SplashActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
-                                    logopedista = true;
-                                    loggato = true;
-                                    fecthCompletato = true;
-                                    final Message goAheadMessage =
-                                            mHandler.obtainMessage(FECTH_TERMINATO);
-                                    mHandler.sendMessage(goAheadMessage);
+
+                                    //lancio la query per recuperare i pazienti del logopedista
+                                    db.collection("figli")
+                                            .whereEqualTo("logopedista", auth.getCurrentUser().getUid())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        //se i figli vengono trovati li passo all'activity principale e la faccio partire
+                                                        Log.d("Accessoactivity", "Pazienti trovati con query");
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Map<String, Object> nuovoFiglio = document.getData();
+                                                            figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
+                                                                    nuovoFiglio.get("codiceFiscale").toString(), FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                                                    nuovoFiglio.get("genitore").toString(), nuovoFiglio.get("dataNascita").toString()));
+                                                        }
+                                                        logopedista = true;
+                                                        loggato = true;
+                                                        fecthCompletato = true;
+                                                        final Message goAheadMessage =
+                                                                mHandler.obtainMessage(FECTH_TERMINATO);
+                                                        mHandler.sendMessage(goAheadMessage);
+                                                    }
+                                                }
+                                            });
                                 } else {
 
                                 }
@@ -185,10 +201,15 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else if (loggato == true && logopedista == true) {
+            //creo il bundle da passare all'activity principale
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
 
+            Log.d("Accessoactivity", "Figli grandezza" + figli.size());
             Intent intent = new Intent(this, MainActivityLogopedista.class);
+            intent.putExtras(bundle);
 
-            //faccio partire l'activity principale
+            //faccio partire l'activity principale del logopedista
             startActivity(intent);
             finish();
         } else {

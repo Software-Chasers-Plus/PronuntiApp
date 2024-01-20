@@ -25,13 +25,13 @@
         android:text="@string/child_name" />
 
     <TextView
-        android:id="@+id/logopedista_figlio"
+        android:id="@+id/genitore_figlio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/figlio_imageview"
         android:layout_below="@id/nome_figlio"
         android:textColor="@color/black"
-        android:text="@string/logopedista" />
+        android:text="@string/parent" />
 
 
 

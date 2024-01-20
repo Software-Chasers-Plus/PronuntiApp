@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/figlio_imageview"
+        android:foreground="@drawable/bambino"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/label_nome_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/figlio_imageview"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Nome"
+        android:textSize="14dp"
+        android:textColor="@color/grey"
+        />
+
+    <TextView
+        android:id="@+id/nome_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_nome_paziente"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="3dp"
+        android:textSize="18dp"
+        android:background="@drawable/custom_bordo_inferiore"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/label_cognome_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nome_paziente"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Cognome"
+        android:textSize="14dp"
+        android:textColor="@color/grey"
+        />
+
+    <TextView
+        android:id="@+id/cognome_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_cognome_paziente"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="3dp"
+        android:textSize="18dp"
+        android:background="@drawable/custom_bordo_inferiore"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/label_codiceFiscale_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cognome_paziente"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Codice fiscale"
+        android:textSize="14dp"
+        android:textColor="@color/grey"
+        />
+    <TextView
+        android:id="@+id/codiceFiscale_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_codiceFiscale_paziente"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="3dp"
+        android:textSize="18dp"
+        android:background="@drawable/custom_bordo_inferiore"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/label_data_nascita_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/codiceFiscale_paziente"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Data di nascita"
+        android:textSize="14dp"
+        android:textColor="@color/grey"
+        />
+    <TextView
+        android:id="@+id/data_nascita_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_data_nascita_paziente"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="3dp"
+        android:textSize="18dp"
+        android:background="@drawable/custom_bordo_inferiore"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/label_genitore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/data_nascita_paziente"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/parent"
+        android:textSize="14dp"
+        android:textColor="@color/grey"
+        />
+    <TextView
+        android:id="@+id/genitore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_genitore"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="3dp"
+        android:textSize="18dp"
+        android:background="@drawable/custom_bordo_inferiore"
+        android:textColor="@color/black"
+        />
+
+
+    <TextView
+        android:id="@+id/label_schede_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/genitore"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Schede del bambino da completare"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/schede_recycler_view_paziente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_schede_paziente"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:maxHeight="690dp" />
+
+
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungiFiglio;
+package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
 
 
 import android.app.DatePickerDialog;
