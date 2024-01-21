@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
-import it.uniba.dib.sms232419.pronuntiapp.MainActivity;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;

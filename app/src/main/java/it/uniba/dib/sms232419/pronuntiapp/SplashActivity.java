@@ -205,7 +205,7 @@ public class SplashActivity extends AppCompatActivity {
             // Creo il bundle da passare all'activity principale
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, MainActivityGenitore.class);
             intent.putExtras(bundle);
 
             // Faccio partire l'activity principale
