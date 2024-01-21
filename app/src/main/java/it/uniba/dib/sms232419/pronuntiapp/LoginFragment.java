@@ -147,6 +147,7 @@ public class LoginFragment extends Fragment {
                                             }
                                         });
 
+                                //lancio la query per verificare se l'utente è un logopedista
                                 db.collection("logopedisti")
                                         .document(auth.getCurrentUser().getUid())
                                         .get()
@@ -156,23 +157,47 @@ public class LoginFragment extends Fragment {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
                                                     if (document.exists()) {
-                                                        // Verifica se il campo "Abilitazione" è impostato a true
-                                                        boolean abilitazione = document.getBoolean("Abilitazione");
-                                                        if (abilitazione) {
-                                                            // Il logopedista è abilitato, puoi eseguire le azioni necessarie
-                                                            Intent intent = new Intent(getContext(), MainActivityLogopedista.class);
+                                                        //se è un logopedista recupero recuperaro i suoi pazienti(figli
+                                                        List<Figlio> figli = new ArrayList<>();
 
-                                                            //faccio partire l'activity principale
-                                                            startActivity(intent);
-                                                            mActivity.finish();
+                                                        //lancio la query per recuperare i figli del genitore
+                                                        db.collection("figli")
+                                                                .whereEqualTo("logopedista", auth.getCurrentUser().getUid())
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            //se i pazienti vengono trovati li passo all'activity principale e la faccio partire
+                                                                            Log.d("Accessoactivity", "Figli trovati con query");
+                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                Map<String, Object> nuovoFiglio = document.getData();
+                                                                                figli.add(new Figlio(
+                                                                                        nuovoFiglio.get("nome").toString(),
+                                                                                        nuovoFiglio.get("cognome").toString(),
+                                                                                        nuovoFiglio.get("codiceFiscale").toString(),
+                                                                                        FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                                                                        nuovoFiglio.get("genitore").toString(),
+                                                                                        nuovoFiglio.get("dataNascita").toString()));
+                                                                            }
 
-                                                        } else {
-                                                            // Il logopedista non è stato abilitato
-                                                            Toast.makeText(mActivity, "Non sei stato ancora abilitato come locopedista", Toast.LENGTH_SHORT).show();
-                                                        }
+                                                                            //creo il bundle da passare all'activity principale
+                                                                            Bundle bundle = new Bundle();
+                                                                            bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
+
+                                                                            Log.d("Accessoactivity", "Figli grandezza" + figli.size());
+                                                                            Intent intent = new Intent(getContext(), MainActivityLogopedista.class);
+                                                                            intent.putExtras(bundle);
+
+                                                                            //faccio partire l'activity principale
+                                                                            startActivity(intent);
+                                                                            mActivity.finish();
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 } else {
-                                                    // TODO: Gestire il caso in cui la query per verificare l'abilitazione non va a buon fine
+                                                    //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
                                                 }
                                             }
                                         });

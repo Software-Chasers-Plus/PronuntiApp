@@ -46,7 +46,7 @@ public class MainActivityLogopedista extends AppCompatActivity {
             Log.d("MainActivityLogopededista", "src è null");
         }
 
-        Log.d("MainActivityLogopededista", "ciaoooooooooooooooooooooo");
+
         binding = ActivityMainLogopedistaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
