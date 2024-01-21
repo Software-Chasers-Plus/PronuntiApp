@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
-
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -41,13 +41,14 @@ public class SplashActivity extends AppCompatActivity {
     private boolean mIsDone;
     private boolean genitore = false;
     private boolean logopedista = false;
+    private FirebaseUser currentUser;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case GO_AHEAD_WHAT:
-                    long elapsedTime = SystemClock.uptimeMillis() -
-                            mStartTime;
+                    long elapsedTime = SystemClock.uptimeMillis() - mStartTime;
                     if ((elapsedTime >= MIN_WAIT_INTERVAL && !mIsDone) && fecthCompletato) {
                         mIsDone = true;
                         startMainActivity();
@@ -59,7 +60,6 @@ public class SplashActivity extends AppCompatActivity {
                         startMainActivity();
                     }
                     break;
-
             }
         }
     };
@@ -71,124 +71,156 @@ public class SplashActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         decorView.setSystemUiVisibility(uiOptions);
-        fetchDataFromdataBase();
+        fetchDataFromDataBase();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mStartTime = SystemClock.uptimeMillis();
-        final Message goAheadMessage =
-                mHandler.obtainMessage(GO_AHEAD_WHAT);
-        mHandler.sendMessageAtTime(goAheadMessage, mStartTime +
-                MAX_WAIT_INTERVAL);
+        final Message goAheadMessage = mHandler.obtainMessage(GO_AHEAD_WHAT);
+        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
     }
 
-
-    private void fetchDataFromdataBase() {
+    private void fetchDataFromDataBase() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        currentUser = auth.getCurrentUser();
 
-        //verifico se l'utente è già loggato
-        if (auth.getCurrentUser() != null) {
-            //lancio la query per verificare se l'utente è un genitore
-            db.collection("genitori")
-                    .document(auth.getCurrentUser().getUid())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    genitore = true;
-                                    //se è un genitore recupero recuperaro i suoi figli
-
-                                    //lancio la query per recuperare i figli del genitore
-                                    db.collection("figli")
-                                            .whereEqualTo("genitore", auth.getCurrentUser().getUid())
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        //se i figli vengono trovati li passo all'activity principale e la faccio partire
-                                                        Log.d("Accessoactivity", "Figli trovati con query");
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Map<String, Object> nuovoFiglio = document.getData();
-                                                            figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
-                                                                    nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
-                                                                    FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
-                                                        }
-                                                        loggato = true;
-                                                        fecthCompletato = true;
-                                                        final Message goAheadMessage =
-                                                                mHandler.obtainMessage(FECTH_TERMINATO);
-                                                        mHandler.sendMessage(goAheadMessage);
-                                                    }
-                                                }
-                                            });
-                                } else {
-                                    //l'utente è un logopedista
-                                    loggato = true;
-                                    fecthCompletato = true;
-                                    final Message goAheadMessage = mHandler.obtainMessage(FECTH_TERMINATO);
-                                    mHandler.sendMessage(goAheadMessage);
-                                }
-                            } else {
-                                //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
-                            }
-                        }
-                    });
-
-            //lancio la query per verificare se l'utente è un logopedista
-            db.collection("logopedisti")
-                    .document(auth.getCurrentUser().getUid())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    logopedista = true;
-                                    loggato = true;
-                                    fecthCompletato = true;
-                                    final Message goAheadMessage =
-                                            mHandler.obtainMessage(FECTH_TERMINATO);
-                                    mHandler.sendMessage(goAheadMessage);
-                                } else {
-
-                                }
-                            } else {
-                                //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
-                            }
-                        }
-                    });
+        if (currentUser != null) {
+            checkIfGenitore(auth);
+            checkIfLogopedista(auth);
         } else {
+            // Utente non loggato
             loggato = false;
             fecthCompletato = true;
+            startMainActivity(); // Chiamare startMainActivity anche se non è loggato
         }
     }
 
+    private void checkIfGenitore(final FirebaseAuth auth) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("genitori")
+                .document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                genitore = true;
+                                retrieveFigliForGenitore(auth);
+                            } else {
+                                fecthCompletato = true;
+                            }
+                        } else {
+                            // TODO: Gestire il caso in cui la query per verificare che è un genitore non va a buon fine
+                        }
+                    }
+                });
+    }
+
+    private void retrieveFigliForGenitore(final FirebaseAuth auth) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("figli")
+                .whereEqualTo("genitore", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> nuovoFiglio = document.getData();
+                                figli.add(new Figlio(
+                                        nuovoFiglio.get("nome").toString(),
+                                        nuovoFiglio.get("cognome").toString(),
+                                        nuovoFiglio.get("codiceFiscale").toString(),
+                                        nuovoFiglio.get("logopedista").toString(),
+                                        currentUser.getUid(),
+                                        nuovoFiglio.get("dataNascita").toString()
+                                ));
+                            }
+                            loggato = true;
+                            fecthCompletato = true;
+                            mHandler.sendEmptyMessage(FECTH_TERMINATO);
+                        }
+                    }
+                });
+    }
+
+    private void checkIfLogopedista(final FirebaseAuth auth) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("logopedisti")
+                .document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                retrievePazientiForLogopedista(auth);
+                            } else {
+                                fecthCompletato = true;
+                            }
+                        } else {
+                            // TODO: Gestire il caso in cui la query per verificare che è un logopedista non va a buon fine
+                        }
+                    }
+                });
+    }
+
+    private void retrievePazientiForLogopedista(final FirebaseAuth auth) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("figli")
+                .whereEqualTo("logopedista", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> nuovoFiglio = document.getData();
+                                figli.add(new Figlio(
+                                        nuovoFiglio.get("nome").toString(),
+                                        nuovoFiglio.get("cognome").toString(),
+                                        nuovoFiglio.get("codiceFiscale").toString(),
+                                        currentUser.getUid(),
+                                        nuovoFiglio.get("genitore").toString(),
+                                        nuovoFiglio.get("dataNascita").toString()
+                                ));
+                            }
+                            logopedista = true;
+                            loggato = true;
+                            fecthCompletato = true;
+                            mHandler.sendEmptyMessage(FECTH_TERMINATO);
+                        }
+                    }
+                });
+    }
+
+
     private void startMainActivity() {
-        if (loggato == true && genitore == true) {
-            //creo il bundle da passare all'activity principale
+        if (loggato && genitore) {
+            // Creo il bundle da passare all'activity principale
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtras(bundle);
+
+            // Faccio partire l'activity principale
+            startActivity(intent);
+            finish();
+        } else if (loggato && logopedista) {
+            // Creo il bundle da passare all'activity principale
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
 
             Log.d("Accessoactivity", "Figli grandezza" + figli.size());
-            Intent intent = new Intent(this, MainActivityGenitore.class);
+            Intent intent = new Intent(this, MainActivityLogopedista.class);
             intent.putExtras(bundle);
 
-            //faccio partire l'activity principale
-            startActivity(intent);
-            finish();
-        } else if (loggato == true && logopedista == true) {
-
-            Intent intent = new Intent(this, MainActivityLogopedista.class);
-
-            //faccio partire l'activity principale
+            // Faccio partire l'activity principale del logopedista
             startActivity(intent);
             finish();
         } else {

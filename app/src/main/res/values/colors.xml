@@ -13,4 +13,9 @@
     <color name="thirdGenitore">#FBF9F1</color>
     <color name="fourthGenitore">#E5E1DA</color>
     <color name="red">#FF0000</color>
+
+    <color name="primaryLogopedista">#88AB8E</color>
+    <color name="secondaryLogopedista">#AFC8AD</color>
+    <color name="thirdLogopedista">#EEE7DA</color>
+    <color name="fourthLogopedista">#F2F1EB</color>
 </resources>
