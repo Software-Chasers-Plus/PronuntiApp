@@ -159,7 +159,13 @@ public class SplashActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document != null && document.exists()) {
-                                retrievePazientiForLogopedista(auth);
+                                // Verifica che il campo "abilitazione" sia impostato a true
+                                boolean isAbilitato = document.getBoolean("Abilitazione");
+                                if (isAbilitato) {
+                                    retrievePazientiForLogopedista(auth);
+                                } else {
+                                    fecthCompletato = true;
+                                }
                             } else {
                                 fecthCompletato = true;
                             }

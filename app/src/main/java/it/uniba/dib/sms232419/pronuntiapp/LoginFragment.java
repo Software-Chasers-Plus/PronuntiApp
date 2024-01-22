@@ -35,14 +35,10 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
 public class LoginFragment extends Fragment {
     private AccessoActivity mActivity;
-
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     private Button loginButton;
-
 
     @Override
     public void onAttach(Context context) {
@@ -63,166 +59,157 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         super.onViewCreated(view, savedInstanceState);
-        //imposto sul bottone di registrazione il listener per passare al fragment di registrazione
-        view.findViewById(R.id.scegli_registrazione).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mActivity.getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true) // Imposta che le transazioni di frammenti possono essere riordinate  migliorare le animazioni
-                        .replace(R.id.login_signup_fragment, new SceltaRegistrazioneFragment(), null)
-                        .addToBackStack(null)//aggiuge il fragment al back stack del fragment manager e permette agli utenti di navigare all'indietro
-                        .commit();
-            }
+
+        // Listener per il passaggio al fragment di registrazione
+        view.findViewById(R.id.scegli_registrazione).setOnClickListener(v -> {
+            mActivity.getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.login_signup_fragment, new SceltaRegistrazioneFragment(), null)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         loginEmail = view.findViewById(R.id.login_email);
         loginPassword = view.findViewById(R.id.login_password);
         loginButton = view.findViewById(R.id.login_button);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = loginEmail.getText().toString();
-                String password = loginPassword.getText().toString();
+        loginButton.setOnClickListener(v -> {
+            String email = loginEmail.getText().toString();
+            String password = loginPassword.getText().toString();
 
-                //controllo che l'email non sia vuota e che sia valida
-                if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    //controllo che la password non sia vuota
-                    if(!password.isEmpty()){
-                        //faccio il login con email e password
-                        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(mActivity, new OnSuccessListener<AuthResult>() {
-                            //se il login va a buon fine
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                //lancio la query per verificare se l'utente è un genitore
-                                db.collection("genitori")
-                                        .document(auth.getCurrentUser().getUid())
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    DocumentSnapshot document = task.getResult();
-                                                    if (document.exists()) {
-                                                        //se è un genitore recupero recuperaro i suoi figli
-                                                        List<Figlio> figli = new ArrayList<>();
-
-                                                        //lancio la query per recuperare i figli del genitore
-                                                        db.collection("figli")
-                                                                .whereEqualTo("genitore", auth.getCurrentUser().getUid())
-                                                                .get()
-                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            //se i figli vengono trovati li passo all'activity principale e la faccio partire
-                                                                            Log.d("Accessoactivity", "Figli trovati con query");
-                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                Map<String, Object> nuovoFiglio = document.getData();
-                                                                                figli.add(new Figlio(nuovoFiglio.get("nome").toString(), nuovoFiglio.get("cognome").toString(),
-                                                                                        nuovoFiglio.get("codiceFiscale").toString(), nuovoFiglio.get("logopedista").toString(),
-                                                                                        FirebaseAuth.getInstance().getCurrentUser().getUid(), nuovoFiglio.get("dataNascita").toString()));
-                                                                            }
-
-                                                                            //creo il bundle da passare all'activity principale
-                                                                            Bundle bundle = new Bundle();
-                                                                            bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
-
-                                                                            Log.d("Accessoactivity", "Figli grandezza" + figli.size());
-                                                                            Intent intent = new Intent(getContext(), MainActivityGenitore.class);
-                                                                            intent.putExtras(bundle);
-
-                                                                            //faccio partire l'activity principale
-                                                                            startActivity(intent);
-                                                                            mActivity.finish();
-                                                                        }
-                                                                    }
-                                                                });
-                                                    }
-                                                } else {
-                                                    //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
-                                                }
-                                            }
-                                        });
-
-                                //lancio la query per verificare se l'utente è un logopedista
-                                db.collection("logopedisti")
-                                        .document(auth.getCurrentUser().getUid())
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    DocumentSnapshot document = task.getResult();
-                                                    if (document.exists()) {
-                                                        //se è un logopedista recupero recuperaro i suoi pazienti(figli
-                                                        List<Figlio> figli = new ArrayList<>();
-
-                                                        //lancio la query per recuperare i figli del genitore
-                                                        db.collection("figli")
-                                                                .whereEqualTo("logopedista", auth.getCurrentUser().getUid())
-                                                                .get()
-                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            //se i pazienti vengono trovati li passo all'activity principale e la faccio partire
-                                                                            Log.d("Accessoactivity", "Figli trovati con query");
-                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                Map<String, Object> nuovoFiglio = document.getData();
-                                                                                figli.add(new Figlio(
-                                                                                        nuovoFiglio.get("nome").toString(),
-                                                                                        nuovoFiglio.get("cognome").toString(),
-                                                                                        nuovoFiglio.get("codiceFiscale").toString(),
-                                                                                        FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                                                                                        nuovoFiglio.get("genitore").toString(),
-                                                                                        nuovoFiglio.get("dataNascita").toString()));
-                                                                            }
-
-                                                                            //creo il bundle da passare all'activity principale
-                                                                            Bundle bundle = new Bundle();
-                                                                            bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
-
-                                                                            Log.d("Accessoactivity", "Figli grandezza" + figli.size());
-                                                                            Intent intent = new Intent(getContext(), MainActivityLogopedista.class);
-                                                                            intent.putExtras(bundle);
-
-                                                                            //faccio partire l'activity principale
-                                                                            startActivity(intent);
-                                                                            mActivity.finish();
-                                                                        }
-                                                                    }
-                                                                });
-                                                    }
-                                                } else {
-                                                    //TODO: gestire il caso in cui la query per verificare che è un genitore non va a buon fine
-                                                }
-                                            }
-                                        });
-
-                            }
-                        }).addOnFailureListener(mActivity, new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(mActivity, "Login fallito", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }else{
-                        loginPassword.setError("Inserisci la tua password");
-                        loginPassword.requestFocus();
-                    }
-                }else if(email.isEmpty()){
-                    loginEmail.setError("Inserisci la tua email");
-                    loginEmail.requestFocus();
-                }else{
-                    loginEmail.setError("Inserisci una email valida");
-                    loginEmail.requestFocus();
-                }
+            if (isValidEmail(email) && isValidPassword(password)) {
+                loginUser(email, password);
             }
         });
+    }
 
+    // Metodo per validare l'email
+    private boolean isValidEmail(String email) {
+        if (email.isEmpty()) {
+            loginEmail.setError("Inserisci la tua email");
+            loginEmail.requestFocus();
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            loginEmail.setError("Inserisci una email valida");
+            loginEmail.requestFocus();
+            return false;
+        }
+        return true;
+    }
 
+    // Metodo per validare la password
+    private boolean isValidPassword(String password) {
+        if (password.isEmpty()) {
+            loginPassword.setError("Inserisci la tua password");
+            loginPassword.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    // Metodo per eseguire il login
+    private void loginUser(String email, String password) {
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(mActivity, authResult -> {
+                    checkUserType(authResult.getUser().getUid());
+                })
+                .addOnFailureListener(mActivity, e -> {
+                    Toast.makeText(mActivity, "Login fallito", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    // Metodo per verificare il tipo di utente
+    private void checkUserType(String userId) {
+        // Verifica se è un genitore
+        db.collection("genitori").document(userId).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            retrieveChildren(userId);
+                        }
+                    } else {
+                        // TODO: Gestire il caso in cui la query per verificare che è un genitore non va a buon fine
+                    }
+                });
+
+        // Verifica se è un logopedista
+        db.collection("logopedisti").document(userId).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Verifica che il campo "abilitazione" sia impostato a true
+                            boolean isAbilitato = document.getBoolean("Abilitazione");
+                            if (isAbilitato) {
+                                retrievePatients(userId);
+                            } else {
+                                Toast.makeText(mActivity, "Non sei stato ancora abilitato come logopedista", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        // TODO: Gestire il caso in cui la query per verificare che è un logopedista non va a buon fine
+                    }
+                });
+
+    }
+
+    // Metodo per recuperare i figli di un genitore
+    private void retrieveChildren(String userId) {
+        List<Figlio> childrenList = new ArrayList<>();
+
+        db.collection("figli").whereEqualTo("genitore", userId).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> childData = document.getData();
+                            childrenList.add(new Figlio(
+                                    childData.get("nome").toString(),
+                                    childData.get("cognome").toString(),
+                                    childData.get("codiceFiscale").toString(),
+                                    childData.get("logopedista").toString(),
+                                    userId,
+                                    childData.get("dataNascita").toString()
+                            ));
+                        }
+                        startMainActivity(childrenList, MainActivityGenitore.class);
+                    }
+                });
+    }
+
+    // Metodo per recuperare i pazienti di un logopedista
+    private void retrievePatients(String userId) {
+        List<Figlio> patientsList = new ArrayList<>();
+
+        db.collection("figli").whereEqualTo("logopedista", userId).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> patientData = document.getData();
+                            patientsList.add(new Figlio(
+                                    patientData.get("nome").toString(),
+                                    patientData.get("cognome").toString(),
+                                    patientData.get("codiceFiscale").toString(),
+                                    userId,
+                                    patientData.get("genitore").toString(),
+                                    patientData.get("dataNascita").toString()
+                            ));
+                        }
+                        startMainActivity(patientsList, MainActivityLogopedista.class);
+                    }
+                });
+    }
+
+    // Metodo per avviare l'activity principale
+    private void startMainActivity(List<Figlio> dataList, Class<?> activityClass) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) dataList);
+
+        Intent intent = new Intent(getContext(), activityClass);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+        mActivity.finish();
     }
 }
