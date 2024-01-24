@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PronuntiApp"
         tools:targetApi="31" >
-        <activity
-            android:name=".MainActivityLogopedista"
-            android:exported="false" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -25,15 +23,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".AccessoActivity"
             android:exported="true" >
         </activity>
+
+
+        <activity
+            android:name=".MainActivityLogopedista"
+            android:exported="false"
+            android:theme="@style/Theme.Logopedista"/>
+
+
         <activity
             android:name=".MainActivityGenitore"
             android:exported="true"
             android:label="@string/app_name" >
         </activity>
+
     </application>
 
 </manifest>

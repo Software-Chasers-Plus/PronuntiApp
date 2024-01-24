@@ -118,6 +118,7 @@
             android:textColor="@color/black"
             android:layout_gravity="bottom|center_horizontal"
             android:elevation="15dp"
+            android:backgroundTint="@color/secondaryLogopedista"
             />
 
         <Space
