@@ -12,7 +12,7 @@
     <string name="codicefiscale">Codice Fiscale</string>
     <string name="email_logopedista">Email logopedista</string>
     <string name="add">Aggiungi</string>
-    <string name="logout">Esci\n</string>
+    <string name="logout">Logout</string>
     <string name="children">I tuoi figli</string>
     <string name="add_child">Aggiungi Figlio</string>
     <string name="logopedista">Logopedista</string>

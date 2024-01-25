@@ -115,11 +115,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logout"
-            android:textColor="@color/black"
-            android:layout_gravity="bottom|center_horizontal"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
             android:elevation="15dp"
             android:backgroundTint="@color/secondaryLogopedista"
             />
+
+
 
         <Space
             android:layout_width="match_parent"
