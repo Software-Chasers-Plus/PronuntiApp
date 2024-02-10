@@ -96,7 +96,6 @@ public class HomeFragmentLogopedista extends Fragment implements ClickFigliListe
                 });
 
         //recupero i figli dall'activity
-        //recupero i figli dall'activity
         if(mainActivityLogopedista.figli != null){
             figli = mainActivityLogopedista.figli;
             Log.d("HomeFragmentLogopedista", "Figli recuperati: "+figli.size());
@@ -131,12 +130,12 @@ public class HomeFragmentLogopedista extends Fragment implements ClickFigliListe
         buttonAggiungiPaziente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Apri il nuovo fragment AggiungiPazienteFragment
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
-                navController.navigate(R.id.navigation_aggiungi_paziente, bundle);
+                navController.navigate(R.id.navigation_mostra_paziente);
             }
         });
+
     }
 
     @Override

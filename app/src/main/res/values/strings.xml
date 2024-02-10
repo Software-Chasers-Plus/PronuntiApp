@@ -40,5 +40,8 @@
     <string name="parent">Genitore</string>
     <string name="title_add_patient">Aggiungi paziente</string>
     <string name="info_patient">Informazioni paziente</string>
+    <string name="patients_available">Pazienti disponibili</string>
+    <string name="title_show_patient">Mostra Paziente</string>
+    <string name="shows_available_patients">MOSTRA PAZIENTI DISPONIBILI</string>
 
 </resources>

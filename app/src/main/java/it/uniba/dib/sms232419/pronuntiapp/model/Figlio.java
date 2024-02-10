@@ -13,15 +13,15 @@ public class Figlio implements Parcelable {
     private String codiceFiscale;
 
     private String dataNascita;
-    private String emailLogopedista;
+    private String Logopedista;
 
     private String emailGenitore;
 
-    public Figlio(String nome, String cognome, String codiceFiscale, String emailLogopedista, String emailGenitore, String dataNascita) {
+    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = codiceFiscale;
-        this.emailLogopedista = emailLogopedista;
+        this.Logopedista = Logopedista;
         this.emailGenitore = emailGenitore;
         this.dataNascita = dataNascita;
     }
@@ -38,7 +38,7 @@ public class Figlio implements Parcelable {
         nome = in.readString();
         cognome = in.readString();
         codiceFiscale = in.readString();
-        emailLogopedista = in.readString();
+        Logopedista = in.readString();
         emailGenitore = in.readString();
         dataNascita = in.readString();
     }
@@ -67,8 +67,8 @@ public class Figlio implements Parcelable {
         return codiceFiscale;
     }
 
-    public String getEmailLogopedista() {
-        return emailLogopedista;
+    public String getLogopedista() {
+        return Logopedista;
     }
 
     public String getEmailGenitore() {
@@ -87,8 +87,8 @@ public class Figlio implements Parcelable {
         this.codiceFiscale = codiceFiscale;
     }
 
-    private void setEmailLogopedista(String emailLogopedista) {
-        this.emailLogopedista = emailLogopedista;
+    public void setLogopedista(String emailLogopedista) {
+        this.Logopedista = Logopedista;
     }
 
     private void setEmailGenitore(String emailGenitore) {
@@ -105,7 +105,7 @@ public class Figlio implements Parcelable {
         parcel.writeString(nome);
         parcel.writeString(cognome);
         parcel.writeString(codiceFiscale);
-        parcel.writeString(emailLogopedista);
+        parcel.writeString(Logopedista);
         parcel.writeString(emailGenitore);
         parcel.writeString(dataNascita);
     }

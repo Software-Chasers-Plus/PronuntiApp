@@ -57,7 +57,7 @@ public class AggiungiFiglioFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mActivity = (MainActivityGenitore) getActivity();
 
-        //recupero i figli dal bundle passato al fragment
+        //recupero i pazienti dal bundle passato al fragment
         if(getArguments() != null){
             figli = getArguments().getParcelableArrayList("figli");
             Log.d("aggiungiFiglioFragment", "Figli recuperati: "+figli.size());

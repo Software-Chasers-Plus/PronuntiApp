@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragmentLogopedista">
+    tools:context=".ui.aggiungi.MostraPazientiFragment">
 
     <TextView
         android:id="@+id/intestazione_pazienti"
@@ -12,7 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/patients"
+        android:text="@string/patients_available"
         android:textSize="20dp"
         android:textStyle="bold"/>
 
@@ -25,17 +25,5 @@
         android:layout_below="@+id/intestazione_pazienti"
         android:layout_marginTop="-19dp"
         android:maxHeight="690dp" />
-
-    <Button
-        android:id="@+id/aggiungi_paziente_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_below="@id/pazienti_recycler_view"
-        android:layout_centerHorizontal="true"
-        android:text="@string/shows_available_patients"
-        android:textSize="18dp"
-        android:backgroundTint="@color/secondaryLogopedista" />
-
 
 </RelativeLayout>

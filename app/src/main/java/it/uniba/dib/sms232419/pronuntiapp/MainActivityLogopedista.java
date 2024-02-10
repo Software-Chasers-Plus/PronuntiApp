@@ -1,5 +1,7 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,8 +19,9 @@ import java.util.List;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainLogopedistaBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
+import it.uniba.dib.sms232419.pronuntiapp.ui.home.ClickFigliListener;
 
-public class MainActivityLogopedista extends AppCompatActivity {
+public class MainActivityLogopedista extends AppCompatActivity{
 
 
     // binding: crea la classe e collega in automatico al file layout per facilitare operazioni (non si usa il findViewById)
@@ -65,6 +68,8 @@ public class MainActivityLogopedista extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         // Connetti NavController con BottomNavigationView
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+
     }
 
     //metodo che permette di tronare al fragment precedente
@@ -73,4 +78,6 @@ public class MainActivityLogopedista extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_logopedista);
         return navController.navigateUp();
     }
+
+
 }

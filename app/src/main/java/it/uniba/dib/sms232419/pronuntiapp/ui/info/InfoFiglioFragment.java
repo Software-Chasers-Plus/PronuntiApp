@@ -57,7 +57,7 @@ public class InfoFiglioFragment extends Fragment {
         dataNascitaFiglio.setText(figlio.getDataNascita().toString());
 
         TextView emailLogopedistaFiglio = view.findViewById(R.id.email_logopedista_figlio);
-        emailLogopedistaFiglio.setText(figlio.getEmailLogopedista());
+        emailLogopedistaFiglio.setText(figlio.getLogopedista());
     }
 
 }

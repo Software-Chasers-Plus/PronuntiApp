@@ -10,6 +10,7 @@
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.home.HomeFragmentLogopedista"
         android:label="@string/fragment_home_logopedista"
         tools:layout="@layout/fragment_home_logopedista" />
+
     <fragment
         android:id="@+id/navigation_notifications_logopedista"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.account.AccountFragmentLogopedista"
@@ -23,15 +24,22 @@
         tools:layout="@layout/fragment_esercizi" />
 
     <fragment
-        android:id="@+id/navigation_aggiungi_paziente"
-        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.AggiungiPazienteFragment"
-        android:label="@string/title_add_patient"
-        tools:layout="@layout/fragment_aggiungi_paziente" />
+        android:id="@+id/navigation_mostra_paziente"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.MostraPazientiFragment"
+        android:label="@string/title_show_patient"
+        tools:layout="@layout/fragment_mostra_paziente" />
 
     <fragment
         android:id="@+id/navigation_info_paziente"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.info.InfoPazienteFragment"
         android:label="@string/info_patient"
         tools:layout="@layout/fragment_info_paziente" />
+
+    <fragment
+        android:id="@+id/navigation_aggiungi_paziente"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.AggiungiPazienteFragment"
+        android:label="@string/add_patient"
+        tools:layout="@layout/fragment_aggiungi_paziente" />
+
 
 </navigation>
