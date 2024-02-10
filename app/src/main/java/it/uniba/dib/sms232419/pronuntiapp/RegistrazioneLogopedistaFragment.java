@@ -29,9 +29,9 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private EditText signUpNome, signUpCognome, signUpEmail, signUpCodiceFiscale, signUpPassword;
-    //signUpAbilitazione serve per impostare il campo a false, una volta che il logopedista invia la
-    //richiesta tramite email, se il team conferma i suo certicati, allora tale campo viene impostato
-    //a true direttamente da Firebase
+    // signUpAbilitazione serve per impostare il campo a false, una volta che il logopedista invia la
+    // richiesta tramite email, se il team conferma i suo certicati, allora tale campo viene impostato
+    // a true direttamente da Firebase
     Boolean signUpAbilitazione;
 
     private Button signUpButton;
@@ -71,13 +71,13 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                 String password = signUpPassword.getText().toString().trim();
 
                 if(email.isEmpty()){
-                    signUpEmail.setError("Inserisci la tua email");
+                    signUpEmail.setError(R.string.inserisci_la_tua_email + "");
                 }
 
                 if(password.isEmpty()){
-                    signUpPassword.setError("Inserisci la tua password");
+                    signUpPassword.setError(R.string.inserisci_la_tua_password + "");
                 }else{
-                    //inserisco il logopedista nel database di autenticazione di firebase
+                    // Inserisco il logopedista nel database di autenticazione di firebase
                     auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -100,18 +100,18 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    Toast.makeText(mActivity, "Registrazione avvenuta con successo", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(mActivity, R.string.registrazione_avvenuta_con_successo, Toast.LENGTH_SHORT).show();
                                                     mActivity.getSupportFragmentManager().beginTransaction()
                                                             .setReorderingAllowed(true)
                                                             .replace(R.id.login_signup_fragment, new LoginFragment(), null)
                                                             .commit();
                                                 }else{
-                                                    Toast.makeText(mActivity, "Registrazione fallita", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
                             }else{
-                                Toast.makeText(mActivity, "Registrazione fallita", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

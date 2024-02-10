@@ -139,11 +139,11 @@ public class LoginFragment extends Fragment {
     // Metodo per validare l'email
     private boolean isValidEmail(String email) {
         if (email.isEmpty()) {
-            loginEmail.setError("Inserisci la tua email");
+            loginEmail.setError(getString(R.string.inserisci_la_tua_email));
             loginEmail.requestFocus();
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            loginEmail.setError("Inserisci una email valida");
+            loginEmail.setError(getString(R.string.inserisci_una_email_valida));
             loginEmail.requestFocus();
             return false;
         }
@@ -153,7 +153,7 @@ public class LoginFragment extends Fragment {
     // Metodo per validare la password
     private boolean isValidPassword(String password) {
         if (password.isEmpty()) {
-            loginPassword.setError("Inserisci la tua password");
+            loginPassword.setError(getString(R.string.inserisci_la_tua_password));
             loginPassword.requestFocus();
             return false;
         }
@@ -166,7 +166,7 @@ public class LoginFragment extends Fragment {
                     checkUserType(authResult.getUser().getUid());
                 })
                 .addOnFailureListener(mActivity, e -> {
-                    Toast.makeText(mActivity, "Login fallito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, R.string.login_fallito, Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -174,7 +174,7 @@ public class LoginFragment extends Fragment {
     // Metodo per verificare il tipo di utente
     private void checkUserType(String userId) {
         // Verifica se è un genitore
-        db.collection("genitori").document(userId).get()
+        db.collection(getString(R.string.genitori)).document(userId).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
@@ -187,17 +187,17 @@ public class LoginFragment extends Fragment {
                 });
 
         // Verifica se è un logopedista
-        db.collection("logopedisti").document(userId).get()
+        db.collection(getString(R.string.logopedisti)).document(userId).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             // Verifica che il campo "abilitazione" sia impostato a true
-                            boolean isAbilitato = document.getBoolean("Abilitazione");
+                            boolean isAbilitato = Boolean.TRUE.equals(document.getBoolean(getString(R.string.abilitazione)));
                             if (isAbilitato) {
                                 retrievePatients(userId);
                             } else {
-                                Toast.makeText(mActivity, "Non sei stato ancora abilitato come logopedista", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, R.string.non_ancora_abilitato_come_logopedista, Toast.LENGTH_SHORT).show();
                             }
                         }
                     } else {

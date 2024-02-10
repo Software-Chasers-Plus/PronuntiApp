@@ -43,5 +43,15 @@
     <string name="patients_available">Pazienti disponibili</string>
     <string name="title_show_patient">Mostra Paziente</string>
     <string name="shows_available_patients">MOSTRA PAZIENTI DISPONIBILI</string>
+    <string name="inserisci_la_tua_password">Inserisci la tua password</string>
+    <string name="inserisci_la_tua_email">Inserisci la tua email</string>
+    <string name="inserisci_una_email_valida">Inserisci una email valida</string>
+    <string name="login_fallito">Login fallito</string>
+    <string name="genitori">genitori</string>
+    <string name="logopedisti">logopedisti</string>
+    <string name="abilitazione">Abilitazione</string>
+    <string name="non_ancora_abilitato_come_logopedista">Non sei stato ancora abilitato come logopedista</string>
+    <string name="registrazione_avvenuta_con_successo">Registrazione avvenuta con successo</string>
+    <string name="registrazione_fallita">Registrazione fallita</string>
 
 </resources>
