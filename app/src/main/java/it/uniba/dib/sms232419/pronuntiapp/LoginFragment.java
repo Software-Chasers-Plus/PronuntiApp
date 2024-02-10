@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +41,11 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ImageView imageClockPassword;
+
     private Button loginButton;
+
+    boolean passwordVisible = false;
 
     @Override
     public void onAttach(Context context) {
@@ -52,9 +59,54 @@ public class LoginFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.login_fragment, container, false);
+
+        loginEmail = view.findViewById(R.id.login_email);
+        loginPassword = view.findViewById(R.id.login_password);
+        imageClockPassword = view.findViewById(R.id.imageClockPassword);
+        Button loginButton = view.findViewById(R.id.login_button);
+
+        auth = FirebaseAuth.getInstance();
+
+        loginButton.setOnClickListener(v -> {
+            String email = loginEmail.getText().toString().trim();
+            String password = loginPassword.getText().toString().trim();
+            loginUser(email, password);
+        });
+
+
+        imageClockPassword.setOnClickListener(v -> togglePasswordVisibility());
+
+        return view;
+    }
+
+    //metodo per la visibilità della password
+    private void togglePasswordVisibility() {
+
+        if (!passwordVisible) {
+            // Password non visibile
+            loginPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            passwordVisible = true;
+
+            //Posizionamento del cursore alla fine della stringa
+            loginPassword.setSelection(loginPassword.getText().length());
+
+            //aggiornamento dell'imagine per la visibilità della password
+            imageClockPassword.setImageResource(R.drawable.visibility);
+        } else {
+            // Password visibile
+            loginPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            passwordVisible = false;
+
+            //Posizionamento del cursore alla fine della stringa
+            loginPassword.setSelection(loginPassword.getText().length());
+
+            //aggiornamento dell'imagine per la visibilità della password
+            imageClockPassword.setImageResource(R.drawable.invisible);
+        }
     }
 
     @Override
@@ -108,7 +160,6 @@ public class LoginFragment extends Fragment {
         return true;
     }
 
-    // Metodo per eseguire il login
     private void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(mActivity, authResult -> {
@@ -118,6 +169,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(mActivity, "Login fallito", Toast.LENGTH_SHORT).show();
                 });
     }
+
 
     // Metodo per verificare il tipo di utente
     private void checkUserType(String userId) {

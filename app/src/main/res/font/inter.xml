@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font app:font="@font/intersemibold" app:fontWeight="600"/>
+</font-family>

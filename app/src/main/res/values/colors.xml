@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="grey">#FF808080</color>
     <color name="primaryGenitore">#92C7CF</color>
     <color name="secondaryGenitore">#AAD7D9</color>
@@ -18,4 +11,25 @@
     <color name="secondaryLogopedista">#AFC8AD</color>
     <color name="thirdLogopedista">#EEE7DA</color>
     <color name="fourthLogopedista">#F2F1EB</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_A700_4c">#4cffffff</color>
+    <color name="gray_900_24">#24221f1f</color>
+    <color name="gray_51">#f4f7ff</color>
+    <color name="gray_900_66">#66221f1f</color>
+    <color name="gray_900_99">#99221f1f</color>
+    <color name="gray_900">#221f1f</color>
+    <color name="blue_A200">#407ce2</color>
+    <color name="light_blue_500">#00a3ff</color>
+    <color name="black_900_3f">#3f000000</color>
+    <color name="gray_50">#f9f9fb</color>
+    <color name="gray_900_19">#19221f1f</color>
+    <color name="gray_50_75">#75f9f9fb</color>
+    <color name="black_900">#000000</color>
+    <color name="white_A700">#ffffff</color>
 </resources>
