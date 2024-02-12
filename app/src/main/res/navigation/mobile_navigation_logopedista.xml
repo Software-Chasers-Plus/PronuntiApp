@@ -41,5 +41,4 @@
         android:label="@string/add_patient"
         tools:layout="@layout/fragment_aggiungi_paziente" />
 
-
 </navigation>

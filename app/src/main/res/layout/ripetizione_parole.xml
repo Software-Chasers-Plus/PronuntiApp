@@ -1,0 +1,91 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/linearLayout_esercizio2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/testo_esercizio2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "@string/inserisci_un_audio_contenente_una_sequenza_di_3_parole"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/audio_esercizio2_testo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/audio"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:textSize="18sp"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/upload_audio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/upload_audio"
+                android:backgroundTint="@color/blu_principale"
+                app:srcCompat="@drawable/upload_icon_white"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/testo_trascrizione_esercizio2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "@string/inserisci_la_sequenza_di_parole_contenuta_nell_audio"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/edit_text_esercizio2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:hint="@string/sequenza_di_parole"
+            android:maxLines="5"
+            android:inputType="textShortMessage"
+            android:layout_marginBottom="16dp"
+            android:importantForAutofill="no" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/crea_esercizio2_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:contentDescription="@string/aggiunta_esercizio"
+            android:text="@string/crea_esercizio_FAB"
+            app:icon="@drawable/piu_icon_white"
+            android:backgroundTint="@color/blu_principale"/>
+    </LinearLayout>
+</ScrollView>

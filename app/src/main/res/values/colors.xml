@@ -5,7 +5,10 @@
     <color name="secondaryGenitore">#AAD7D9</color>
     <color name="thirdGenitore">#FBF9F1</color>
     <color name="fourthGenitore">#E5E1DA</color>
-    <color name="red">#FF0000</color>
+    <color name="red">#FF0000</color>\
+    <color name="blu_principale">#407CE2</color>
+    <color name="blue_pressed">#448AFF</color>
+    <color name="blue_normal">#2196F3</color>
 
     <color name="primaryLogopedista">#88AB8E</color>
     <color name="secondaryLogopedista">#AFC8AD</color>

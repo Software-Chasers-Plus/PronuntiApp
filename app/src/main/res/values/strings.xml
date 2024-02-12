@@ -53,5 +53,24 @@
     <string name="non_ancora_abilitato_come_logopedista">Non sei stato ancora abilitato come logopedista</string>
     <string name="registrazione_avvenuta_con_successo">Registrazione avvenuta con successo</string>
     <string name="registrazione_fallita">Registrazione fallita</string>
-
+    <string name="aggiungi_esercizio">Aggiungi esercizio</string>
+    <string name="denominazione_immagini">Denominazione Immagini</string>
+    <string name="ripetizione_parole">Ripetizione Parole</string>
+    <string name="riconoscimento_di_coppie">Riconoscimento di Coppie</string>
+    <string name="creazione_esercizio">Creazione Esercizio</string>
+    <string name="immagine_dell_esercizio">Immagine dell\'esercizio</string>
+    <string name="inserisci_il_testo">Inserisci il testo</string>
+    <string name="contenuto_dell_immagine">Contenuto dell\'immagine</string>
+    <string name="upload_audio">upload audio</string>
+    <string name="inserisci_3_aiuti">Inserisci 3 aiuti</string>
+    <string name="audio1">Audio1:</string>
+    <string name="audio2">Audio2:</string>
+    <string name="audio3">Audio3:</string>
+    <string name="crea_esercizio">Crea esercizio</string>
+    <string name="inserisci_un_audio_contenente_una_sequenza_di_3_parole">Inserisci un audio contenente una sequenza di 3 parole</string>
+    <string name="audio">Audio:</string>
+    <string name="inserisci_la_sequenza_di_parole_contenuta_nell_audio">Inserisci la sequenza di parole contenuta nell\'audio</string>
+    <string name="sequenza_di_parole">Sequenza di parole</string>
+    <string name="crea_esercizio_FAB">Crea esercizio</string>
+    <string name="aggiunta_esercizio">Aggiunta esercizio</string>
 </resources>
