@@ -73,4 +73,11 @@
     <string name="sequenza_di_parole">Sequenza di parole</string>
     <string name="crea_esercizio_FAB">Crea esercizio</string>
     <string name="aggiunta_esercizio">Aggiunta esercizio</string>
+    <string name="inserisci_la_prima_immagine">Inserisci la prima immagine</string>
+    <string name="inserisci_la_seconda_immagine">Inserisci la seconda immagine</string>
+    <string name="inserisci_un_audio_con_la_parola_che_si_riferisce_ad_una_delle_immagini">Inserisci un audio con la parola che si riferisce ad una delle immagini</string>
+    <string name="a_quale_immagine_si_riferisce_la_parola">A quale immagine si riferisce la parola?</string>
+    <string name="immagine_1">Immagine 1</string>
+    <string name="immagine_2">Immagine 2</string>
+    <string name="nome_esercizio">Nome esercizio</string>
 </resources>

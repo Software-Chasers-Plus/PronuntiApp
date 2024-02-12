@@ -1,0 +1,181 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_esercizio1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TextFieldNomeEsercizio3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nome_esercizio"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/testo_immagine1_esercizio3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/inserisci_la_prima_immagine"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"/>
+
+        <!-- ImageView per la prima immagine -->
+        <ImageView
+            android:contentDescription="@string/immagine_dell_esercizio"
+            android:id="@+id/image_view1_esercizio3"
+            android:layout_width="340dp"
+            android:layout_height="340dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_upload_placeholder"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/testo_immagine2_esercizio3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/inserisci_la_seconda_immagine"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"/>
+
+        <!-- ImageView per la seconda immagine -->
+        <ImageView
+            android:contentDescription="@string/immagine_dell_esercizio"
+            android:id="@+id/image_view2_esercizio3"
+            android:layout_width="340dp"
+            android:layout_height="340dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_upload_placeholder"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/testo_audio_esercizio3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/inserisci_un_audio_con_la_parola_che_si_riferisce_ad_una_delle_immagini"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/audio_esercizio3_testo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/audio"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:textSize="18sp"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/upload_audio_button_esercizio3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/upload_audio"
+                android:backgroundTint="@color/blu_principale"
+                app:srcCompat="@drawable/upload_icon_white"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/a_quale_immagine_si_riferisce_la_parola"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup_esercizio3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            android:layout_gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButtonImmagine1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/radio_selectror"
+                android:button="@android:color/transparent"
+                android:elevation="4dp"
+                android:padding="10dp"
+                android:text="@string/immagine_1"
+                android:textColor="@drawable/colore_testo_radiobutton" />
+
+            <RadioButton
+                android:id="@+id/radioButtonImmagine2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/radio_selectror"
+                android:button="@android:color/transparent"
+                android:elevation="4dp"
+                android:padding="10dp"
+                android:text="@string/immagine_2"
+                android:textColor="@drawable/colore_testo_radiobutton" />
+
+        </RadioGroup>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/crea_esercizio3_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:contentDescription="@string/aggiunta_esercizio"
+            android:text="@string/crea_esercizio_FAB"
+            app:icon="@drawable/piu_icon_white"
+            android:backgroundTint="@color/blu_principale"/>
+
+    </LinearLayout>
+</ScrollView>

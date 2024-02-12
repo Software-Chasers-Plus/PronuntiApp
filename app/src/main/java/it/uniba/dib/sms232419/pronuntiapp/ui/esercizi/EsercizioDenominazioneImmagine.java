@@ -28,10 +28,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
@@ -48,6 +54,11 @@ public class EsercizioDenominazioneImmagine extends Fragment {
     Uri audioUri1;
     Uri audioUri2;
     Uri audioUri3;
+
+    String ID_immagine;
+    String ID_audio1;
+    String ID_audio2;
+    String ID_audio3;
 
     String descrizione_immagine;
 
@@ -75,6 +86,7 @@ public class EsercizioDenominazioneImmagine extends Fragment {
         ImageButton upload_audio3_button = view.findViewById(R.id.upload_audio3_button);
         EditText editText = view.findViewById(R.id.edit_text_esercizio1);
         Button conferma_button = view.findViewById(R.id.crea_esercizio_button);
+        TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio1);
 
         imageView.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
@@ -134,43 +146,89 @@ public class EsercizioDenominazioneImmagine extends Fragment {
             // Ottieni il testo dell'immagine
             descrizione_immagine = editText.getText().toString();
 
+            // Ottieni il nome dell'esercizio
+            String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
+
             //Creazione dei percorsi per Firebase Storage
-            String path_img = "esercizio1/" + descrizione_immagine + ".jpg";
-            String path_audio1 = "esercizio1/" + descrizione_immagine + "_audio1.mp3";
-            String path_audio2 = "esercizio1/" + descrizione_immagine + "_audio2.mp3";
-            String path_audio3 = "esercizio1/" + descrizione_immagine + "_audio3.mp3";
+            String path_img = "esercizio1/" + nome_esercizio + descrizione_immagine + ".jpg";
+            String path_audio1 = "esercizio1/" + nome_esercizio + "_audio1.mp3";
+            String path_audio2 = "esercizio1/" + nome_esercizio + "_audio2.mp3";
+            String path_audio3 = "esercizio1/" + nome_esercizio + "_audio3.mp3";
 
             // Carica l'immagine su Firebase Storage
-            uploadFileToFirebaseStorage(imageUri, path_img, success -> {
-                if (!success) {
+            uploadFileToFirebaseStorage(imageUri, path_img, (success, id_img) -> {
+                if (success) {
+                    ID_immagine = id_img;
+                }else {
                     esito[0] = false;
                 }
             });
 
             // Carica l'audio 1 su Firebase Storage
-            uploadFileToFirebaseStorage(audioUri1, path_audio1, success -> {
-                if (!success) {
+            uploadFileToFirebaseStorage(audioUri1, path_audio1, (success, id_audio1) -> {
+                if (success) {
+                    ID_audio1 = id_audio1;
+                }else {
                     esito[0] = false;
                 }
             });
 
             // Carica l'audio 2 su Firebase Storage
-            uploadFileToFirebaseStorage(audioUri2, path_audio2, success -> {
-                if (!success) {
+            uploadFileToFirebaseStorage(audioUri2, path_audio2, (success, id_audio2) -> {
+                if (success) {
+                    ID_audio2 = id_audio2;
+                }else {
                     esito[0] = false;
                 }
             });
 
             // Carica l'audio 3 su Firebase Storage
-            uploadFileToFirebaseStorage(audioUri3, path_audio3, success -> {
-                if (!success) {
+            uploadFileToFirebaseStorage(audioUri3, path_audio3, (success, id_audio3) -> {
+                if (success) {
+                    ID_audio3 = id_audio3;
+                }else {
                     esito[0] = false;
                 }
             });
 
             if(esito[0]) {
                 // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                Toast.makeText(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT).show();
+                //Creazione di una raccolta su firebase con i dati dell'esercizio
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+                String userId = null;
+                if (currentUser != null) {
+                    userId = currentUser.getUid();
+                    Log.d("EsercizioDenominazioneImmagine", "ID dell'utente attualmente loggato: " + userId);
+                } else {
+                    Log.d("EsercizioDenominazioneImmagine", "Nessun utente attualmente loggato");
+                }
+
+                // Crea un oggetto Map per contenere i dati da inserire nel documento
+                Map<String, Object> data = new HashMap<>();
+                data.put("tipologia", 1);
+                data.put("logopedista", userId);
+                data.put("nome", nome_esercizio);
+                data.put("immagine", path_img);
+                data.put("descrizioneImmagine", descrizione_immagine);
+                data.put("audio1", path_audio1);
+                data.put("audio2", path_audio2);
+                data.put("audio3", path_audio3);
+
+                // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
+                db.collection("esercizi")
+                        .add(data)
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d("EsercizioDenominazioneImmagine", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w("EsercizioDenominazioneImmagine", "Errore durante l'aggiunta del documento", e);
+                        });
+
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
                 Toast.makeText(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT).show();
@@ -281,26 +339,26 @@ public class EsercizioDenominazioneImmagine extends Fragment {
                                 String downloadUri = uri.toString();
                                 Log.d("EsercizioDenominazioneImmagine", "File caricato con successo: " + downloadUri);
                                 progressDialog.dismiss();
-                                callback.onUploadComplete(true); // Notifica il chiamante che il caricamento è completato con successo
+                                callback.onUploadComplete(true, downloadUri); // Notifica il chiamante che il caricamento è completato con successo
                             })
                             .addOnFailureListener(e -> {
                                 // Gestisci l'errore
                                 Log.e("EsercizioDenominazioneImmagine", "Errore nel caricare il file: " + e.getMessage());
                                 progressDialog.dismiss();
-                                callback.onUploadComplete(false); // Notifica il chiamante che si è verificato un errore durante il caricamento
+                                callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                             });
                 })
                 .addOnFailureListener(e -> {
                     // Gestisci l'errore
                     Log.e("EsercizioDenominazioneImmagine", "Errore nel caricare il file: " + e.getMessage());
                     progressDialog.dismiss();
-                    callback.onUploadComplete(false); // Notifica il chiamante che si è verificato un errore durante il caricamento
+                    callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                 });
     }
 
     // Interfaccia per il callback quando il caricamento è completato
     interface OnUploadCompleteListener {
-        void onUploadComplete(boolean success);
+        void onUploadComplete(boolean success, String id_immagine);
     }
 
 }

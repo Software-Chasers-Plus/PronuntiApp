@@ -1,6 +1,5 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -20,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,19 +42,36 @@ import java.util.Map;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
-public class EsercizioRipetizioneParole extends Fragment {
+public class EsercizioRiconoscimentoCoppie extends Fragment {
+    private static final int REQUEST_IMAGE_PICK1 = 11;
+
+    private static final int REQUEST_IMAGE_PICK2 = 12;
     private static final int REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE = 2;
-    private static final int REQUEST_CODE_PICK_AUDIO_BUTTON = 31;
+    private static final int REQUEST_CODE_PICK_AUDIO_BUTTON = 3;
+
+    Uri image1Uri;
+
+    Uri image2Uri;
     Uri audioUri;
+
+    String ID_immagine1;
+    String ID_immagine2;
 
     String ID_audio;
 
-    String trascrizione_audio;
+    private ImageView image1View;
+    private ImageView image2View;
+
+
+    int riferimento_immagine_audio;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.ripetizione_parole, container, false);
+        View view = inflater.inflate(R.layout.riconoscimento_coppie, container, false);
+
+        image1View = view.findViewById(R.id.image_view1_esercizio3);
+        image2View = view.findViewById(R.id.image_view2_esercizio3);
 
         return view;
     }
@@ -63,47 +80,96 @@ public class EsercizioRipetizioneParole extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ImageButton upload_audio_button = view.findViewById(R.id.upload_audio_button_esercizio3);
+        RadioGroup radioGroup = view.findViewById(R.id.radioGroup_esercizio3);
+        Button conferma_button = view.findViewById(R.id.crea_esercizio3_button);
+        TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio3);
 
-        ImageButton upload_audio_button = view.findViewById(R.id.upload_audio_button);
-        EditText editText = view.findViewById(R.id.edit_text_esercizio2);
-        Button conferma_button = view.findViewById(R.id.crea_esercizio2_button);
-        TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio2);
-
-        editText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                // Quando l'EditText perde il focus, controlla se è vuoto e ripristina il suggerimento
-                if (editText.getText().toString().isEmpty()) {
-                    editText.setHint("@string/inserisci_la_sequenza_di_parole_contenuta_nell_audio"); // Imposta il suggerimento desiderato
-                }
+        image1View.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Se il permesso non è stato concesso, richiedilo all'utente
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.READ_MEDIA_IMAGES},
+                        REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE);
             } else {
-                // Quando l'EditText ottiene il focus, rimuovi il suggerimento
-                editText.setHint("");
+                // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_IMAGE_PICK1);
             }
         });
 
-        //Gestione bottone audio 1
-        upload_audio_button.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("audio/*"); // Specifica che stai cercando file audio
-                startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON);
+        image2View.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Se il permesso non è stato concesso, richiedilo all'utente
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.READ_MEDIA_IMAGES},
+                        REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE);
+            } else {
+                // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_IMAGE_PICK2);
+            }
         });
 
+
+
+        //Gestione bottone audio 1
+        upload_audio_button.setOnClickListener(v -> {
+            // Crea un Intent per selezionare un file audio
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("audio/*"); // Specifica che stai cercando file audio
+            startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON);
+        });
+
+        // Puoi aggiungere qui la logica per inizializzare i componenti UI o gestire gli eventi
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(RadioGroup group, int checkedId) {
+                  if (checkedId == R.id.radioButtonImmagine1) {
+                      riferimento_immagine_audio = 1;
+                  } else if (checkedId == R.id.radioButtonImmagine2) {
+                      riferimento_immagine_audio = 2;
+                  } else {
+                      return;
+                  }
+              }
+          });
 
         //Gestione bottone conferma
         conferma_button.setOnClickListener(v -> {
 
             final boolean[] esito = {true};
 
-            // Ottieni il testo dell'immagine
-            trascrizione_audio = editText.getText().toString();
-
             // Ottieni il nome dell'esercizio
             String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
 
-            //Creazione dei percorsi per Firebase Storage
-            String path_audio = "esercizio2/" + nome_esercizio + trascrizione_audio + "_audio.mp3";
 
-            // Carica l'audio su Firebase Storage
+            //Creazione dei percorsi per Firebase Storage
+            String path_img1 = "esercizio3/" + nome_esercizio +"immagine1"+ ".jpg";
+            String path_img2 = "esercizio3/" + nome_esercizio + "immagine2" + ".jpg";
+            String path_audio = "esercizio3/" + nome_esercizio + "_audio.mp3";
+
+            // Carica l'immagine su Firebase Storage
+            uploadFileToFirebaseStorage(image1Uri, path_img1, (success, id_img1) -> {
+                if (success) {
+                    ID_immagine1 = id_img1;
+                }else {
+                    esito[0] = false;
+                }
+            });
+
+            // Carica l'immagine su Firebase Storage
+            uploadFileToFirebaseStorage(image2Uri, path_img2, (success, id_img2) -> {
+                if (success) {
+                    ID_immagine2 = id_img2;
+                }else {
+                    esito[0] = false;
+                }
+            });
+
+            // Carica l'audio 2 su Firebase Storage
             uploadFileToFirebaseStorage(audioUri, path_audio, (success, id_audio) -> {
                 if (success) {
                     ID_audio = id_audio;
@@ -124,31 +190,34 @@ public class EsercizioRipetizioneParole extends Fragment {
                 String userId = null;
                 if (currentUser != null) {
                     userId = currentUser.getUid();
-                    Log.d("EsercizioRipetizioneParole", "ID dell'utente attualmente loggato: " + userId);
+                    Log.d("EsercizioRiconoscimentoCoppie", "ID dell'utente attualmente loggato: " + userId);
                 } else {
-                    Log.d("EsercizioRipetizioneParole", "Nessun utente attualmente loggato");
+                    Log.d("EsercizioRiconoscimentoCoppie", "Nessun utente attualmente loggato");
                 }
 
                 // Crea un oggetto Map per contenere i dati da inserire nel documento
                 Map<String, Object> data = new HashMap<>();
-                data.put("tipologia", 2);
+                data.put("tipologia", 3);
                 data.put("logopedista", userId);
                 data.put("nome", nome_esercizio);
+                data.put("immagine1", path_img1);
+                data.put("immagine2", path_img2);
                 data.put("audio", path_audio);
-                data.put("trascrizione_audio", trascrizione_audio);
+                data.put("immagine_corretta", riferimento_immagine_audio);
 
                 // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
                 db.collection("esercizi")
                         .add(data)
                         .addOnSuccessListener(documentReference -> {
-                            Log.d("EsercizioRipetizioneParole", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+                            Log.d("EsercizioRiconoscimentoCoppie", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
                         })
                         .addOnFailureListener(e -> {
-                            Log.w("EsercizioRipetizioneParole", "Errore durante l'aggiunta del documento", e);
+                            Log.w("EsercizioRiconoscimentoCoppie", "Errore durante l'aggiunta del documento", e);
                         });
+
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                Toast.makeText(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -159,16 +228,36 @@ public class EsercizioRipetizioneParole extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_PICK_AUDIO_BUTTON && data != null) {
+            if (requestCode == REQUEST_IMAGE_PICK1 && data != null) {
+                // Ottieni l'URI dell'immagine selezionata
+                image1Uri = data.getData();
+                if (image1Uri != null) {
+                    // Imposta l'immagine nell'ImageView
+                    image1View.setImageURI(image1Uri);
+                }
+            } else if (requestCode == REQUEST_IMAGE_PICK2 && data != null) {
+                // Ottieni l'URI dell'immagine selezionata
+                image2Uri = data.getData();
+                if (image2Uri != null) {
+                    // Imposta l'immagine nell'ImageView
+                    image2View.setImageURI(image2Uri);
+                }
+            } else if (requestCode == REQUEST_CODE_PICK_AUDIO_BUTTON  && data != null) {
                 // Ottieni l'URI del file audio selezionato
                 audioUri = data.getData();
                 if (audioUri != null) {
-                    // Ottieni il riferimento all'EditText per il testo dell'audio 1
-                    TextView testo_audio = requireView().findViewById(R.id.audio_esercizio2_testo);
-                    String testo_corrente = testo_audio.getText().toString();
-                    // Esegui la logica per caricare l'audio e l'immagine
-                    testo_audio.setText(testo_corrente + " " + getAudioFileNameFromUri(getActivity(), audioUri));
+                    switch (requestCode) {
+                        case REQUEST_CODE_PICK_AUDIO_BUTTON:
+                            // Ottieni il riferimento all'EditText per il testo dell'audio 1
+                            TextView testo_audio = requireView().findViewById(R.id.audio_esercizio3_testo);
+                            String testo_corrente = testo_audio.getText().toString();
+                            // Esegui la logica per caricare l'audio e l'immagine
+                            testo_audio.setText(testo_corrente + " " + getAudioFileNameFromUri(getActivity(), audioUri));
+                            break;
+
+                    }
                 }
+
             }
         }
     }
@@ -199,7 +288,7 @@ public class EsercizioRipetizioneParole extends Fragment {
 
 
     // Metodo per caricare un file su Firebase Storage
-    private void uploadFileToFirebaseStorage(Uri fileUri, String path, EsercizioRipetizioneParole.OnUploadCompleteListener callback) {
+    private void uploadFileToFirebaseStorage(Uri fileUri, String path, EsercizioRiconoscimentoCoppie.OnUploadCompleteListener callback) {
         // Ottieni un riferimento al Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -225,20 +314,20 @@ public class EsercizioRipetizioneParole extends Fragment {
                             .addOnSuccessListener(uri -> {
                                 // Ottieni l'URI del file caricato
                                 String downloadUri = uri.toString();
-                                Log.d("EsercizioRipetizioneParole", "File caricato con successo: " + downloadUri);
+                                Log.d("EsercizioRiconoscimentoCoppie", "File caricato con successo: " + downloadUri);
                                 progressDialog.dismiss();
                                 callback.onUploadComplete(true, downloadUri); // Notifica il chiamante che il caricamento è completato con successo
                             })
                             .addOnFailureListener(e -> {
                                 // Gestisci l'errore
-                                Log.e("EsercizioRipetizioneParole", "Errore nel caricare il file: " + e.getMessage());
+                                Log.e("EsercizioRiconoscimentoCoppie", "Errore nel caricare il file: " + e.getMessage());
                                 progressDialog.dismiss();
                                 callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                             });
                 })
                 .addOnFailureListener(e -> {
                     // Gestisci l'errore
-                    Log.e("EsercizioRipetizioneParole", "Errore nel caricare il file: " + e.getMessage());
+                    Log.e("EsercizioRiconoscimentoCoppie", "Errore nel caricare il file: " + e.getMessage());
                     progressDialog.dismiss();
                     callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                 });
@@ -249,3 +338,4 @@ public class EsercizioRipetizioneParole extends Fragment {
         void onUploadComplete(boolean success, String id_immagine);
     }
 }
+

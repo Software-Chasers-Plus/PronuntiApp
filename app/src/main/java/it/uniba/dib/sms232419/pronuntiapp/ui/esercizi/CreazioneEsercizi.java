@@ -41,7 +41,10 @@ public class CreazioneEsercizi extends AppCompatActivity {
                     fragment = new EsercizioDenominazioneImmagine(); // Crea un'istanza del primo fragment
                 } else if (checkedId == R.id.radioButtonParole) {
                     fragment = new EsercizioRipetizioneParole(); // Crea un'istanza del secondo fragment
-                } else {
+                } else if(checkedId == R.id.radioButtonCoppie){
+                    fragment = new EsercizioRiconoscimentoCoppie(); // Crea un'istanza del terzo fragment
+                }
+                else {
                     return;
                 }
 
