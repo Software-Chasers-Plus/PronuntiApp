@@ -24,7 +24,7 @@ public class SceltaRegistrazioneFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.scelta_genitore).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.imageView_scelta_genitore).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActivity.getSupportFragmentManager().beginTransaction()
@@ -35,7 +35,7 @@ public class SceltaRegistrazioneFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.scelta_logopedista).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.imageView_scelta_logopedista).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActivity.getSupportFragmentManager().beginTransaction()

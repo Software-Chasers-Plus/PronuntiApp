@@ -1,30 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="@color/white">
 
-    <Button
-        android:id="@+id/scelta_logopedista"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView_registrati"
+        style="@style/txtPoppinsbold24"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/baseline_doctor_icon_24"
-        android:drawableTint="@color/white"
-        android:drawablePadding="8dp"
-        android:text="@string/register_as_logopedista"
-        android:textAlignment="viewStart" />
+        android:layout_marginTop="4dp"
+        android:text="@string/sign_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/scelta_genitore"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/txtPoppinsboldregular24"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:drawableLeft="@drawable/baseline_parents_icon_24"
-        android:drawableTint="@color/white"
-        android:drawablePadding="8dp"
-        android:text="@string/register_as_parent"
-        android:textAlignment="viewStart" />
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/are_you"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_registrati" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/txtPoppinssemibold24_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/logopedista_answer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_registrati"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView_scelta_logopedista"
+        android:layout_width="218dp"
+        android:layout_height="248dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logopedista_immagine_registrazione"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/txtPoppinsboldregular24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/are_you"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_scelta_logopedista" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/txtPoppinssemibold24_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/parent_answer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_scelta_logopedista"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView_scelta_genitore"
+        android:layout_width="218dp"
+        android:layout_height="248dp"
+        android:src="@drawable/genitore_immagine_registrazione"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

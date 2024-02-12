@@ -7,15 +7,12 @@ public class Genitore {
 
     private String email;
 
-    private String CodiceFiscale;
-
     private String UID;
 
-    public Genitore(String nome, String cognome, String email, String CodiceFiscale, String UID) {
+    public Genitore(String nome, String cognome, String email, String UID) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
-        this.CodiceFiscale = CodiceFiscale;
         this.UID = UID;
     }
 
@@ -29,10 +26,6 @@ public class Genitore {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getCodiceFiscale() {
-        return CodiceFiscale;
     }
 
     public String getUID() {
@@ -49,9 +42,5 @@ public class Genitore {
 
     private void setEmail(String email) {
         this.email = email;
-    }
-
-    private void setCodiceFiscale(String CodiceFiscale) {
-        this.CodiceFiscale = CodiceFiscale;
     }
 }

@@ -77,8 +77,8 @@ public class HomeFragmentLogopedista extends Fragment implements ClickFigliListe
                                 logopedista = new Logopedista(
                                         nuovoLogopedista.get("Nome").toString(),
                                         nuovoLogopedista.get("Cognome").toString(),
-                                        nuovoLogopedista.get("CodiceFiscale").toString(),
                                         nuovoLogopedista.get("Email").toString(),
+                                        nuovoLogopedista.get("Matricola").toString(),
                                         true,
                                         FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                             } else {

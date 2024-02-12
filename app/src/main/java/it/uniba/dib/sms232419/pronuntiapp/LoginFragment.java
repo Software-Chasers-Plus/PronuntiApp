@@ -1,9 +1,16 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
+
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
@@ -23,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -131,7 +139,9 @@ public class LoginFragment extends Fragment {
             String password = loginPassword.getText().toString();
 
             if (isValidEmail(email) && isValidPassword(password)) {
-                loginUser(email, password);
+                if(verificaConnessioneInternet()){
+                    loginUser(email, password);
+                }
             }
         });
     }
@@ -263,5 +273,50 @@ public class LoginFragment extends Fragment {
 
         startActivity(intent);
         mActivity.finish();
+    }
+
+    private Boolean verificaConnessioneInternet() {
+        ConnectivityManager connMgr = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(mActivity);
+
+            builder.setTitle("Nessuna connessione ad internet");
+            builder.setMessage(R.string.necessara_una_connessione_ad_internet);
+            builder.setIcon(R.drawable.baseline_error_outline_24);
+
+            // Aggiungere pulsanti positivi e negativi
+            builder.setPositiveButton(R.string.attiva_wi_fi, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                    if (intent.resolveActivity(mActivity.getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            builder.setNeutralButton(R.string.attiva_dati_mobili, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                    if (intent.resolveActivity(mActivity.getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                }
+            });
+            builder.show();
+            return false;
+
+        }
     }
 }

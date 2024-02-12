@@ -1,76 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center">
 
     <TextView
+        android:id="@+id/textView_registrati"
+        style="@style/txtPoppinsbold24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text = "@string/parent_registration"
-        android:textSize = "36dp"
+        android:text="@string/parent_registration"
         android:textAlignment="center"
-        android:textStyle="bold"
-        android:textColor="@color/purple_700"/>
-    <EditText
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearRowtrophyNomeGenitore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registrazione_genitore_nome"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
-        android:hint="@string/name"
-        android:textColor="@color/black"/>
+        android:layout_marginStart="@dimen/_33pxh"
+        android:layout_marginEnd="@dimen/_27pxh"
+        android:layout_marginTop="@dimen/_25pxv"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_registrati"
+        style="@style/groupStylegray_50cornerRadius">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutNomeGenitore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="none">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrazione_genitore_nome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableLeft="@drawable/baseline_account_circle_24"
+                android:drawablePadding="8dp"
+                android:hint="@string/inserisci_il_tuo_nome"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"/> <!-- Modifica qui -->
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRowtrophyCognomeGenitore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registrazione_genitore_cognome"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
-        android:hint="@string/surname"
-        android:textColor="@color/black"/>
+        android:layout_marginStart="@dimen/_33pxh"
+        android:layout_marginEnd="@dimen/_27pxh"
+        android:layout_marginTop="@dimen/_25pxv"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearRowtrophyNomeGenitore"
+        style="@style/groupStylegray_50cornerRadius">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutCognomeGenitore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="none">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrazione_genitore_cognome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableLeft="@drawable/baseline_account_circle_24"
+                android:drawablePadding="8dp"
+                android:hint="@string/inserisci_il_tuo_cognome"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"/> <!-- Modifica qui -->
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRowtrophyEmailGenitore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registrazione_genitore_codiceFiscale"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
-        android:hint="@string/codicefiscale"
-        android:textColor="@color/black"/>
+        android:layout_marginStart="@dimen/_33pxh"
+        android:layout_marginEnd="@dimen/_27pxh"
+        android:layout_marginTop="@dimen/_25pxv"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearRowtrophyCognomeGenitore"
+        style="@style/groupStylegray_50cornerRadius">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmailGenitore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="none">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrazione_genitore_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableLeft="@drawable/baseline_email_24"
+                android:drawablePadding="8dp"
+                android:hint="@string/inesrisci_la_tua_email"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"/> <!-- Modifica qui -->
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRowtrophyPasswordGenitore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registrazione_genitore_email"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
-        android:hint="@string/email"
-        android:textColor="@color/black"/>
-    <EditText
+        android:layout_marginStart="@dimen/_33pxh"
+        android:layout_marginEnd="@dimen/_27pxh"
+        android:layout_marginTop="@dimen/_25pxv"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearRowtrophyEmailGenitore"
+        style="@style/groupStylegray_50cornerRadius">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPasswordGenitore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:boxBackgroundMode="none"
+            app:layout_constraintEnd_toStartOf="@id/imageClockPasswordSignupGenitore">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrazione_genitore_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/inserisci_la_tua_password"
+                android:inputType="textPassword"
+                android:drawableLeft="@drawable/baseline_password_icon_24"
+                android:drawablePadding="8dp"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:background="@null"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/imageClockPasswordSignupGenitore"
+            android:layout_width="@dimen/_20pxh"
+            android:layout_height="@dimen/_20pxh"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/invisible"
+            app:layout_constraintStart_toEndOf="@id/textInputLayoutPasswordGenitore" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRowtrophyRipetiPasswordGenitore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registrazione_genitore_password"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
-        android:inputType="textPassword"
-        android:hint="@string/password"
-        android:textColor="@color/black"/>
+        android:layout_marginStart="@dimen/_33pxh"
+        android:layout_marginEnd="@dimen/_27pxh"
+        android:layout_marginTop="@dimen/_25pxv"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearRowtrophyPasswordGenitore"
+        style="@style/groupStylegray_50cornerRadius">
 
-    <Button
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutRipetiPasswordGenitore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:boxBackgroundMode="none"
+            app:layout_constraintEnd_toStartOf="@id/imageClockRipetiPasswordSignupGenitore">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrazione_genitore_ripeti_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ripeti_la_tua_password"
+                android:inputType="textPassword"
+                android:drawableLeft="@drawable/baseline_password_icon_24"
+                android:drawablePadding="8dp"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:background="@null"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/imageClockRipetiPasswordSignupGenitore"
+            android:layout_width="@dimen/_20pxh"
+            android:layout_height="@dimen/_20pxh"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/invisible"
+            app:layout_constraintStart_toEndOf="@id/textInputLayoutPassword" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearColumnaccedi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/regisrazione_genitore_button"
-        android:layout_marginTop="30dp"
-        android:text="@string/sign_up"
-        android:textSize = "18dp"
-        android:backgroundTint="@color/purple_700"/>
+        android:layout_marginStart="@dimen/_32pxh"
+        android:layout_marginEnd="@dimen/_27pxh"
+        android:layout_marginTop="@dimen/_13pxv"
+        android:layout_marginBottom="@dimen/_20pxv"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearRowtrophyRipetiPasswordGenitore"
+        style="@style/groupStylecornerRadius">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/regisrazione_genitore_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registrati"
+            android:textAllCaps="false"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingStart="@dimen/_30pxh"
+            android:paddingEnd="@dimen/_30pxh"
+            android:paddingTop="@dimen/_16pxv"
+            android:paddingBottom="@dimen/_16pxv"
+            android:backgroundTint="@color/blue_A200"
+            android:textColor="@color/white_A700"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_16pxv"
+            tools:targetApi="p"
+            android:elevation="2dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/scegli_accesso_genitore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/hai_gi_un_account_accedi"
+            android:textColor="@color/secondaryGenitore"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

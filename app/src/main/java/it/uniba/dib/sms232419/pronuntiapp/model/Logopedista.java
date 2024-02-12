@@ -8,17 +8,17 @@ public class Logopedista {
 
     private String email;
 
-    private String CodiceFiscale;
+    private String matricola;
 
     private Boolean abilitazione;
 
     private String UID;
 
-    public Logopedista(String nome, String cognome, String email, String CodiceFiscale, Boolean abilitazione, String UID) {
+    public Logopedista(String nome, String cognome, String email, String matricola, Boolean abilitazione, String UID) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
-        this.CodiceFiscale = CodiceFiscale;
+        this.matricola = matricola;
         this.abilitazione = abilitazione;
         this.UID = UID;
     }
@@ -33,10 +33,6 @@ public class Logopedista {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getCodiceFiscale() {
-        return CodiceFiscale;
     }
 
     public Boolean getAbilitazione(){return abilitazione;}
@@ -55,9 +51,5 @@ public class Logopedista {
 
     private void setEmail(String email) {
         this.email = email;
-    }
-
-    private void setCodiceFiscale(String CodiceFiscale) {
-        this.CodiceFiscale = CodiceFiscale;
     }
 }

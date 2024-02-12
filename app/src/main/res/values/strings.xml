@@ -80,4 +80,23 @@
     <string name="immagine_1">Immagine 1</string>
     <string name="immagine_2">Immagine 2</string>
     <string name="nome_esercizio">Nome esercizio</string>
+    <string name="are_you">Sei un </string>
+    <string name="logopedista_answer">logopedista ?</string>
+    <string name="parent_answer">genitore ?</string>
+    <string name="inserisci_il_tuo_nome">Inserisci il tuo nome</string>
+    <string name="inserisci_il_tuo_cognome">Inserisci il tuo cognome</string>
+    <string name="inesrisci_la_tua_email">Inesrisci la tua email</string>
+    <string name="ripeti_la_tua_password">Ripeti la tua password</string>
+    <string name="inserisci_la_tua_matricola">Inserisci la tua matricola</string>
+    <string name="registrati">Registrati</string>
+    <string name="hai_gi_un_account_accedi">Hai già un account? Accedi</string>
+    <string name="la_tua_password_deve_contenere_almeno_6_caratteri">La tua password deve contenere almeno 6 caratteri</string>
+    <string name="le_password_non_corrispondono">Le password non corrispondono</string>
+    <string name="matricola">Matricola</string>
+    <string name="richiesta_di_abilitazione_presa_incarico">La tua richiesta è stata presa incarico. Verrai abilitato al più presto</string>
+    <string name="necessara_una_connessione_ad_internet">Per effetuare il login è necessara una connessione ad internet.</string>
+    <string name="necessara_una_connessione_ad_internet_registrazione">Per effetuare la registrazione è necessara una connessione ad internet.</string>
+    <string name="apri_impostazioni">Apri impostazioni</string>
+    <string name="attiva_wi_fi">Attiva Wi-Fi</string>
+    <string name="attiva_dati_mobili">Attiva Dati Mobili</string>
 </resources>

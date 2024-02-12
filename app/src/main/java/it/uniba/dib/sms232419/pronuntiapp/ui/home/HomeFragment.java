@@ -68,8 +68,9 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                             if (document.exists()) {
                                 Log.d("HomeFragment", "Genitore Trovato");
                                 Map<String, Object> nuovoGenitore = document.getData();
-                                genitore = new Genitore(nuovoGenitore.get("Nome").toString(), nuovoGenitore.get("Cognome").toString(),
-                                        nuovoGenitore.get("CodiceFiscale").toString(), nuovoGenitore.get("Email").toString(),
+                                genitore = new Genitore(nuovoGenitore.get("Nome").toString(),
+                                        nuovoGenitore.get("Cognome").toString(),
+                                        nuovoGenitore.get("Email").toString(),
                                         FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                             } else {
                                 //stampa nel log un messaggio di errore
