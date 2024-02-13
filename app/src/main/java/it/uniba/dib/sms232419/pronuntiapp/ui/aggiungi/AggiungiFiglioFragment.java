@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,9 +25,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -37,14 +36,16 @@ import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
-public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnImageSelectedListener {
+public class AggiungiFiglioFragment extends Fragment {
 
     private List<Figlio> figli;
     private MainActivityGenitore mActivity;
-    private int selectedImageId = -1;
 
     // Array contenente gli ID delle risorse delle immagini
     private final Integer[] images = {R.drawable.bambino_1, R.drawable.bambino_2, R.drawable.bambino_3, R.drawable.bambino_4, R.drawable.bambino_5, R.drawable.bambino_6};
+
+    // Variabile per memorizzare l'ID dell'immagine selezionata
+    private int selectedImageId = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,18 +61,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.aggiungi_figli_fragment, container, false);
-
-        // Ottieni l'activity contenitore
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-
-        // Ottieni l'istanza della BottomNavigationView dall'activity
-        BottomNavigationView bottomNavigationView = activity.findViewById(R.id.nav_view);
-
-        // Nascondi la BottomNavigationView impostando la visibilità a GONE
-        bottomNavigationView.setVisibility(View.GONE);
-
-        return view;
+        return inflater.inflate(R.layout.aggiungi_figli_fragment, container, false);
     }
 
     @Override
@@ -85,9 +75,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
 
         RecyclerView imageRecyclerView = view.findViewById(R.id.imageRecyclerView);
         imageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        ImageAdapter imageAdapter = new ImageAdapter(images);
-        imageAdapter.setOnImageSelectedListener(this); // Imposta il listener
-        imageRecyclerView.setAdapter(imageAdapter);
+        imageRecyclerView.setAdapter(new ImageAdapter());
 
         EditText editTextDate = view.findViewById(R.id.data_nascita_figlio);
         ImageView iconaCalendario = view.findViewById(R.id.imageViewCalendar);
@@ -159,24 +147,51 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    // Adapter per le immagini
+    class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
-        // Ottieni l'activity contenitore
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        @NonNull
+        @Override
+        public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image, parent, false);
+            return new ImageViewHolder(itemView);
+        }
 
-        // Ottieni l'istanza della BottomNavigationView dall'activity
-        BottomNavigationView bottomNavigationView = activity.findViewById(R.id.nav_view);
+        @Override
+        public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+            Integer imageResId = images[position];
+            holder.imageView.setImageResource(imageResId);
 
-        // Riporta la BottomNavigationView visibile
-        bottomNavigationView.setVisibility(View.VISIBLE);
-    }
+            // Imposta il bordo attorno all'immagine selezionata
+            if (imageResId == selectedImageId) {
+                holder.imageView.setBackgroundResource(R.drawable.selected_border);
+            } else {
+                holder.imageView.setBackgroundResource(0);
+            }
 
-    // Metodo dell'interfaccia per la gestione della selezione dell'immagine
-    @Override
-    public void onImageSelected(int imageId) {
-        selectedImageId = imageId;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedImageId = images[position]; // Ottieni l'ID dell'immagine selezionata
+                    notifyDataSetChanged(); // Notifica all'adapter che i dati sono stati modificati
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return images.length;
+        }
+
+        // ViewHolder per le immagini
+        class ImageViewHolder extends RecyclerView.ViewHolder {
+            ImageView imageView;
+
+            public ImageViewHolder(@NonNull View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.imageView);
+            }
+        }
     }
 
     // Genera un token univoco a partire dal codice fiscale per ogni figlio
