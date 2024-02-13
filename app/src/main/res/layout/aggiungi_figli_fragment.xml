@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context=".ui.aggiungi.AggiungiFiglioFragment">
 
     <EditText
@@ -146,16 +148,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"/>
 
+
     <Button
+        android:id="@+id/conferma_aggiungi_figlio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/conferma_aggiungi_figlio_button"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/imageRecyclerView"
+        android:layout_marginTop="10dp"
         android:text="@string/add"
-        android:textSize="18dp"
-        android:backgroundTint="@color/purple_700"/>
+        android:textSize = "18dp"
+        android:backgroundTint="@color/secondaryGenitore"/>
 
 
 </LinearLayout>
