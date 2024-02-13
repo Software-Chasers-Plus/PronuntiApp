@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     private List<Figlio> figli = new ArrayList<>();
 
     private static final long MIN_WAIT_INTERVAL = 1500L;
-    private static final long MAX_WAIT_INTERVAL = 3000L;
+    private static final long MAX_WAIT_INTERVAL = 6000L;
     private static final int GO_AHEAD_WHAT = 1;
     private static final int FECTH_TERMINATO = 2;
     private long mStartTime;
