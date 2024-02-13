@@ -11,27 +11,21 @@ public class Figlio implements Parcelable {
     private String nome;
     private String cognome;
     private String codiceFiscale;
-
     private String dataNascita;
     private String Logopedista;
-
     private String emailGenitore;
+    private int idAvatar;
+    private String token;
 
-    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita) {
+    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita, int idAvatar, String token) {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = codiceFiscale;
         this.Logopedista = Logopedista;
         this.emailGenitore = emailGenitore;
         this.dataNascita = dataNascita;
-    }
-
-    public String getDataNascita() {
-        return dataNascita;
-    }
-
-    public void setDataNascita(String dataNascita) {
-        this.dataNascita = dataNascita;
+        this.idAvatar = idAvatar;
+        this.token = token;
     }
 
     protected Figlio(Parcel in) {
@@ -41,6 +35,8 @@ public class Figlio implements Parcelable {
         Logopedista = in.readString();
         emailGenitore = in.readString();
         dataNascita = in.readString();
+        idAvatar = in.readInt();
+        token = in.readString();
     }
 
     public static final Creator<Figlio> CREATOR = new Creator<Figlio>() {
@@ -75,25 +71,15 @@ public class Figlio implements Parcelable {
         return emailGenitore;
     }
 
-    private void setNome(String nome) {
-        this.nome = nome;
+    public String getDataNascita() {
+        return dataNascita;
     }
 
-    private void setCognome(String cognome) {
-        this.cognome = cognome;
+    public int getIdAvatar() {
+        return idAvatar;
     }
 
-    private void setCodiceFiscale(String codiceFiscale) {
-        this.codiceFiscale = codiceFiscale;
-    }
-
-    public void setLogopedista(String emailLogopedista) {
-        this.Logopedista = Logopedista;
-    }
-
-    private void setEmailGenitore(String emailGenitore) {
-        this.emailGenitore = emailGenitore;
-    }
+    public String getToken() {return token;}
 
     @Override
     public int describeContents() {
@@ -108,5 +94,7 @@ public class Figlio implements Parcelable {
         parcel.writeString(Logopedista);
         parcel.writeString(emailGenitore);
         parcel.writeString(dataNascita);
+        parcel.writeInt(idAvatar);
+        parcel.writeString(token);
     }
 }

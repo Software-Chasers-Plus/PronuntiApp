@@ -226,14 +226,31 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Map<String, Object> childData = document.getData();
-                            childrenList.add(new Figlio(
-                                    childData.get("nome").toString(),
-                                    childData.get("cognome").toString(),
-                                    childData.get("codiceFiscale").toString(),
-                                    childData.get("logopedista").toString(),
-                                    userId,
-                                    childData.get("dataNascita").toString()
-                            ));
+
+                            if (childData.get("logopedista") != null){
+                                childrenList.add(new Figlio(
+                                        childData.get("nome").toString(),
+                                        childData.get("cognome").toString(),
+                                        childData.get("codiceFiscale").toString(),
+                                        childData.get("logopedista").toString(),
+                                        userId,
+                                        childData.get("dataNascita").toString(),
+                                        Integer.parseInt(childData.get("idAvatar").toString()),
+                                        childData.get("token").toString()
+                                ));
+                            }else{
+                                childrenList.add(new Figlio(
+                                        childData.get("nome").toString(),
+                                        childData.get("cognome").toString(),
+                                        childData.get("codiceFiscale").toString(),
+                                        "",
+                                        userId,
+                                        childData.get("dataNascita").toString(),
+                                        Integer.parseInt(childData.get("idAvatar").toString()),
+                                        childData.get("token").toString()
+                                ));
+                            }
+
                         }
                         startMainActivity(childrenList, MainActivityGenitore.class);
                     }
@@ -255,7 +272,9 @@ public class LoginFragment extends Fragment {
                                     patientData.get("codiceFiscale").toString(),
                                     userId,
                                     patientData.get("genitore").toString(),
-                                    patientData.get("dataNascita").toString()
+                                    patientData.get("dataNascita").toString(),
+                                    Integer.parseInt(patientData.get("idAvatar").toString()),
+                                    patientData.get("token").toString()
                             ));
                         }
                         startMainActivity(patientsList, MainActivityLogopedista.class);

@@ -1,11 +1,7 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
 
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,43 +25,38 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
-import it.uniba.dib.sms232419.pronuntiapp.model.Logopedista;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.FigliAdapter;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.HomeFragment;
 
-public class AggiungiFiglioFragment extends Fragment{
+public class AggiungiFiglioFragment extends Fragment {
 
-    List<Figlio> figli;
+    private List<Figlio> figli;
+    private MainActivityGenitore mActivity;
 
-    Button confermaAggiungiFiglio;
+    // Array contenente gli ID delle risorse delle immagini
+    private final Integer[] images = {R.drawable.bambino_1, R.drawable.bambino_2, R.drawable.bambino_3, R.drawable.bambino_4, R.drawable.bambino_5, R.drawable.bambino_6};
 
-    MainActivityGenitore mActivity;
+    // Variabile per memorizzare l'ID dell'immagine selezionata
+    private int selectedImageId = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = (MainActivityGenitore) getActivity();
 
-        //recupero i pazienti dal bundle passato al fragment
-        if(getArguments() != null){
+        // Recupero i figli dal bundle passato al fragment
+        if (getArguments() != null) {
             figli = getArguments().getParcelableArrayList("figli");
-            Log.d("aggiungiFiglioFragment", "Figli recuperati: "+figli.size());
-        }else{
-            Log.d("aggiungiFiglioFragment", "Bundle nullo");
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,12 +67,15 @@ public class AggiungiFiglioFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Figlio figlioDaAggiungere;
+
         EditText nomeFiglio = view.findViewById(R.id.nome_figlio);
-        EditText congnomeFiglio = view.findViewById(R.id.cognome_figlio);
+        EditText cognomeFiglio = view.findViewById(R.id.cognome_figlio);
         EditText codiceFiscaleFiglio = view.findViewById(R.id.codiFiscale_figlio);
-        EditText emaillogopedista = view.findViewById(R.id.email_logopedista_figlio);
-        RecyclerView logopedistiRecyclerView = view.findViewById(R.id.logopedistiSimiliRecyclerView);
+        EditText dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio);
+
+        RecyclerView imageRecyclerView = view.findViewById(R.id.imageRecyclerView);
+        imageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        imageRecyclerView.setAdapter(new ImageAdapter());
 
         EditText editTextDate = view.findViewById(R.id.data_nascita_figlio);
         ImageView iconaCalendario = view.findViewById(R.id.imageViewCalendar);
@@ -98,87 +92,122 @@ public class AggiungiFiglioFragment extends Fragment{
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // La data selezionata dall'utente
                                 String dataSelezionata = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                editTextDate.setText(dataSelezionata);
+                                dataNascitaFiglio.setText(dataSelezionata);
                             }
                         }, anno, mese, giorno);
                 datePickerDialog.show();
             }
         });
 
-        TextView errNome = view.findViewById(R.id.err_nome);
-        TextView errCognome = view.findViewById(R.id.err_cognome);
-        TextView errCodiceFiscale = view.findViewById(R.id.err_codiceFiscale);
-        TextView errDataNascita = view.findViewById(R.id.err_dataNascita);
-        TextView errLogopedista = view.findViewById(R.id.err_logopedista);
-
-        confermaAggiungiFiglio = view.findViewById(R.id.conferma_aggiungi_figlio_button);
+        Button confermaAggiungiFiglio = view.findViewById(R.id.conferma_aggiungi_figlio_button);
         confermaAggiungiFiglio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nomeFiglio.getText().toString().isEmpty()) {
-                    errNome.setVisibility(View.VISIBLE);
-                } else{
-                    errNome.setVisibility(View.GONE);
-                }
+                String nome = nomeFiglio.getText().toString().trim();
+                String cognome = cognomeFiglio.getText().toString().trim();
+                String codiceFiscale = codiceFiscaleFiglio.getText().toString().trim();
+                String dataNascita = dataNascitaFiglio.getText().toString().trim();
 
-                if (congnomeFiglio.getText().toString().isEmpty()) {
-                    errCognome.setVisibility(View.VISIBLE);
-                }else{
-                    errCognome.setVisibility(View.GONE);
-                }
-
-                if (codiceFiscaleFiglio.getText().toString().isEmpty()) {
-                    errCodiceFiscale.setVisibility(View.VISIBLE);
-                }else{
-                    errCodiceFiscale.setVisibility(View.GONE);
-                }
-
-                if (editTextDate.getText().toString().isEmpty()) {
-                    errDataNascita.setVisibility(View.VISIBLE);
-                }else {
-                    errDataNascita.setVisibility(View.GONE);
-                }
-
-                if (emaillogopedista.getText().toString().isEmpty()) {
-                    errLogopedista.setVisibility(View.VISIBLE);
-                }else{
-                    errLogopedista.setVisibility(View.GONE);
-                }
-
-                if(errNome.getVisibility() == View.VISIBLE || errCognome.getVisibility() == View.VISIBLE || errCodiceFiscale.getVisibility() == View.VISIBLE || errDataNascita.getVisibility() == View.VISIBLE || errLogopedista.getVisibility() == View.VISIBLE){
+                if (nome.isEmpty() || cognome.isEmpty() || codiceFiscale.isEmpty() || dataNascita.isEmpty() || selectedImageId == -1) {
+                    Toast.makeText(getContext(), "Inserisci tutti i dati e seleziona un'immagine", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                // Genera un token univoco a partire dal codice fiscale per ogni figlio
+                String token = generateTokenFromString(codiceFiscale);
 
+                // Salvataggio del figlio nel database
                 String genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                Map<String , Object> figlio = new HashMap<>();
-                figlio.put("nome", nomeFiglio.getText().toString());
-                figlio.put("cognome", congnomeFiglio.getText().toString());
-                figlio.put("codiceFiscale", codiceFiscaleFiglio.getText().toString());
-                figlio.put("dataNascita", editTextDate.getText().toString());
-                figlio.put("logopedista", emaillogopedista.getText().toString());
+                Map<String, Object> figlio = new HashMap<>();
+                figlio.put("nome", nome);
+                figlio.put("cognome", cognome);
+                figlio.put("codiceFiscale", codiceFiscale);
+                figlio.put("dataNascita", dataNascita);
                 figlio.put("genitore", genitoreUid);
+                figlio.put("logopedista", "");
+                figlio.put("idAvatar", selectedImageId);
+                figlio.put("token", token);
                 db.collection("figli")
                         .add(figlio)
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if(task.isSuccessful()){
-                                    figli.add(new Figlio(nomeFiglio.getText().toString(), congnomeFiglio.getText().toString(),
-                                            codiceFiscaleFiglio.getText().toString(), emaillogopedista.getText().toString(),
-                                            FirebaseAuth.getInstance().getCurrentUser().getUid(), editTextDate.getText().toString()));
+                                if (task.isSuccessful()) {
+                                    figli.add(new Figlio(nome, cognome, codiceFiscale, "", genitoreUid, dataNascita, selectedImageId, token));
                                     Toast.makeText(mActivity, "Figlio aggiunto con successo", Toast.LENGTH_SHORT).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_home);
-                                }else{
+                                } else {
                                     Toast.makeText(mActivity, "Registrazione fallita", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
             }
         });
+    }
 
+    // Adapter per le immagini
+    class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+
+        @NonNull
+        @Override
+        public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image, parent, false);
+            return new ImageViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+            Integer imageResId = images[position];
+            holder.imageView.setImageResource(imageResId);
+
+            // Imposta il bordo attorno all'immagine selezionata
+            if (imageResId == selectedImageId) {
+                holder.imageView.setBackgroundResource(R.drawable.selected_border);
+            } else {
+                holder.imageView.setBackgroundResource(0);
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedImageId = images[position]; // Ottieni l'ID dell'immagine selezionata
+                    notifyDataSetChanged(); // Notifica all'adapter che i dati sono stati modificati
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return images.length;
+        }
+
+        // ViewHolder per le immagini
+        class ImageViewHolder extends RecyclerView.ViewHolder {
+            ImageView imageView;
+
+            public ImageViewHolder(@NonNull View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.imageView);
+            }
+        }
+    }
+
+    // Genera un token univoco a partire dal codice fiscale per ogni figlio
+    public static String generateTokenFromString(String codiceFiscale) {
+        // Converti la stringa univoca in un array di byte
+        byte[] bytes = codiceFiscale.getBytes();
+
+        // Genera un UUID basato sulla stringa univoca
+        UUID uuid = UUID.nameUUIDFromBytes(bytes);
+
+        // Converte l'UUID in una stringa
+        String token = uuid.toString();
+
+        // Rimuovi eventuali trattini dalla stringa generata
+        token = token.replaceAll("-", "");
+
+        return token;
     }
 }

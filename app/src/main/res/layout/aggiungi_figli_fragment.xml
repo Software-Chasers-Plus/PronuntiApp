@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context=".ui.aggiungi.AggiungiFiglioFragment">
 
     <EditText
@@ -106,15 +108,6 @@
         android:textColor="@color/red"
         android:visibility="gone" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/email_logopedista_figlio"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
-        android:hint="@string/email_logopedista"
-        android:textColor="@color/black"/>
 
     <!-- RecyclerView per visualizzare i risultati della query dei logopedisti -->
     <androidx.recyclerview.widget.RecyclerView
@@ -137,13 +130,40 @@
         android:textColor="@color/red"
         android:visibility="gone" />
 
-    <Button
+    <TextView
+        android:id="@+id/intestazione_figli"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/choose_avatar"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <!-- RecyclerView per visualizzare le immagini -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"/>
+
+
+    <Button
         android:id="@+id/conferma_aggiungi_figlio_button"
-        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/imageRecyclerView"
+        android:layout_marginTop="10dp"
         android:text="@string/add"
         android:textSize = "18dp"
-        android:backgroundTint="@color/purple_700"/>
+        android:backgroundTint="@color/secondaryGenitore"/>
+
 
 </LinearLayout>

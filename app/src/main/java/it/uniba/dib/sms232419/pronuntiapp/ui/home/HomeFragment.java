@@ -45,8 +45,16 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
 
     private Genitore genitore;
 
-    private List<Figlio> figli = new ArrayList<>() ;
+    private List<Figlio> figli = new ArrayList<>();
 
+    private int[] avatarIds = {
+            R.drawable.bambino_1,
+            R.drawable.bambino_2,
+            R.drawable.bambino_3,
+            R.drawable.bambino_4,
+            R.drawable.bambino_5,
+            R.drawable.bambino_6
+    };
 
     FirebaseFirestore db;
 
@@ -56,7 +64,7 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
         mainActivityGenitore = (MainActivityGenitore) getActivity();
         db = FirebaseFirestore.getInstance();
 
-        //creo un oggetto genitore con i dati dell'utente loggato
+        // Creiamo un oggetto genitore con i dati dell'utente loggato
         db.collection("genitori")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
@@ -73,8 +81,8 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                                         nuovoGenitore.get("Email").toString(),
                                         FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                             } else {
-                                //stampa nel log un messaggio di errore
-                                Log.d("HomeFragment", "No genitore con id:"+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                // Stampa nel log un messaggio di errore
+                                Log.d("HomeFragment", "No genitore con id:" + FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 startActivity(new Intent(mainActivityGenitore, AccessoActivity.class));
                                 mainActivityGenitore.finish();
                             }
@@ -86,15 +94,17 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                     }
                 });
 
-            //recupero i figli dall'activity
-            if(mainActivityGenitore.figli != null){
-                figli = mainActivityGenitore.figli;
-                Log.d("HomeFragment", "Figli recuperati: "+figli.size());
-            }else{
-                Log.d("HomeFragment", "Figli non recuperati");
-            }
+        // Recuperiamo i figli dall'activity
+        if (mainActivityGenitore.figli != null) {
+            figli = mainActivityGenitore.figli;
+            Log.d("HomeFragment", "Figli recuperati: " + figli.size());
+        } else {
+            Log.d("HomeFragment", "Figli non recuperati");
+        }
     }
 
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -109,10 +119,22 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d("HomeFragment", "Figli stampati: "+figli.size());
         RecyclerView recyclerView = view.findViewById(R.id.figli_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivityGenitore.getApplicationContext()));
-        recyclerView.setAdapter(new FigliAdapter(mainActivityGenitore.getApplicationContext(), figli, HomeFragment.this));
+
+        // Ottieni gli ID degli avatar dai figli
+        List<Integer> avatarIdsList = new ArrayList<>();
+        for (Figlio figlio : figli) {
+            if (figlio.getIdAvatar() >= 0) {
+                Log.d("HomeFragment", "ID avatar valido per il figlio: " + figlio.getIdAvatar());
+                avatarIdsList.add(figlio.getIdAvatar());
+            } else {
+                Log.e("HomeFragment", "ID avatar non valido per il figlio: " + figlio.getNome());
+            }
+        }
+
+        recyclerView.setAdapter(new FigliAdapter(mainActivityGenitore.getApplicationContext(), figli, avatarIdsList, this));
+
 
         buttonAggiungiFiglio = view.findViewById(R.id.aggiungi_figlio_button);
         buttonAggiungiFiglio.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +146,9 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                 navController.navigate(R.id.navigation_aggiungi_figlio, bundle);
             }
         });
+
     }
+
 
     @Override
     public void onDestroyView() {

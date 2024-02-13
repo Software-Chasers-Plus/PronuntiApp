@@ -140,7 +140,7 @@
                 android:textSize="@dimen/_16pxv"
                 tools:targetApi="p"
                 android:elevation="2dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
 
             <TextView
