@@ -2,6 +2,7 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,7 +177,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
     // Metodo dell'interfaccia per la gestione della selezione dell'immagine
     @Override
     public void onImageSelected(int imageId) {
-        selectedImageId = imageId;
+        selectedImageId = imageId - 1;
     }
 
     // Genera un token univoco a partire dal codice fiscale per ogni figlio
