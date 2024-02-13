@@ -8,23 +8,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
-public class FigliHolderView extends RecyclerView.ViewHolder implements View.OnClickListener{
-    ImageView imageViewFiglio;
+public class FigliHolderView extends RecyclerView.ViewHolder implements View.OnClickListener {
+    ImageView imageViewFiglio; // Aggiungi campo per l'ImageView per l'avatar del figlio
 
-    TextView textViewNomeFiglio, textViewLogopedistaFiglio;
+    TextView textViewNomeFiglio, textViewEtaFiglio, textViewLogopedistaFiglio;
 
     private ClickFigliListener clickFigliListener;
 
     // Costruttore che riceve un'istanza di ClickListener
-    public FigliHolderView(View itemView, ClickFigliListener listener) {
+    public FigliHolderView(View itemView) {
         super(itemView);
         // Imposta questo ViewHolder come gestore di clic
         itemView.setOnClickListener(this);
-        // Salva il riferimento all'istanza di ClickListener
-        this.clickFigliListener = listener;
 
-        imageViewFiglio = itemView.findViewById(R.id.figlio_imageview);
+        // Inizializza il campo dell'ImageView per l'avatar del figlio
+        imageViewFiglio = itemView.findViewById(R.id.figlio_avatar);
+
         textViewNomeFiglio = itemView.findViewById(R.id.nome_figlio);
+        textViewEtaFiglio = itemView.findViewById(R.id.eta_figlio);
         textViewLogopedistaFiglio = itemView.findViewById(R.id.logopedista_figlio);
     }
 

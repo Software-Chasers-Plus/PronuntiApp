@@ -99,4 +99,6 @@
     <string name="apri_impostazioni">Apri impostazioni</string>
     <string name="attiva_wi_fi">Attiva Wi-Fi</string>
     <string name="attiva_dati_mobili">Attiva Dati Mobili</string>
+    <string name="choose_avatar">Scegli l\'avatar</string>
+    <string name="age">Età</string>
 </resources>

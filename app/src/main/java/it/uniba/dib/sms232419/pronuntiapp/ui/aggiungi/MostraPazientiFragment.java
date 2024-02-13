@@ -34,6 +34,8 @@ public class MostraPazientiFragment extends Fragment implements ClickFigliListen
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private List<Figlio> pazientiDisponibili;
+    private List<Integer> idAvatarList = new ArrayList<>();
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,14 +70,16 @@ public class MostraPazientiFragment extends Fragment implements ClickFigliListen
                                         figlioData.get("codiceFiscale").toString(),
                                         "",
                                         figlioData.get("genitore").toString(),
-                                        figlioData.get("dataNascita").toString()
+                                        figlioData.get("dataNascita").toString(),
+                                        Integer.parseInt(figlioData.get("idAvatar").toString())
                                 );
 
                                 pazientiDisponibili.add(nuovoPaziente);
+                                idAvatarList.add(Integer.parseInt(figlioData.get("idAvatar").toString())); // Aggiungi l'idAvatar alla lista
                             }
 
                             if (!pazientiDisponibili.isEmpty()) {
-                                recyclerView.setAdapter(new FigliAdapter(requireContext(), pazientiDisponibili, MostraPazientiFragment.this));
+                                recyclerView.setAdapter(new FigliAdapter(requireContext(), pazientiDisponibili, idAvatarList, MostraPazientiFragment.this));
                                 recyclerView.getAdapter().notifyDataSetChanged();
                             } else {
                                 Log.d("AggiungiPazienteFragment", "Nessun paziente disponibile senza logopedista");

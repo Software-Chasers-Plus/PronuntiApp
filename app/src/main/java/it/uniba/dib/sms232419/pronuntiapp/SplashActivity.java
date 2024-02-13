@@ -131,14 +131,29 @@ public class SplashActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> nuovoFiglio = document.getData();
-                                figli.add(new Figlio(
-                                        nuovoFiglio.get("nome").toString(),
-                                        nuovoFiglio.get("cognome").toString(),
-                                        nuovoFiglio.get("codiceFiscale").toString(),
-                                        nuovoFiglio.get("logopedista").toString(),
-                                        currentUser.getUid(),
-                                        nuovoFiglio.get("dataNascita").toString()
-                                ));
+
+                                if(nuovoFiglio.get("logopedista") != null){
+                                    figli.add(new Figlio(
+                                            nuovoFiglio.get("nome").toString(),
+                                            nuovoFiglio.get("cognome").toString(),
+                                            nuovoFiglio.get("codiceFiscale").toString(),
+                                            nuovoFiglio.get("logopedista").toString(),
+                                            currentUser.getUid(),
+                                            nuovoFiglio.get("dataNascita").toString(),
+                                            Integer.parseInt(nuovoFiglio.get("idAvatar").toString())
+                                    ));
+                                }else{
+                                    figli.add(new Figlio(
+                                            nuovoFiglio.get("nome").toString(),
+                                            nuovoFiglio.get("cognome").toString(),
+                                            nuovoFiglio.get("codiceFiscale").toString(),
+                                            "",
+                                            currentUser.getUid(),
+                                            nuovoFiglio.get("dataNascita").toString(),
+                                            Integer.parseInt(nuovoFiglio.get("idAvatar").toString())
+                                    ));
+                                }
+
                             }
                             loggato = true;
                             fecthCompletato = true;
@@ -147,6 +162,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void checkIfLogopedista(final FirebaseAuth auth) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -187,13 +203,15 @@ public class SplashActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> nuovoFiglio = document.getData();
+                                // Aggiungi la conversione dell'ID avatar da String a int
                                 figli.add(new Figlio(
                                         nuovoFiglio.get("nome").toString(),
                                         nuovoFiglio.get("cognome").toString(),
                                         nuovoFiglio.get("codiceFiscale").toString(),
                                         currentUser.getUid(),
                                         nuovoFiglio.get("genitore").toString(),
-                                        nuovoFiglio.get("dataNascita").toString()
+                                        nuovoFiglio.get("dataNascita").toString(),
+                                        Integer.parseInt(nuovoFiglio.get("idAvatar").toString()) // Conversione da String a int
                                 ));
                             }
                             logopedista = true;
@@ -204,6 +222,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
 
     private void startMainActivity() {
