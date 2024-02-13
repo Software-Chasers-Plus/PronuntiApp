@@ -235,7 +235,8 @@ public class LoginFragment extends Fragment {
                                         childData.get("logopedista").toString(),
                                         userId,
                                         childData.get("dataNascita").toString(),
-                                        Integer.parseInt(childData.get("idAvatar").toString())
+                                        Integer.parseInt(childData.get("idAvatar").toString()),
+                                        childData.get("token").toString()
                                 ));
                             }else{
                                 childrenList.add(new Figlio(
@@ -245,7 +246,8 @@ public class LoginFragment extends Fragment {
                                         "",
                                         userId,
                                         childData.get("dataNascita").toString(),
-                                        Integer.parseInt(childData.get("idAvatar").toString())
+                                        Integer.parseInt(childData.get("idAvatar").toString()),
+                                        childData.get("token").toString()
                                 ));
                             }
 
@@ -271,7 +273,8 @@ public class LoginFragment extends Fragment {
                                     userId,
                                     patientData.get("genitore").toString(),
                                     patientData.get("dataNascita").toString(),
-                                    Integer.parseInt(patientData.get("idAvatar").toString()) // Aggiungi l'ID dell'avatar
+                                    Integer.parseInt(patientData.get("idAvatar").toString()),
+                                    patientData.get("token").toString()
                             ));
                         }
                         startMainActivity(patientsList, MainActivityLogopedista.class);

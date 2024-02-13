@@ -140,7 +140,8 @@ public class SplashActivity extends AppCompatActivity {
                                             nuovoFiglio.get("logopedista").toString(),
                                             currentUser.getUid(),
                                             nuovoFiglio.get("dataNascita").toString(),
-                                            Integer.parseInt(nuovoFiglio.get("idAvatar").toString())
+                                            Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
+                                            nuovoFiglio.get("token").toString()
                                     ));
                                 }else{
                                     figli.add(new Figlio(
@@ -150,7 +151,8 @@ public class SplashActivity extends AppCompatActivity {
                                             "",
                                             currentUser.getUid(),
                                             nuovoFiglio.get("dataNascita").toString(),
-                                            Integer.parseInt(nuovoFiglio.get("idAvatar").toString())
+                                            Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
+                                            nuovoFiglio.get("token").toString()
                                     ));
                                 }
 
@@ -211,7 +213,8 @@ public class SplashActivity extends AppCompatActivity {
                                         currentUser.getUid(),
                                         nuovoFiglio.get("genitore").toString(),
                                         nuovoFiglio.get("dataNascita").toString(),
-                                        Integer.parseInt(nuovoFiglio.get("idAvatar").toString()) // Conversione da String a int
+                                        Integer.parseInt(nuovoFiglio.get("idAvatar").toString()), // Conversione da String a int
+                                        nuovoFiglio.get("token").toString()
                                 ));
                             }
                             logopedista = true;

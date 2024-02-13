@@ -15,8 +15,9 @@ public class Figlio implements Parcelable {
     private String Logopedista;
     private String emailGenitore;
     private int idAvatar;
+    private String token;
 
-    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita, int idAvatar) {
+    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita, int idAvatar, String token) {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = codiceFiscale;
@@ -24,6 +25,7 @@ public class Figlio implements Parcelable {
         this.emailGenitore = emailGenitore;
         this.dataNascita = dataNascita;
         this.idAvatar = idAvatar;
+        this.token = token;
     }
 
     protected Figlio(Parcel in) {
@@ -34,6 +36,7 @@ public class Figlio implements Parcelable {
         emailGenitore = in.readString();
         dataNascita = in.readString();
         idAvatar = in.readInt();
+        token = in.readString();
     }
 
     public static final Creator<Figlio> CREATOR = new Creator<Figlio>() {
@@ -76,9 +79,7 @@ public class Figlio implements Parcelable {
         return idAvatar;
     }
 
-    public void setIdAvatar(int idAvatar) {
-        this.idAvatar = idAvatar;
-    }
+    public String getToken() {return token;}
 
     @Override
     public int describeContents() {
@@ -94,5 +95,6 @@ public class Figlio implements Parcelable {
         parcel.writeString(emailGenitore);
         parcel.writeString(dataNascita);
         parcel.writeInt(idAvatar);
+        parcel.writeString(token);
     }
 }

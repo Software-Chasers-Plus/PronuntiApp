@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
@@ -112,6 +113,9 @@ public class AggiungiFiglioFragment extends Fragment {
                     return;
                 }
 
+                // Genera un token univoco a partire dal codice fiscale per ogni figlio
+                String token = generateTokenFromString(codiceFiscale);
+
                 // Salvataggio del figlio nel database
                 String genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -121,14 +125,16 @@ public class AggiungiFiglioFragment extends Fragment {
                 figlio.put("codiceFiscale", codiceFiscale);
                 figlio.put("dataNascita", dataNascita);
                 figlio.put("genitore", genitoreUid);
+                figlio.put("logopedista", "");
                 figlio.put("idAvatar", selectedImageId);
+                figlio.put("token", token);
                 db.collection("figli")
                         .add(figlio)
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if (task.isSuccessful()) {
-                                    figli.add(new Figlio(nome, cognome, codiceFiscale, "", genitoreUid, dataNascita, selectedImageId));
+                                    figli.add(new Figlio(nome, cognome, codiceFiscale, "", genitoreUid, dataNascita, selectedImageId, token));
                                     Toast.makeText(mActivity, "Figlio aggiunto con successo", Toast.LENGTH_SHORT).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_home);
@@ -186,5 +192,22 @@ public class AggiungiFiglioFragment extends Fragment {
                 imageView = itemView.findViewById(R.id.imageView);
             }
         }
+    }
+
+    // Genera un token univoco a partire dal codice fiscale per ogni figlio
+    public static String generateTokenFromString(String codiceFiscale) {
+        // Converti la stringa univoca in un array di byte
+        byte[] bytes = codiceFiscale.getBytes();
+
+        // Genera un UUID basato sulla stringa univoca
+        UUID uuid = UUID.nameUUIDFromBytes(bytes);
+
+        // Converte l'UUID in una stringa
+        String token = uuid.toString();
+
+        // Rimuovi eventuali trattini dalla stringa generata
+        token = token.replaceAll("-", "");
+
+        return token;
     }
 }
