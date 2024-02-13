@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,19 +45,25 @@ public class InfoFiglioFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView nomeFiglio = view.findViewById(R.id.nome_figlio);
+        TextView nomeFiglio = view.findViewById(R.id.nome_figlio_dettaglio);
         nomeFiglio.setText(figlio.getNome());
 
-        TextView cognomeFiglio = view.findViewById(R.id.cognome_figlio);
+        TextView cognomeFiglio = view.findViewById(R.id.cognome_figlio_dettaglio);
         cognomeFiglio.setText(figlio.getCognome());
 
-        TextView codiceFiscaleFiglio = view.findViewById(R.id.codiceFiscale_figlio);
+        ImageView avatarFiglio = view.findViewById(R.id.avatar_figlio_dettaglio);
+        avatarFiglio.setImageResource(figlio.getIdAvatar());
+
+        TextView codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
         codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
 
-        TextView dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio);
+        TextView dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio_dettaglio);
         dataNascitaFiglio.setText(figlio.getDataNascita().toString());
 
-        TextView emailLogopedistaFiglio = view.findViewById(R.id.email_logopedista_figlio);
+        TextView tokenFiglio = view.findViewById(R.id.token_figlio_dettaglio);
+        tokenFiglio.setText(figlio.getToken());
+
+        TextView emailLogopedistaFiglio = view.findViewById(R.id.email_logopedista_figlio_dettaglio);
         emailLogopedistaFiglio.setText(figlio.getLogopedista());
     }
 

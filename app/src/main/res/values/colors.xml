@@ -35,4 +35,5 @@
     <color name="gray_50_75">#75f9f9fb</color>
     <color name="black_900">#000000</color>
     <color name="white_A700">#ffffff</color>
+    <color name="blue_sfondo_dettaglio">#d5ecf4</color>
 </resources>

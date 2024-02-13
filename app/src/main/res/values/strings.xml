@@ -101,4 +101,10 @@
     <string name="attiva_dati_mobili">Attiva Dati Mobili</string>
     <string name="choose_avatar">Scegli l\'avatar</string>
     <string name="age">Età</string>
+    <string name="data_di_nascita">Data di nascita</string>
+    <string name="token_bambino">Token Bambino</string>
+    <string name="n_figli">N°Figli</string>
+    <string name="iscritto_da">Iscritto da</string>
+    <string name="ruolo">Ruolo</string>
+    <string name="n_pazienti">N° Pazienti</string>
 </resources>
