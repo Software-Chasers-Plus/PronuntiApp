@@ -1,132 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:layout_height="match_parent">
 
+
+  
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="118dp"
-        android:background="@drawable/account_bar"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="-36dp">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <!-- Foto profilo (da vedere se metterne una default) -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/nav_header_desc"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="60dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="143dp"
+                android:layout_height="121dp"
+                android:src="@drawable/bambino"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="45dp" />
+
+        </LinearLayout>
+
+        <!-- Layout per n° bambini / iscritto da / ruolo -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp">
+            
+            
+            <!-- N° Figli -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/bambino_svg_repo"/>
+                
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/n_figli"/>
+
+                <TextView
+                    android:id="@+id/dettaglio_account_nro_figli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="3"/>
+            </LinearLayout>
+            <!-- fine N° Figli -->
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <!-- Iscritto da -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/time_second_icon"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/iscritto_da"/>
+
+                <TextView
+                    android:id="@+id/dettaglio_account_data_registrazione"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="01/01/2020"/>
+
+            </LinearLayout>
+            <!-- Fine Iscritto da -->
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <!-- Ruolo -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/role_funny_svg_repo"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ruolo"/>
+
+                <TextView
+                    android:id="@+id/dettaglio_account_tipo_utente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Genitore"/>
+
+
+            </LinearLayout>
+            <!-- Fine ruolo -->
+
+
+        </LinearLayout>
+
+
+        <!-- Layout info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
+            <!-- Riga nome -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/user_svgrepo_com__3_" />
+
+                <TextView
+                    android:id="@+id/dettaglio_account_nome_genitore"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="plainTextNome" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/pencil_svgrepo"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+            <!-- fine riga nome -->
+
+
+            <!-- Riga cognome -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/user_svgrepo_4_" />
+
+                <TextView
+                    android:id="@+id/dettaglio_account_cognome_genitore"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="plainTextCognome" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/pencil_svgrepo"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+            <!-- fine riga cognome -->
+
+
+            <!-- Riga email -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/email_notification_message" />
+
+                <TextView
+                    android:id="@+id/dettaglio_account_email_genitore"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:text="plainTextEmail" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/pencil_svgrepo"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+            <!-- fine riga email -->
+
+        </LinearLayout>
+        <!-- Fine layout info -->
+
+
+        <!-- Button logout -->
+        <LinearLayout
+            android:id="@+id/logout_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="25dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/varelaround_regular"
+                >
+            </TextView>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logout_sketch_svgrepo_com">
+            </ImageView>
+
+        </LinearLayout>
+        <!-- Fine logout button -->
+
 
     </LinearLayout>
 
-    <LinearLayout
-        android:paddingTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="@drawable/box_background">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-        />
-
-        <TextView
-            android:id="@+id/account_username"
-            android:layout_width="wrap_content"
-            android:paddingLeft="30dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="30dp"
-        android:padding="16dp"
-        android:gravity="center"
-        android:background="@drawable/box_background">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            />
-
-        <TextView
-            android:id="@+id/account_email"
-            android:layout_width="wrap_content"
-            android:paddingLeft="30dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:paddingTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="@drawable/box_background">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/codicefiscale"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            />
-        <TextView
-            android:id="@+id/codice_fiscale"
-            android:layout_width="wrap_content"
-            android:paddingLeft="30dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
-    </LinearLayout>
 
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="bottom"
-    >
-
-    <Button
-        android:id="@+id/logout_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:textColor="@color/black"
-        android:layout_gravity="bottom|center_horizontal"
-        android:elevation="15dp"
-        />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        >
-
-    </Space>
-
-</LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

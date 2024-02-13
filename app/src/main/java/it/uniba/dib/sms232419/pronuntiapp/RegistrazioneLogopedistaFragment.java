@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -285,6 +286,10 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                             .build();
                     auth.getCurrentUser().updateProfile(profileUpdates);
 
+                    // prendo la data di oggi
+                    Calendar calendar = Calendar.getInstance();
+                    String dataRegistrazione = calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR);
+
                     //memorizzazione del genitore nel database
                     Map<String, Object> utente = new HashMap<>();
                     utente.put("Nome", nome);
@@ -292,6 +297,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                     utente.put("Email", email);
                     utente.put("Matricola", matricola);
                     utente.put("Abilitazione", signUpAbilitazione);
+                    utente.put("DataRegistrazione", dataRegistrazione);
                     db.collection("logopedisti").document(auth.getCurrentUser().getUid())
                             .set(utente).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
