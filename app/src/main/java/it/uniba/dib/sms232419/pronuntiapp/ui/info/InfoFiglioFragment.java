@@ -52,7 +52,7 @@ public class InfoFiglioFragment extends Fragment {
         cognomeFiglio.setText(figlio.getCognome());
 
         ImageView avatarFiglio = view.findViewById(R.id.avatar_figlio_dettaglio);
-        avatarFiglio.setImageResource(figlio.getIdAvatar());
+        avatarFiglio.setImageResource(figlio.getIdAvatar() + 1);
 
         TextView codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
         codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
