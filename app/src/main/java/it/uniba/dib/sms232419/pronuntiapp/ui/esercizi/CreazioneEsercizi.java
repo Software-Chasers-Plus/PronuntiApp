@@ -1,8 +1,11 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.RadioGroup;
+import android.widget.Toolbar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,6 +32,16 @@ public class CreazioneEsercizi extends AppCompatActivity {
 
         // Inizializza i componenti UI e gestisci gli eventi
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null){
+            // Modifica il colore della freccia di navigazione
+            actionBar.setHomeAsUpIndicator(R.drawable.back_arrow_icon_white); // Sostituisci con la tua icona personalizzata
+            actionBar.setHomeActionContentDescription("Back");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
 
 
 
@@ -62,5 +75,16 @@ public class CreazioneEsercizi extends AppCompatActivity {
                 transaction.commit();
 
             }});
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Gestisce il clic sul pulsante indietro
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Chiama il metodo onBackPressed() per tornare all'activity precedente
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

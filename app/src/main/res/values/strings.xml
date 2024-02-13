@@ -107,4 +107,9 @@
     <string name="iscritto_da">Iscritto da</string>
     <string name="ruolo">Ruolo</string>
     <string name="n_pazienti">N° Pazienti</string>
+    <string name="non_sono_stati_creati_esercizi">Non sono stati creati esercizi</string>
+    <string name="nome_dell_esercizio">Nome dell\'esercizio</string>
+    <string name="sottotitolo_dell_esercizio">Sottotitolo dell\'esercizio</string>
+    <string name="delete_button">delete_button</string>
+    <string name="esercizi_creati">Esercizi creati</string>
 </resources>
