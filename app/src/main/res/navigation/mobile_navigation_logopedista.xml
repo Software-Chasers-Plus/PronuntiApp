@@ -41,4 +41,10 @@
         android:label="@string/add_patient"
         tools:layout="@layout/fragment_aggiungi_paziente" />
 
+    <fragment
+        android:id="@+id/navigation_dettaglio_account_logopedista"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.account.AccountFragmentLogopedista"
+        android:label="@string/title_account"
+        tools:layout="@layout/fragment_account_logopedista" />
+
 </navigation>

@@ -6,15 +6,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.w3c.dom.Document;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
@@ -34,17 +42,77 @@ public class AccountFragment extends Fragment {
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // retrieve nome genitore
-        String userDisplayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        TextView account_username = root.findViewById(R.id.account_username);
-        account_username.setText(userDisplayName);
+        return root;
+    }
 
-        // retrieve email genitore
-        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        TextView account_email = root.findViewById(R.id.account_email);
-        account_email.setText(userEmail);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Retrieve nome e cognome genitore
+        db.collection("genitori")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+
+                            // Set nome
+                            TextView account_nome_genitore = view.findViewById(R.id.dettaglio_account_nome_genitore);
+                            account_nome_genitore.setText(documentSnapshot.getString("Nome"));
+
+                            // Set cognome
+                            TextView account_cognome_genitore = view.findViewById(R.id.dettaglio_account_cognome_genitore);
+                            account_cognome_genitore.setText(documentSnapshot.getString("Cognome"));
+
+                    }
+                });
+
+        // Retrieve DataRegistrazione
+        db.collection("genitori")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+
+                        // Set DataRegistrazione
+                        TextView account_data_registrazione = view.findViewById(R.id.dettaglio_account_data_registrazione);
+                        account_data_registrazione.setText(documentSnapshot.getString("DataRegistrazione"));
+                    }
+                });
+
+        // Conto numero figli del genitore loggato
+        db.collection("figli").whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        long nroFigli = task.getResult().size();
+                        TextView account_nro_figli = view.findViewById(R.id.dettaglio_account_nro_figli);
+                        account_nro_figli.setText(String.valueOf(nroFigli));
+                    }
+                });
+
+        // Controllo se l'utente loggato è un genitore
+        db.collection("genitori")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+
+                        // Set DataRegistrazione
+                        TextView account_tipo_utente = view.findViewById(R.id.dettaglio_account_tipo_utente);
+                        account_tipo_utente.setText("Genitore");
+                    }
+                });
+
+        // Retrieve email
+        TextView account_email = view.findViewById(R.id.dettaglio_account_email_genitore);
+        account_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
 
+        /*
         // retrieve codice fiscale
         db.collection("genitori")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -55,7 +123,7 @@ public class AccountFragment extends Fragment {
                         if (task.getResult().exists()) {
                             String codiceFiscale = task.getResult().getString("CodiceFiscale");
                             // Ora puoi fare qualcosa con il codice fiscale, ad esempio stamparlo
-                            TextView account_codice_fiscale = root.findViewById(R.id.codice_fiscale);
+                            TextView account_codice_fiscale = view.findViewById(R.id.codice_fiscale);
                             account_codice_fiscale.setText(codiceFiscale);
                         }
                     } else {
@@ -66,9 +134,9 @@ public class AccountFragment extends Fragment {
                         }
                     }
                 });
+         */
 
-
-        TextView logout = root.findViewById(R.id.logout_textView);
+        LinearLayout logout = view.findViewById(R.id.logout_textView);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +145,7 @@ public class AccountFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        return root;
+
     }
 
     @Override
