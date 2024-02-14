@@ -33,7 +33,7 @@ public class FigliAdapter extends RecyclerView.Adapter<FigliHolderView> {
         this.context = context;
         this.items = items;
         this.avatarIds = avatarIds;
-        this.db = db; // Inizializza l'istanza del database
+        this.db = db;
         this.clickFigliListener = listener;
     }
 

@@ -16,6 +16,11 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
@@ -23,20 +28,23 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 public class InfoFiglioFragment extends Fragment {
 
     private Figlio figlio;
+    private FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if(getArguments() != null){
-            //recupero il figlio dal bundle passato al fragment
+            // recupero il figlio dal bundle passato al fragment
             figlio = getArguments().getParcelable("figlio");
 
             Log.d("InfoFiglioFragment", "Figlio recuperato: "+figlio.getNome());
-        }else{
-            Log.d("InfoFiglioFragment", "Bundle non nullo");
+        } else {
+            Log.d("InfoFiglioFragment", "Bundle nullo");
         }
 
+        // Inizializzazione di Firestore
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -49,26 +57,61 @@ public class InfoFiglioFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView nomeFiglio = view.findViewById(R.id.nome_figlio_dettaglio);
-        nomeFiglio.setText(figlio.getNome());
+        if (figlio != null) {
+            TextView nomeFiglio = view.findViewById(R.id.nome_figlio_dettaglio);
+            nomeFiglio.setText(figlio.getNome());
 
-        TextView cognomeFiglio = view.findViewById(R.id.cognome_figlio_dettaglio);
-        cognomeFiglio.setText(figlio.getCognome());
+            TextView cognomeFiglio = view.findViewById(R.id.cognome_figlio_dettaglio);
+            cognomeFiglio.setText(figlio.getCognome());
 
-        ImageView avatarFiglio = view.findViewById(R.id.avatar_figlio_dettaglio);
-        avatarFiglio.setImageResource(figlio.getIdAvatar() + 1);
+            ImageView avatarFiglio = view.findViewById(R.id.avatar_figlio_dettaglio);
+            avatarFiglio.setImageResource(figlio.getIdAvatar() + 1);
 
-        TextView codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
-        codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
+            TextView codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
+            codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
 
-        TextView dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio_dettaglio);
-        dataNascitaFiglio.setText(figlio.getDataNascita().toString());
+            TextView dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio_dettaglio);
+            dataNascitaFiglio.setText(figlio.getDataNascita().toString());
 
-        TextView tokenFiglio = view.findViewById(R.id.token_figlio_dettaglio);
-        tokenFiglio.setText(figlio.getToken());
+            TextView tokenFiglio = view.findViewById(R.id.token_figlio_dettaglio);
+            tokenFiglio.setText(figlio.getToken());
 
-        TextView emailLogopedistaFiglio = view.findViewById(R.id.email_logopedista_figlio_dettaglio);
-        emailLogopedistaFiglio.setText(figlio.getLogopedista());
+            TextView emailLogopedistaFiglio = view.findViewById(R.id.email_logopedista_figlio_dettaglio);
+
+            // Visualizza l'email del logopedista subito se disponibile
+            if (figlio.getLogopedista() != null && !figlio.getLogopedista().isEmpty()) {
+                emailLogopedistaFiglio.setText("Caricamento in corso...");
+                db.collection("logopedisti")
+                        .document(figlio.getLogopedista())
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists()) {
+                                    String emailLogopedista = documentSnapshot.getString("Email");
+                                    if (emailLogopedista != null && !emailLogopedista.isEmpty()) {
+                                        emailLogopedistaFiglio.setText(emailLogopedista);
+                                    } else {
+                                        emailLogopedistaFiglio.setText("Nessun logopedista");
+                                    }
+                                } else {
+                                    Log.d("InfoFiglioFragment", "Il documento del logopedista non esiste");
+                                    emailLogopedistaFiglio.setText("Nessun logopedista");
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("InfoFiglioFragment", "Errore nel recuperare l'email del logopedista: " + e.getMessage());
+                                emailLogopedistaFiglio.setText("Errore nel recuperare l'email del logopedista");
+                            }
+                        });
+            } else {
+                emailLogopedistaFiglio.setText("Nessun logopedista");
+            }
+        } else {
+            Log.d("InfoFiglioFragment", "Figlio nullo");
+        }
     }
-
 }
