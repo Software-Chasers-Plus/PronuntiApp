@@ -117,35 +117,43 @@ public class AggiungiPazienteFragment extends Fragment {
                     progressBar.setVisibility(View.VISIBLE);
                     db.collection("figli").whereEqualTo("token", token).get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("AggiungiPazienteFragment", "Figlio trovato: " + document.get("nome").toString());
-                                if(document.get("logopedista").toString().isEmpty()){
-                                    figlioUid = document.getId();
-                                    avatarPaziente.setImageResource(Integer.valueOf(document.get("idAvatar").toString()));
-                                    nomePaziente.setText(document.get("nome").toString() + " " + document.get("cognome").toString());
-                                    dataNascitaPaziente.setText(document.get("dataNascita").toString());
-                                    codiceFiscalePaziente.setText(document.get("codiceFiscale").toString());
-                                    db.collection("genitori")
-                                            .document(document.get("genitore").toString())
-                                            .get()
-                                            .addOnCompleteListener(task1 -> {
-                                                if (task1.isSuccessful()) {
-                                                    DocumentSnapshot document1 = task1.getResult();
-                                                    if (document1.exists()) {
-                                                        emailGenitore.setText(document1.get("Email").toString());
-                                                        mHandler.sendEmptyMessage(PAZIENTE_TROVATO);
-                                                    } else {
-                                                        Log.e("AggiungiPazienteFragment", "Errore nella ricerca del genitore");
+                            if(!task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("AggiungiPazienteFragment", "Figlio trovato: " + document.get("nome").toString());
+                                    if (document.get("logopedista").toString().isEmpty()) {
+                                        figlioUid = document.getId();
+                                        avatarPaziente.setImageResource(Integer.valueOf(document.get("idAvatar").toString()));
+                                        nomePaziente.setText(document.get("nome").toString() + " " + document.get("cognome").toString());
+                                        dataNascitaPaziente.setText(document.get("dataNascita").toString());
+                                        codiceFiscalePaziente.setText(document.get("codiceFiscale").toString());
+                                        db.collection("genitori")
+                                                .document(document.get("genitore").toString())
+                                                .get()
+                                                .addOnCompleteListener(task1 -> {
+                                                    if (task1.isSuccessful()) {
+                                                        DocumentSnapshot document1 = task1.getResult();
+                                                        if (document1.exists()) {
+                                                            emailGenitore.setText(document1.get("Email").toString());
+                                                            mHandler.sendEmptyMessage(PAZIENTE_TROVATO);
+                                                        } else {
+                                                            Log.e("AggiungiPazienteFragment", "Errore nella ricerca del genitore");
+                                                        }
                                                     }
-                                                }
-                                            });
-                                }else{
-                                    Toast.makeText(getContext(), "Il paziente è già associato ad un logopedista", Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.GONE);
+                                                });
+                                    } else {
+                                        Toast.makeText(getContext(), "Il paziente è già associato ad un logopedista", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
                                 }
+                            } else {
+                                Log.e("AggiungiPazienteFragment", "Figlio non trovato");
+                                Toast.makeText(getContext(), "Il token inserito non è associato a nessun pazziente", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
                             }
                         } else {
                             Log.e("AggiungiPazienteFragment", "Errore nella ricerca del figlio");
+                            Toast.makeText(getContext(), "Il token inserito non è associato a nessun pazziente", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
                 }

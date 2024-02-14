@@ -128,4 +128,6 @@
     <string name="aggiungi_paziente">Aggiungi paziente</string>
     <string name="aggiungi">Aggiungi</string>
     <string name="ricerca_paziente">Ricerca paziente</string>
+    <string name="codice_fiscale_label">Codice Fiscale:</string>
+    <string name="email_genitore_label">Email genitore:</string>
 </resources>
