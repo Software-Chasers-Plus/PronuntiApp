@@ -112,4 +112,10 @@
     <string name="sottotitolo_dell_esercizio">Sottotitolo dell\'esercizio</string>
     <string name="delete_button">delete_button</string>
     <string name="esercizi_creati">Esercizi creati</string>
+    <string name="descrizione_immagine"> Descrizione immagine</string>
+    <string name="aiuto_1">Aiuto 1</string>
+    <string name="aiuto_2">Aiuto 2</string>
+    <string name="aiuto_3">Aiuto 3</string>
+    <string name="aiuti_forniti">Aiuti Forniti</string>
+    <string name="trascrizione">Trascrizione Audio</string>
 </resources>

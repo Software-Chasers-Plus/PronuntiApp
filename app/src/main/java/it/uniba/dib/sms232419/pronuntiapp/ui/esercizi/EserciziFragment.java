@@ -2,6 +2,7 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +21,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 
+import it.uniba.dib.sms232419.pronuntiapp.ConfirmationDialog;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentEserciziBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Esercizio;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia1;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia3;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.MostraPazientiFragment;
 import it.uniba.dib.sms232419.pronuntiapp.ui.home.FigliAdapter;
@@ -85,30 +91,12 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
         String userId = null;
         if (currentUser != null) {
             userId = currentUser.getUid();
-            Log.d("EsercizioDenominazioneImmagine", "ID dell'utente attualmente loggato: " + userId);
+            Log.d("EserciziFragment", "ID dell'utente attualmente loggato: " + userId);
         } else {
-            Log.d("EsercizioDenominazioneImmagine", "Nessun utente attualmente loggato");
+            Log.d("EserciziFragment", "Nessun utente attualmente loggato");
         }
 
-        //Recupero dei dati degli esercizi da firebase
-        db.collection("esercizi")
-                .whereEqualTo("logopedista", userId) // Sostituisci "campo" con il nome del campo e "valore" con il valore da filtrare
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    // Itera sui risultati della query
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        // Ottenere i dati da ogni documento
-                        esercizi = document.getData();
-                        eserciziList.add(new Esercizio(esercizi.get("nome").toString(), esercizi.get("tipologia").toString(),esercizi.get("logopedista").toString()));
-                        // Fai qualcosa con i dati
-                        Log.d("EsercizioDenominazioneImmagine", document.getId() + " => " + esercizi);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Gestisci eventuali errori
-                    Log.d("EsercizioDenominazioneImmagine", "Errore nel recuperare i documenti filtrati", e);
-                });
-
+        //Recupero esercizi dal database
         db.collection("esercizi")
                 .whereEqualTo("logopedista", userId)
                 .get()
@@ -117,17 +105,10 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
                         eserciziList = new ArrayList<>();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Map<String, Object> esercizioData = document.getData();
-
-                            Esercizio nuovoEsercizio = new Esercizio(
-                                    esercizioData.get("nome").toString(),
-                                    esercizioData.get("logopedista").toString(),
-                                    esercizioData.get("tipologia").toString());
-
-                            eserciziList.add(nuovoEsercizio);
-
-                            Log.d("Esercizi Fragment", document.getId() + " => " + nuovoEsercizio);
+                            eserciziList.add(creazioneEsercizio(document));
                         }
+
+                        Log.d("Esercizi Fragment", "Esercizi disponibili: " + eserciziList.size());
 
                         if (!eserciziList.isEmpty()) {
                             textView.setVisibility(View.GONE);
@@ -152,6 +133,79 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
 
     @Override
     public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("esercizio", (Parcelable) eserciziList.get(position));
+        Log.d("EserciziFragment", "Esercizio passato: " + eserciziList.get(position).getNome());
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
 
+        switch (eserciziList.get(position).getTipologia().toString()){
+            case "1":
+                navController.navigate(R.id.navigation_dettaglio_esercizio1, bundle);
+                break;
+            case "2":
+                navController.navigate(R.id.navigation_dettaglio_esercizio2, bundle);
+                break;
+            case "3":
+                //navController.navigate(R.id.navigation_dettaglio_esercizio3, bundle);
+                break;
+        }
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+        ConfirmationDialog.showConfirmationDialog(getContext(), "Sei sicuro di voler eliminare questo elemento?", new ConfirmationDialog.ConfirmationListener() {
+            @Override
+            public void onConfirm() {
+                Esercizio esercizio = eserciziList.get(position);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("esercizi").document(esercizio.getEsercizioId()).delete();
+                eserciziList.remove(position);
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancel() {
+                // Azione di eliminazione annullata
+            }
+        });
+    }
+
+    public Esercizio creazioneEsercizio(QueryDocumentSnapshot document) {
+        Map<String, Object> esercizioData = document.getData();
+
+        switch (esercizioData.get("tipologia").toString()){
+            case "1":
+                return new EsercizioTipologia1(
+                        document.getId().toString(),
+                        esercizioData.get("nome").toString(),
+                        esercizioData.get("logopedista").toString(),
+                        esercizioData.get("tipologia").toString(),
+                        esercizioData.get("immagine").toString(),
+                        esercizioData.get("descrizioneImmagine").toString(),
+                        esercizioData.get("audio1").toString(),
+                        esercizioData.get("audio2").toString(),
+                        esercizioData.get("audio3").toString());
+            case "2":
+                return new EsercizioTipologia2(
+                        document.getId().toString(),
+                        esercizioData.get("nome").toString(),
+                        esercizioData.get("logopedista").toString(),
+                        esercizioData.get("tipologia").toString(),
+                        esercizioData.get("audio").toString(),
+                        esercizioData.get("trascrizione_audio").toString());
+
+            case "3":
+                return new EsercizioTipologia3(
+                        document.getId().toString(),
+                        esercizioData.get("nome").toString(),
+                        esercizioData.get("logopedista").toString(),
+                        esercizioData.get("tipologia").toString(),
+                        esercizioData.get("audio").toString(),
+                        esercizioData.get("immagine1").toString(),
+                        esercizioData.get("immagine2").toString(),
+                        (long)esercizioData.get("immagine_corretta"));
+        }
+
+        return null;
     }
 }

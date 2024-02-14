@@ -167,13 +167,11 @@
                                 android:enabled="false"
                                 style="@style/txtPoppinsregular16black"/>
                         </com.google.android.material.textfield.TextInputLayout>
-
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </FrameLayout>
-
 </LinearLayout>
 <!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

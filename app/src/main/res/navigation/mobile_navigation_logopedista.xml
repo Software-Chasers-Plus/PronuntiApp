@@ -47,4 +47,16 @@
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account_logopedista" />
 
+    <fragment
+        android:id="@+id/navigation_dettaglio_esercizio1"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.DettaglioEsercizioDenominazioneImmagini"
+        android:label="@string/denominazione_immagini"
+        tools:layout="@layout/dettaglio_esercizio1" />
+
+    <fragment
+        android:id="@+id/navigation_dettaglio_esercizio2"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.DettaglioEsercizioRipetizioneParole"
+        android:label="@string/ripetizione_parole"
+        tools:layout="@layout/dettaglio_esercizio2" />
+
 </navigation>

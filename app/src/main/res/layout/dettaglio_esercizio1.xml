@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/blue_sfondo_dettaglio">
+
+    <FrameLayout
+        android:id="@+id/framelayout_dettaglio_schede"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/collapsing_toolbar"
+                android:background="@color/blue_sfondo_dettaglio">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_gravity="bottom">
+
+
+                        <TextView
+                            android:id="@+id/nome_esercizio1_dettaglio"
+                            style="@style/txtPoppinsregular40bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="144dp"
+                            android:layout_marginTop="88dp"
+                            android:layout_marginEnd="144dp"
+                            android:layout_marginBottom="1dp"
+                            android:text="@string/name"
+                            app:layout_constraintBottom_toTopOf="@+id/tipologia1_esercizio_dettaglio"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tipologia1_esercizio_dettaglio"
+                            style="@style/txtPoppinsbold24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="45dp"
+                            android:layout_marginEnd="46dp"
+                            android:text="@string/denominazione_immagini"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Aggiungi qui la tua CardView e altre viste -->
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="25dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/descrizione_immagine"
+                            android:layout_marginTop="@dimen/_10pxh"
+                            android:layout_marginStart="@dimen/_10pxh"
+                            android:layout_marginEnd="@dimen/_10pxh"
+                            android:textColorHint="@color/black"
+                            style="@style/textInputLayoutStyle">
+
+                            <EditText
+                                android:id="@+id/descrizione_immagine_esercizio1_dettaglio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:text="@string/descrizione_immagine"
+                                android:enabled="false"
+                                style="@style/txtPoppinsregular16black"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10pxh"
+                            android:layout_marginStart="@dimen/_10pxh"
+                            android:layout_marginEnd="@dimen/_10pxh"
+                            android:layout_marginBottom="@dimen/_10pxh"
+                            android:textColorHint="@color/black"
+                            style="@style/textInputLayoutStyle">
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageView
+                            android:contentDescription="@string/immagine_dell_esercizio"
+                            android:id="@+id/image_view_dettaglio_esercizio1"
+                            android:layout_width="320dp"
+                            android:layout_height="320dp"
+                            android:layout_marginBottom="16dp"
+                            android:adjustViewBounds="true"
+                            android:clickable="false"
+                            android:scaleType="centerCrop"
+                            android:layout_gravity="center"
+                            android:src="@drawable/image_upload_placeholder"/>
+
+                        <TextView
+                            style="@style/txtPoppinsbold20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="45dp"
+                            android:layout_marginEnd="46dp"
+                            android:text="@string/aiuti_forniti"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_gravity="center"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+                            <TextView
+                                android:id="@+id/audio1_testo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/aiuto_1"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="16dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="18sp"/>
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/play_audio1_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_margin="16dp"
+                                android:contentDescription="@string/upload_audio"
+                                android:backgroundTint="@color/blu_principale"
+                                app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+                            <TextView
+                                android:id="@+id/audio2_testo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/aiuto_2"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="16dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="18sp"/>
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/play_audio2_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_margin="16dp"
+                                android:contentDescription="@string/upload_audio"
+                                android:backgroundTint="@color/blu_principale"
+                                app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+                            <TextView
+                                android:id="@+id/audio3_testo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/aiuto_3"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="16dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="18sp"/>
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/play_audio3_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_margin="16dp"
+                                android:contentDescription="@string/upload_audio"
+                                android:backgroundTint="@color/blu_principale"
+                                app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
+
+</LinearLayout>

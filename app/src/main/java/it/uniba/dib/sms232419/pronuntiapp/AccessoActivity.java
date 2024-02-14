@@ -13,9 +13,9 @@ public class AccessoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accesso_app);
         auth = FirebaseAuth.getInstance();
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.login_signup_fragment, LoginFragment.class, null)
-                    .commit();
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.login_signup_fragment, LoginFragment.class, null)
+                .commit();
     }
 }
