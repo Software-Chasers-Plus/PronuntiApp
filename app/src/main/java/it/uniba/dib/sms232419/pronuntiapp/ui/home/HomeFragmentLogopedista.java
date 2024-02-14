@@ -135,8 +135,10 @@ public class HomeFragmentLogopedista extends Fragment implements ClickFigliListe
             @Override
             public void onClick(View view) {
                 // Apri il nuovo fragment AggiungiPazienteFragment
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("logopedista", logopedista);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                navController.navigate(R.id.navigation_mostra_paziente);
+                navController.navigate(R.id.navigation_aggiungi_paziente, bundle);
             }
         });
 

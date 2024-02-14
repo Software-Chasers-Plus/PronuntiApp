@@ -124,4 +124,8 @@
     <string name="data_di_nascita_label">Data di nascita:</string>
     <string name="logopedista_label">Logopedista:</string>
     <string name="immagine_corretta">Immagine corretta:</string>
+    <string name="email_genitore">Email genitore</string>
+    <string name="aggiungi_paziente">Aggiungi paziente</string>
+    <string name="aggiungi">Aggiungi</string>
+    <string name="ricerca_paziente">Ricerca paziente</string>
 </resources>

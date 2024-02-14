@@ -1,6 +1,11 @@
 package it.uniba.dib.sms232419.pronuntiapp.model;
 
-public class Logopedista {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Logopedista implements Parcelable {
 
     private String nome;
 
@@ -22,6 +27,28 @@ public class Logopedista {
         this.abilitazione = abilitazione;
         this.UID = UID;
     }
+
+    protected Logopedista(Parcel in) {
+        nome = in.readString();
+        cognome = in.readString();
+        email = in.readString();
+        matricola = in.readString();
+        byte tmpAbilitazione = in.readByte();
+        abilitazione = tmpAbilitazione == 0 ? null : tmpAbilitazione == 1;
+        UID = in.readString();
+    }
+
+    public static final Creator<Logopedista> CREATOR = new Creator<Logopedista>() {
+        @Override
+        public Logopedista createFromParcel(Parcel in) {
+            return new Logopedista(in);
+        }
+
+        @Override
+        public Logopedista[] newArray(int size) {
+            return new Logopedista[size];
+        }
+    };
 
     public String getNome() {
         return nome;
@@ -51,5 +78,20 @@ public class Logopedista {
 
     private void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(nome);
+        parcel.writeString(cognome);
+        parcel.writeString(email);
+        parcel.writeString(matricola);
+        parcel.writeByte((byte) (abilitazione ? 1 : 0));
+        parcel.writeString(UID);
     }
 }

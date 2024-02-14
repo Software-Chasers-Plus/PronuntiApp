@@ -1,157 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/figlio_imageview"
-        android:foreground="@drawable/bambino"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/label_nome_paziente"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar_aggiunta_paziente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/figlio_imageview"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Nome"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
+        android:indeterminate="true"
+        android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/nome_paziente"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_nome_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+        android:layout_marginTop="@dimen/_15pxh"
+        android:layout_marginStart="@dimen/_15pxh"
+        android:layout_marginLeft="@dimen/_15pxh"
+        android:layout_marginEnd="@dimen/_15pxh"
+        android:layout_marginRight="@dimen/_15pxh"
+        android:hint="Inserisci il token"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/search_baseline_24">
 
-    <TextView
-        android:id="@+id/label_cognome_paziente"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/token_paziente_aggiunta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bottone_ricerca_paziente_aggiunta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nome_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Cognome"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
+        android:layout_marginStart="@dimen/_15pxh"
+        android:layout_marginEnd="@dimen/_15pxh"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins"
+        android:textSize="@dimen/_16pxv"
+        android:text="@string/ricerca_paziente"
+        style="@style/Widget.Material3.Button.Icon"/>
 
-    <TextView
-        android:id="@+id/cognome_paziente"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView_info_paziente_aggiunta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_cognome_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+        android:layout_marginStart="@dimen/_15pxh"
+        android:layout_marginEnd="@dimen/_15pxh"
+        android:layout_marginTop="@dimen/_15pxh"
+        app:cardCornerRadius="@dimen/_15pxh"
+        app:strokeColor="@color/primaryLogopedista"
+        app:strokeWidth="1dp"
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/label_codiceFiscale_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cognome_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Codice fiscale"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
-    <TextView
-        android:id="@+id/codiceFiscale_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_codiceFiscale_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/label_data_nascita_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/codiceFiscale_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Data di nascita"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
-    <TextView
-        android:id="@+id/data_nascita_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_data_nascita_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/avatar_paziente_aggiunta_card"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/avatar_paziente_aggiunta"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/bambino" />
+            </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/label_genitore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/data_nascita_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/parent"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
 
-    <TextView
-        android:id="@+id/genitore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_genitore"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+            <TextView
+                android:id="@+id/nome_paziente_aggiunta"
+                style="@style/txtPoppinsboldregular18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintHorizontal_bias="0.125"
+                android:text="@string/name"
+                app:layout_constraintStart_toEndOf="@id/avatar_paziente_aggiunta_card"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/aggiungi_paziente_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/genitore"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/secondaryLogopedista"
-        android:text="@string/add_patient"
-        android:textSize="18dp" />
+            <TextView
+                android:id="@+id/data_nascita_paziente_aggiunta"
+                style="@style/txtPoppinsboldregular18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="@string/data_di_nascita"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintStart_toEndOf="@id/avatar_paziente_aggiunta_card"
+                app:layout_constraintTop_toBottomOf="@+id/nome_paziente_aggiunta" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/codice_fiscale_paziente_aggiunta"
+                style="@style/txtPoppinsboldregular18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="@string/codicefiscale"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintStart_toEndOf="@+id/avatar_paziente_aggiunta_card"
+                app:layout_constraintTop_toBottomOf="@+id/data_nascita_paziente_aggiunta" />
+
+            <TextView
+                android:id="@+id/email_genitore_paziente_aggiunta"
+                style="@style/txtPoppinsboldregular18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="@string/email_genitore"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintStart_toEndOf="@+id/avatar_paziente_aggiunta_card"
+                app:layout_constraintTop_toBottomOf="@+id/codice_fiscale_paziente_aggiunta" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bottone_conferma_aggiunti_paziente"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="@string/aggiungi"
+                android:textSize="@dimen/_16pxv"
+                android:layout_marginTop="@dimen/_10pxh"
+                android:layout_marginBottom="@dimen/_10pxh"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.919"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email_genitore_paziente_aggiunta"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
