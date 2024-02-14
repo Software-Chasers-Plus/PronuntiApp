@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,11 +59,11 @@ public class AccountFragment extends Fragment {
                         DocumentSnapshot documentSnapshot = task.getResult();
 
                             // Set nome
-                            TextView account_nome_genitore = view.findViewById(R.id.dettaglio_account_nome_genitore);
+                            EditText account_nome_genitore = view.findViewById(R.id.dettaglio_account_nome_genitore);
                             account_nome_genitore.setText(documentSnapshot.getString("Nome"));
 
                             // Set cognome
-                            TextView account_cognome_genitore = view.findViewById(R.id.dettaglio_account_cognome_genitore);
+                            EditText account_cognome_genitore = view.findViewById(R.id.dettaglio_account_cognome_genitore);
                             account_cognome_genitore.setText(documentSnapshot.getString("Cognome"));
 
                     }
@@ -108,7 +109,7 @@ public class AccountFragment extends Fragment {
                 });
 
         // Retrieve email
-        TextView account_email = view.findViewById(R.id.dettaglio_account_email_genitore);
+        EditText account_email = view.findViewById(R.id.dettaglio_account_email_genitore);
         account_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
 
