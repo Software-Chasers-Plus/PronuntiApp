@@ -43,7 +43,6 @@ import java.util.Map;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class EsercizioRipetizioneParole extends Fragment {
-    private static final int REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_CODE_PICK_AUDIO_BUTTON = 31;
     Uri audioUri;
 

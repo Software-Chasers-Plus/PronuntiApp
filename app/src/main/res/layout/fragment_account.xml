@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:layout_marginBottom="60dp">
+            android:layout_marginBottom="30dp">
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -42,8 +42,7 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
             android:layout_marginBottom="30dp">
-            
-            
+
             <!-- N° Figli -->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -143,11 +142,120 @@
             </LinearLayout>
             <!-- Fine ruolo -->
 
-
         </LinearLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="232dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Layout info -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        android:hint="@string/name"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/dettaglio_account_nome_genitore"
+                            style="@style/txtPoppinsregular16black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:inputType="text"
+                            android:text="@string/name" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        android:hint="@string/surname"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/dettaglio_account_cognome_genitore"
+                            style="@style/txtPoppinsregular16black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:inputType="text"
+                            android:text="@string/surname" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        android:hint="@string/email"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/dettaglio_account_email_genitore"
+                            style="@style/txtPoppinsregular16black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:inputType="none"
+                            android:text="@string/email" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Button logout -->
+        <LinearLayout
+            android:id="@+id/logout_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/varelaround_regular"
+                >
+            </TextView>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/logout_sketch_svgrepo_com">
+            </ImageView>
+
+        </LinearLayout>
+        <!-- Fine logout button -->
+
+
+
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,7 +263,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp">
 
-            <!-- Riga nome -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,10 +293,7 @@
                     android:textAlignment="center" />
 
             </LinearLayout>
-            <!-- fine riga nome -->
 
-
-            <!-- Riga cognome -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -218,10 +323,8 @@
                     android:textAlignment="center" />
 
             </LinearLayout>
-            <!-- fine riga cognome -->
 
 
-            <!-- Riga email -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,40 +354,11 @@
                     android:textAlignment="center" />
 
             </LinearLayout>
-            <!-- fine riga email -->
+
 
         </LinearLayout>
-        <!-- Fine layout info -->
+        -->
 
-
-        <!-- Button logout -->
-        <LinearLayout
-            android:id="@+id/logout_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/logout"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:fontFamily="@font/varelaround_regular"
-                >
-            </TextView>
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:src="@drawable/logout_sketch_svgrepo_com">
-            </ImageView>
-
-        </LinearLayout>
-        <!-- Fine logout button -->
 
 
     </LinearLayout>

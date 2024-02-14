@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,7 +51,7 @@ public class AccountFragmentLogopedista extends Fragment {
 
         // Retrieve nome e cognome logopedista
         TextView nomeLogopedista = view.findViewById(R.id.dettaglio_acccount_nome_logopedista);
-        TextView nomeFull = view.findViewById(R.id.dettaglio_account_logopedista_fullname);
+        EditText nomeFull = view.findViewById(R.id.dettaglio_account_logopedista_fullname);
         db.collection("logopedisti")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
@@ -95,7 +96,7 @@ public class AccountFragmentLogopedista extends Fragment {
                     if (task.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task.getResult();
                         // Set matricola
-                        TextView account_matricola = view.findViewById(R.id.dettaglio_account_logopedista_matricola);
+                        EditText account_matricola = view.findViewById(R.id.dettaglio_account_logopedista_matricola);
                         account_matricola.setText(documentSnapshot.getString("Matricola"));
                     }
                 });
