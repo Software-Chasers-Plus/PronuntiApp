@@ -127,7 +127,7 @@ public class HomeFragmentLogopedista extends Fragment implements ClickFigliListe
         Log.d("HomeFragmentLogopedista", "Figli stampati: "+figli.size());
         RecyclerView recyclerView = view.findViewById(R.id.pazienti_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivityLogopedista.getApplicationContext()));
-        recyclerView.setAdapter(new FigliAdapter(mainActivityLogopedista.getApplicationContext(), figli, idAvatarList, HomeFragmentLogopedista.this));
+        recyclerView.setAdapter(new FigliAdapter(mainActivityLogopedista.getApplicationContext(), figli, idAvatarList, db,HomeFragmentLogopedista.this));
 
         buttonAggiungiPaziente = view.findViewById(R.id.aggiungi_paziente_button);
 

@@ -10,6 +10,7 @@
         android:id="@+id/intestazione_figli"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
@@ -27,16 +28,16 @@
         android:layout_marginTop="-19dp"
         android:maxHeight="690dp" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/aggiungi_figlio_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@id/figli_recycler_view"
-        android:layout_marginTop="10dp"
-        android:text="@string/add_child"
-        android:textSize = "18dp"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
         style="@style/Widget.Material3.Button.Icon"
         android:backgroundTint="@color/secondaryGenitore"/>
 </RelativeLayout>

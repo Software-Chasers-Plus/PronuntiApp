@@ -80,7 +80,7 @@ public class MostraPazientiFragment extends Fragment implements ClickFigliListen
                             }
 
                             if (!pazientiDisponibili.isEmpty()) {
-                                recyclerView.setAdapter(new FigliAdapter(requireContext(), pazientiDisponibili, idAvatarList, MostraPazientiFragment.this));
+                                recyclerView.setAdapter(new FigliAdapter(requireContext(), pazientiDisponibili, idAvatarList, db, MostraPazientiFragment.this));
                                 recyclerView.getAdapter().notifyDataSetChanged();
                             } else {
                                 Log.d("AggiungiPazienteFragment", "Nessun paziente disponibile senza logopedista");

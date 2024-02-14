@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class FigliHolderView extends RecyclerView.ViewHolder implements View.OnClickListener {
-    ImageView imageViewFiglio; // Aggiungi campo per l'ImageView per l'avatar del figlio
-
+    ImageView imageViewFiglio; // Campo per l'ImageView per l'avatar del figlio
     TextView textViewNomeFiglio, textViewEtaFiglio, textViewLogopedistaFiglio;
+    TextView emailLogopedistaLabelTextView, emailLogopedistaTextView; // Campi per l'email del logopedista
 
     private ClickFigliListener clickFigliListener;
 
@@ -26,7 +26,11 @@ public class FigliHolderView extends RecyclerView.ViewHolder implements View.OnC
 
         textViewNomeFiglio = itemView.findViewById(R.id.nome_figlio);
         textViewEtaFiglio = itemView.findViewById(R.id.eta_figlio);
-        textViewLogopedistaFiglio = itemView.findViewById(R.id.logopedista_figlio);
+        //textViewLogopedistaFiglio = itemView.findViewById(R.id.logopedista_figlio);
+
+        // Inizializza i campi per l'email del logopedista
+        emailLogopedistaLabelTextView = itemView.findViewById(R.id.email_logopedista_label_figlio);
+        emailLogopedistaTextView = itemView.findViewById(R.id.email_logopedista_figlio);
     }
 
     // Metodo chiamato quando un elemento della RecyclerView viene cliccato

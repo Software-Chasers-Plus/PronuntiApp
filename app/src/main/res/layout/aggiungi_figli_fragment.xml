@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp"
-    android:paddingTop="12dp"
-    tools:context=".ui.aggiungi.AggiungiFiglioFragment">
-
-    <TextView
-        android:id="@+id/intestazione"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/insert_child_information"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="12dp"
+        tools:context=".ui.aggiungi.AggiungiFiglioFragment">
+
+        <TextView
+            android:id="@+id/intestazione"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/insert_child_information"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:layout_margin="10dp">
 
@@ -112,7 +111,6 @@
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
         </LinearLayout>
 
         <TextView
@@ -156,17 +154,19 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <!-- Pulsante spostato sotto la tastiera -->
+        <Button
+            android:id="@+id/conferma_aggiungi_figlio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/add_child"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:backgroundTint="@color/secondaryGenitore"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/conferma_aggiungi_figlio_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/add"
-        android:textSize="18dp"
-        style="@style/Widget.Material3.Button.Icon"
-        android:backgroundTint="@color/secondaryGenitore"/>
-
-</LinearLayout>
+</ScrollView>
