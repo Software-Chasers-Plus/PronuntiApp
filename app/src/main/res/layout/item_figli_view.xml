@@ -3,43 +3,104 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:padding="5dp"
-    android:background="@drawable/custom_border_item_figli">
+    android:padding="5dp">
 
-    <!-- ImageView per l'avatar del figlio -->
-    <ImageView
-        android:id="@+id/figlio_avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:background="@drawable/custom_border_item_figli">
+
+        <!-- CardView per l'avatar del figlio con ombra -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="28dp">
+
+        <!-- ImageView per l'avatar del figlio -->
+        <ImageView
+            android:id="@+id/figlio_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- TextView per il nome del figlio -->
+    <TextView
+        android:id="@+id/nome_label_figlio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/name_label"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:id="@+id/nome_figlio"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/figlio_avatar"
-        android:textSize="20dp"
+        android:textSize="16sp"
         android:textColor="@color/black"
-        android:text="@string/child_name" />
+        android:text="@string/child_name"
+        android:layout_below="@id/nome_label_figlio"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+
+    <!-- TextView per l'età del figlio -->
+    <TextView
+        android:id="@+id/eta_label_figlio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/data_di_nascita_label"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/nome_figlio"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/eta_figlio"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nome_figlio"
-        android:layout_toEndOf="@id/figlio_avatar"
+        android:textSize="16sp"
         android:textColor="@color/black"
-        android:text="@string/age" />
+        android:text="@string/age"
+        android:layout_below="@id/eta_label_figlio"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+
+    <!-- TextView per il logopedista del figlio -->
+    <TextView
+        android:id="@+id/logopedista_label_figlio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logopedista_label"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/eta_figlio"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/logopedista_figlio"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/eta_figlio"
-        android:layout_toEndOf="@id/figlio_avatar"
+        android:textSize="16sp"
         android:textColor="@color/black"
-        android:text="@string/logopedista" />
+        android:text="@string/logopedista"
+        android:layout_below="@id/logopedista_label_figlio"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="6dp"/>
 
 </RelativeLayout>
+    </RelativeLayout>

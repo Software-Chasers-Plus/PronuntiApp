@@ -120,4 +120,7 @@
     <string name="trascrizione">Trascrizione Audio</string>
     <string name="insert_child_information">Inserisci le informazioni</string>
     <string name="nome_e_cognome">Nome e cognome</string>
+    <string name="name_label">Nome:</string>
+    <string name="data_di_nascita_label">Data di nascita:</string>
+    <string name="logopedista_label">Logopedista:</string>
 </resources>
