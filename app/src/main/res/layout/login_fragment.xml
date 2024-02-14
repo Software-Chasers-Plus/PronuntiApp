@@ -26,11 +26,11 @@
 
         <ImageView
             android:id="@+id/imageLogo"
-            android:layout_width="@dimen/_268pxh"
-            android:layout_height="@dimen/_201pxh"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_29pxv"
-            android:src="@drawable/logo"
+            android:src="@mipmap/ic_launcher"
             android:scaleType="fitXY" />
 
         <LinearLayout
@@ -140,7 +140,7 @@
                 android:textSize="@dimen/_16pxv"
                 tools:targetApi="p"
                 android:elevation="2dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                style="@style/Widget.Material3.Button.Icon"/>
 
 
             <TextView
