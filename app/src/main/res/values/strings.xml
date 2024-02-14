@@ -123,4 +123,5 @@
     <string name="name_label">Nome:</string>
     <string name="data_di_nascita_label">Data di nascita:</string>
     <string name="logopedista_label">Logopedista:</string>
+    <string name="immagine_corretta">Immagine corretta:</string>
 </resources>

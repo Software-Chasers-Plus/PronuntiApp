@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.FirebaseStorage;
@@ -61,37 +60,22 @@ public class DettaglioEsercizioDenominazioneImmagini extends Fragment {
 
         //recupero l'immagine da firebase storage
         ImageView immagine = view.findViewById(R.id.image_view_dettaglio_esercizio1);
-        String pathImmagine = esercizio.getImmagine().toString();
+        String pathImmagine = esercizio.getImmagine();
 
-        // Create a storage reference from our app
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child(pathImmagine);
-
-        // Download directly from StorageReference using Glide
-        final long MAX_DOWNLOAD_SIZE = 2048 * 2048; // 1MB max download size
-        storageRef.getBytes(MAX_DOWNLOAD_SIZE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Decode the byte array into a Bitmap
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                // Set the Bitmap to the ImageView
-                immagine.setImageBitmap(bitmap);
-            }
-        });
+        FirebaseHelper.downloadImmagine(immagine, pathImmagine);
 
         //recupero l'audio 1 da firebase storage
-        String pathAudio1 = esercizio.getAudio1().toString();
+        String pathAudio1 = esercizio.getAudio1();
         FloatingActionButton playButton1 = view.findViewById(R.id.play_audio1_button); // Replace with your Button ID
         FirebaseHelper.playAudioFromFirebaseStorage(pathAudio1, playButton1);
 
         //recupero l'audio 2 da firebase storage
-        String pathAudio2 = esercizio.getAudio2().toString();
+        String pathAudio2 = esercizio.getAudio2();
         FloatingActionButton playButton2 = view.findViewById(R.id.play_audio2_button); // Replace with your Button ID
         FirebaseHelper.playAudioFromFirebaseStorage(pathAudio2, playButton2);
 
         //recupero l'audio 3 da firebase storage
-        String pathAudio3 = esercizio.getAudio3().toString();
+        String pathAudio3 = esercizio.getAudio3();
         FloatingActionButton playButton3 = view.findViewById(R.id.play_audio3_button); // Replace with your Button ID
         FirebaseHelper.playAudioFromFirebaseStorage(pathAudio3, playButton3);
     }

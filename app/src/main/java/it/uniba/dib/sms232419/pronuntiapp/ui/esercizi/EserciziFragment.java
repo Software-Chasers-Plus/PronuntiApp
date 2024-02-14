@@ -146,7 +146,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
                 navController.navigate(R.id.navigation_dettaglio_esercizio2, bundle);
                 break;
             case "3":
-                //navController.navigate(R.id.navigation_dettaglio_esercizio3, bundle);
+                navController.navigate(R.id.navigation_dettaglio_esercizio3, bundle);
                 break;
         }
     }

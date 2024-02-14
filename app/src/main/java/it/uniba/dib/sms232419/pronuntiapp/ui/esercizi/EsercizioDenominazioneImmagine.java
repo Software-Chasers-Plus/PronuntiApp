@@ -1,10 +1,11 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
-import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +44,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PermissionManager;
 
-public class EsercizioDenominazioneImmagine extends Fragment {
+public class EsercizioDenominazioneImmagine extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_IMAGE_PICK = 1;
     private static final int REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE = 2;
@@ -89,18 +92,40 @@ public class EsercizioDenominazioneImmagine extends Fragment {
         Button conferma_button = view.findViewById(R.id.crea_esercizio_button);
         TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio1);
 
+
+        /*
         imageView.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
                     != PackageManager.PERMISSION_GRANTED) {
                 // Se il permesso non è stato concesso, richiedilo all'utente
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                requestPermissions(new String[]{android.Manifest.permission.READ_MEDIA_IMAGES},
                         REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE);
             } else {
-                // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQUEST_IMAGE_PICK);
+                selectImage();
             }
+        });
+        */
+
+        imageView.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.READ_MEDIA_IMAGES}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    selectImage();
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Permesso negato")
+                            .setMessage("Per favore, fornisci il permesso per accedere alla galleria.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
         });
 
         editText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -238,6 +263,61 @@ public class EsercizioDenominazioneImmagine extends Fragment {
 
     }
 
+    // Gestione della risposta alla richiesta di permesso
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        /*
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permesso concesso, puoi aprire la galleria
+                selectImage();
+            } else {
+                // Permesso non concesso, mostra un dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Permesso negato")
+                        .setMessage("Per favore, fornisci il permesso per accedere alla galleria.")
+                        .setPositiveButton("Impostazioni", (dialog, which) -> {
+                            // Aprire le impostazioni
+                            openAppSettings();
+                        })
+                        .show();
+            }
+        }
+         */
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults,
+                new PermissionManager.PermissionListener() {
+                    @Override
+                    public void onPermissionsGranted() {
+                        selectImage();
+                        Log.d("EsercizioDenominazioneImmagine", "Permissions granted");
+                    }
+
+                    @Override
+                    public void onPermissionsDenied() {
+                        // Permesso non concesso, mostra un dialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Permesso negato")
+                                .setMessage("Per favore, fornisci il permesso per accedere alla galleria.")
+                                .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                    // Aprire le impostazioni
+                                    openAppSettings();
+                                })
+                                .show();
+                        Log.d("EsercizioDenominazioneImmagine", "Permissions denied");
+                    }
+                });
+
+    }
+
+    //Metodo per creare l'intent per selezionare un'immagine
+    private void selectImage() {
+        // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_IMAGE_PICK);
+    }
+
     // Metodo per gestire il risultato della selezione dell'immagine
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -284,6 +364,14 @@ public class EsercizioDenominazioneImmagine extends Fragment {
 
             }
         }
+    }
+
+    // Metodo per aprire le impostazioni dell'applicazione
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 
     public String getAudioFileNameFromUri(Context context, Uri uri) {

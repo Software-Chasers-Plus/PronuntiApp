@@ -59,4 +59,10 @@
         android:label="@string/ripetizione_parole"
         tools:layout="@layout/dettaglio_esercizio2" />
 
+    <fragment
+        android:id="@+id/navigation_dettaglio_esercizio3"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.DettaglioEsercizioRiconoscimentoCoppie"
+        android:label="@string/riconoscimento_di_coppie"
+        tools:layout="@layout/dettaglio_esercizio3" />
+
 </navigation>

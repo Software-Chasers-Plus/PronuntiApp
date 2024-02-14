@@ -1,5 +1,7 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
@@ -14,6 +16,7 @@ import java.io.IOException;
 
 import android.media.MediaPlayer;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -70,6 +73,22 @@ public class FirebaseHelper {
                     e.printStackTrace();
                 }
             }
+        });
+    }
+
+    public static void downloadImmagine(ImageView immagine, String pathImmagine) {
+        // Create a storage reference from our app
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child(pathImmagine);
+
+        // Download directly from StorageReference using Glide
+        final long MAX_DOWNLOAD_SIZE = 2048 * 2048; // 1MB max download size
+        storageRef.getBytes(MAX_DOWNLOAD_SIZE).addOnSuccessListener(bytes -> {
+            // Decode the byte array into a Bitmap
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+            // Set the Bitmap to the ImageView
+            immagine.setImageBitmap(bitmap);
         });
     }
 }

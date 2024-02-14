@@ -1,6 +1,5 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -87,11 +86,11 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
         TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio3);
 
         image1View.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
                     != PackageManager.PERMISSION_GRANTED) {
                 // Se il permesso non è stato concesso, richiedilo all'utente
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        new String[]{android.Manifest.permission.READ_MEDIA_IMAGES},
                         REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE);
             } else {
                 // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
@@ -101,11 +100,11 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
         });
 
         image2View.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
                     != PackageManager.PERMISSION_GRANTED) {
                 // Se il permesso non è stato concesso, richiedilo all'utente
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        new String[]{android.Manifest.permission.READ_MEDIA_IMAGES},
                         REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE);
             } else {
                 // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
