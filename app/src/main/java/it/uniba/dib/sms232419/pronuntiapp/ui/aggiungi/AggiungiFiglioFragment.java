@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -94,20 +95,23 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
         iconaCalendario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar calendarioCorrente = Calendar.getInstance();
-                int anno = calendarioCorrente.get(Calendar.YEAR);
-                int mese = calendarioCorrente.get(Calendar.MONTH);
-                int giorno = calendarioCorrente.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                // La data selezionata dall'utente
-                                String dataSelezionata = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                dataNascitaFiglio.setText(dataSelezionata);
-                            }
-                        }, anno, mese, giorno);
-                datePickerDialog.show();
+                MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+                builder.setTitleText("Seleziona una data");
+                MaterialDatePicker<Long> materialDatePicker = builder.build();
+                materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+                    // Converte la data selezionata in un oggetto Calendar
+                    Calendar calendarioSelezionato = Calendar.getInstance();
+                    calendarioSelezionato.setTimeInMillis(selection);
+
+                    int anno = calendarioSelezionato.get(Calendar.YEAR);
+                    int mese = calendarioSelezionato.get(Calendar.MONTH);
+                    int giorno = calendarioSelezionato.get(Calendar.DAY_OF_MONTH);
+
+                    // La data selezionata dall'utente
+                    String dataSelezionata = giorno + "/" + (mese + 1) + "/" + anno;
+                    dataNascitaFiglio.setText(dataSelezionata);
+                });
+                materialDatePicker.show(requireFragmentManager(), "DATE_PICKER");
             }
         });
 

@@ -37,5 +37,6 @@
         android:layout_marginTop="10dp"
         android:text="@string/add_child"
         android:textSize = "18dp"
+        style="@style/Widget.Material3.Button.Icon"
         android:backgroundTint="@color/secondaryGenitore"/>
 </RelativeLayout>
