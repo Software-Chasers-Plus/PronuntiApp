@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_dettaglio_figlio" />
 
     <fragment
+        android:id="@+id/navigation_avvio_gioco"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.gioco.AvvioGiocoFragment"
+        android:label="@string/avvio_gioco"
+        tools:layout="@layout/fragment_avvio_gioco" />
+
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.EserciziFragment"
         android:label="@string/title_esercizi"

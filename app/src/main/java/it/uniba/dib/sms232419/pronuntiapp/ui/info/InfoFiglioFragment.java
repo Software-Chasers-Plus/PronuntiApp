@@ -21,6 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -132,6 +134,17 @@ public class InfoFiglioFragment extends Fragment {
         } else {
             Log.d("InfoFiglioFragment", "Figlio nullo");
         }
+
+        //AVVIO GIOCO DA SPOSTARE
+        FloatingActionButton avviaGioco = view.findViewById(R.id.avvio_gioco_figlio_button);
+        avviaGioco.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.navigation_avvio_gioco);
+                return false;
+            }
+        });
     }
 
     private void popUpToken(){

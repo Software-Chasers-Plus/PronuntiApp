@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -75,6 +75,7 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -174,29 +175,7 @@
                                 android:background="@drawable/qr_code_baseline_24"
                                 android:clickable="true" />
                         </RelativeLayout>
-                        <!--
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/token_bambino"
-                            android:layout_marginTop="@dimen/_10pxh"
-                            android:layout_marginStart="@dimen/_10pxh"
-                            android:layout_marginEnd="@dimen/_10pxh"
-                            style="@style/txtPoppinsbold13"/>
 
-                        <TextView
-                            android:id="@+id/token_figlio_dettaglio"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_50pxh"
-                            android:paddingLeft="@dimen/_20pxh"
-                            android:inputType="text"
-                            android:gravity="center|left"
-                            android:text="@string/token_bambino"
-                            android:enabled="false"
-                            android:layout_marginStart="@dimen/_10pxh"
-                            android:layout_marginEnd="@dimen/_10pxh"
-                            style="@style/txtPoppinsregular16black"
-                            android:background="@drawable/rectangle_border_radius_5"/> -->
                         <!-- Email logopedista -->
                         <TextView
                             android:layout_width="wrap_content"
@@ -225,5 +204,18 @@
                 </androidx.cardview.widget.CardView>
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     </FrameLayout>
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/avvio_gioco_figlio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/play_arrow"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        style="@style/Widget.Material3.Button.Icon"
+        android:backgroundTint="@color/secondaryGenitore"/>
+</RelativeLayout>

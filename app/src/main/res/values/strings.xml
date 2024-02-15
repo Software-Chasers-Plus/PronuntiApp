@@ -136,4 +136,8 @@
     <string name="questo_il_qr_code_del_token_del_bambino">"Questo è il QR code del token del bambino "</string>
     <string name="per_l_applicazione_pronuntiapp">" per l'applicazione PronuntiApp."</string>
     <string name="qr_code_token_bambino_pronuntiapp">Qr code token bambino PronuntiApp</string>
+    <string name="impostazioni">Impostazioni</string>
+    <string name="gioca">Gioca</string>
+    <string name="esci">Esci</string>
+    <string name="avvio_gioco">Avvio Gioco</string>
 </resources>
