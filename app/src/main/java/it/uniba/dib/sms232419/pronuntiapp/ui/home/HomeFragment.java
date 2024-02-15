@@ -81,39 +81,6 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                                         nuovoGenitore.get("Cognome").toString(),
                                         nuovoGenitore.get("Email").toString(),
                                         FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-
-                                // Recupera l'UID del logopedista da ogni figlio e ottieni l'email corrispondente
-                                for (Figlio figlio : figli) {
-                                    String logopedistaUid = figlio.getLogopedista();
-                                    if (logopedistaUid != null && !logopedistaUid.isEmpty()) {
-                                        db.collection("logopedisti")
-                                                .document(logopedistaUid)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            DocumentSnapshot logopedistaDocument = task.getResult();
-                                                            if (logopedistaDocument.exists()) {
-                                                                String emailLogopedista = logopedistaDocument.getString("Email");
-                                                                // Fai qualcosa con l'email del logopedista
-                                                                Log.d("HomeFragment", "Email logopedista: " + emailLogopedista);
-                                                                // Aggiorna l'interfaccia utente per mostrare l'email del logopedista
-                                                                // Ad esempio, impostala direttamente in una TextView
-                                                                String logopedistaEmail = "Email Logopedista: " + emailLogopedista;
-                                                            } else {
-                                                                Log.d("HomeFragment", "Il logopedista non esiste");
-                                                            }
-                                                        } else {
-                                                            Log.d("HomeFragment", "Errore nel recuperare il logopedista", task.getException());
-                                                        }
-                                                    }
-                                                });
-                                    } else {
-                                        // Se il campo logopedista è vuoto, nascondi le view dell'email
-                                        Log.d("HomeFragment", "Il campo logopedista è vuoto per il figlio: " + figlio.getNome());
-                                    }
-                                }
                             } else {
                                 // Stampa nel log un messaggio di errore
                                 Log.d("HomeFragment", "No genitore con id:" + FirebaseAuth.getInstance().getCurrentUser().getUid());

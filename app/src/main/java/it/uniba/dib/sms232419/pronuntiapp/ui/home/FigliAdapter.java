@@ -127,8 +127,6 @@ public class FigliAdapter extends RecyclerView.Adapter<FigliHolderView> {
         });
     }
 
-
-
     @Override
     public int getItemCount() {
         return items.size();
