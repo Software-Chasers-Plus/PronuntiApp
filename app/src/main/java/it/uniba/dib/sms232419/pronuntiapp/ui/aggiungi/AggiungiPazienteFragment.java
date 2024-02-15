@@ -1,9 +1,14 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +29,7 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,13 +37,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Logopedista;
+import it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.EsercizioDenominazioneImmagine;
+import it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PermissionManager;
 
 public class AggiungiPazienteFragment extends Fragment {
     private Button ricercaPaziente, aggiungiPaziente;
+    private ExtendedFloatingActionButton scanQRCode;
     private Logopedista logopedista;
     private TextInputEditText tokenPaziente;
     private LinearProgressIndicator progressBar;
@@ -58,6 +70,14 @@ public class AggiungiPazienteFragment extends Fragment {
             }
         }
     };
+
+    private ActivityResultLauncher<ScanOptions> qrCodeLaucher = registerForActivityResult(new ScanContract(), result ->{
+        if(result != null){
+            tokenPaziente.setText(result.getContents());
+        }else{
+            Toast.makeText(getContext(), "Nessun QR Code trovato", Toast.LENGTH_SHORT).show();
+        }
+    });
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,7 +197,28 @@ public class AggiungiPazienteFragment extends Fragment {
             }
         });
 
+        scanQRCode = view.findViewById(R.id.fab_scan_qr_aggiunta);
+        scanQRCode.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(AggiungiPazienteFragment.this, new String[]{Manifest.permission.CAMERA}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    showCamera();
+                }
 
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(R.string.permesso_negato)
+                            .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo)
+                            .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
     }
 
     @Override
@@ -192,6 +233,55 @@ public class AggiungiPazienteFragment extends Fragment {
 
         // Riporta la BottomNavigationView visibile
         bottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    private void showCamera() {
+        ScanOptions options = new ScanOptions();
+        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+        options.setPrompt("Inquadra il QR Code");
+        options.setCameraId(0);
+        options.setBeepEnabled(true);
+        options.setBarcodeImageEnabled(true);
+        options.setOrientationLocked(false);
+
+        qrCodeLaucher.launch(options);
+    }
+
+    // Gestione della risposta alla richiesta di permesso
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults,
+                new PermissionManager.PermissionListener() {
+                    @Override
+                    public void onPermissionsGranted() {
+                        showCamera();
+                        Log.d("EsercizioDenominazioneImmagine", "Permissions granted");
+                    }
+
+                    @Override
+                    public void onPermissionsDenied() {
+                        // Permesso non concesso, mostra un dialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle(R.string.permesso_negato)
+                                .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo)
+                                .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
+                                    // Aprire le impostazioni
+                                    openAppSettings();
+                                })
+                                .show();
+                        Log.d("EsercizioDenominazioneImmagine", "Permissions denied");
+                    }
+                });
+
+    }
+
+    // Metodo per aprire le impostazioni dell'applicazione
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 
 }

@@ -33,6 +33,39 @@
             android:singleLine="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_scan_qr_aggiunta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scansiona QR"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_16pxv"
+            app:backgroundTint="@color/secondaryLogopedista"
+            app:icon="@drawable/qr_code_scanner_baseline_24"
+            style="@style/Widget.Material3.Button.Icon"/>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/extended_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Carica QR"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_16pxv"
+            app:backgroundTint="@color/secondaryLogopedista"
+            app:icon="@drawable/upload_icon"
+            style="@style/Widget.Material3.Button.Icon"/>
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bottone_ricerca_paziente_aggiunta"
