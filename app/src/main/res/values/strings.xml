@@ -130,4 +130,6 @@
     <string name="ricerca_paziente">Ricerca paziente</string>
     <string name="codice_fiscale_label">Codice Fiscale:</string>
     <string name="email_genitore_label">Email genitore:</string>
+    <string name="codice_qr_del_token">Codice QR del token</string>
+    <string name="il_token_qr_un_codice_univoco_che_identifica_il_figlio_all_interno_dell_applicazione">Il token QR è un codice univoco che identifica il figlio all\'interno dell\'applicazione.</string>
 </resources>

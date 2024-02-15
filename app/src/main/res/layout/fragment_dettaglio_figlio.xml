@@ -145,6 +145,44 @@
                             android:layout_marginStart="@dimen/_10pxh"
                             android:layout_marginEnd="@dimen/_10pxh"
                             style="@style/txtPoppinsbold13"/>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10pxh"
+                            android:layout_marginEnd="@dimen/_10pxh">
+
+                            <TextView
+                                android:id="@+id/token_figlio_dettaglio"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_50pxh"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/_20pxh"
+                                android:inputType="text"
+                                android:gravity="center|left"
+                                android:text="@string/token_bambino"
+                                android:enabled="false"
+                                style="@style/txtPoppinsregular16black"
+                                android:background="@drawable/rectangle_border_radius_5"/>
+
+                            <ImageView
+                                android:id="@+id/icon_qr_code"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/qr_code_baseline_24"
+                                android:clickable="true" />
+                        </RelativeLayout>
+                        <!--
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/token_bambino"
+                            android:layout_marginTop="@dimen/_10pxh"
+                            android:layout_marginStart="@dimen/_10pxh"
+                            android:layout_marginEnd="@dimen/_10pxh"
+                            style="@style/txtPoppinsbold13"/>
 
                         <TextView
                             android:id="@+id/token_figlio_dettaglio"
@@ -158,8 +196,7 @@
                             android:layout_marginStart="@dimen/_10pxh"
                             android:layout_marginEnd="@dimen/_10pxh"
                             style="@style/txtPoppinsregular16black"
-                            android:background="@drawable/rectangle_border_radius_5"/>
-
+                            android:background="@drawable/rectangle_border_radius_5"/> -->
                         <!-- Email logopedista -->
                         <TextView
                             android:layout_width="wrap_content"
