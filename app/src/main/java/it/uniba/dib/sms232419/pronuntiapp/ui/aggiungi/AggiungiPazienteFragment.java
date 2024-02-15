@@ -1,13 +1,17 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +27,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -37,8 +42,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+
+import java.io.IOException;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
@@ -48,7 +65,7 @@ import it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PermissionManager;
 
 public class AggiungiPazienteFragment extends Fragment {
     private Button ricercaPaziente, aggiungiPaziente;
-    private ExtendedFloatingActionButton scanQRCode;
+    private ExtendedFloatingActionButton scanQRCode,caricaQRCode;
     private Logopedista logopedista;
     private TextInputEditText tokenPaziente;
     private LinearProgressIndicator progressBar;
@@ -58,6 +75,8 @@ public class AggiungiPazienteFragment extends Fragment {
     private MaterialCardView cardView;
     private FirebaseFirestore db;
     private static final int PAZIENTE_TROVATO = 1;
+    private static final int REQUEST_CAMERA_PERMISSION = 1;
+    private static final int REQUEST_STORAGE_PERMISSION = 2;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -78,6 +97,7 @@ public class AggiungiPazienteFragment extends Fragment {
             Toast.makeText(getContext(), "Nessun QR Code trovato", Toast.LENGTH_SHORT).show();
         }
     });
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -199,7 +219,8 @@ public class AggiungiPazienteFragment extends Fragment {
 
         scanQRCode = view.findViewById(R.id.fab_scan_qr_aggiunta);
         scanQRCode.setOnClickListener(v -> {
-            PermissionManager.requestPermissions(AggiungiPazienteFragment.this, new String[]{Manifest.permission.CAMERA}, new PermissionManager.PermissionListener() {
+            PermissionManager.requestPermissions(AggiungiPazienteFragment.this, new String[]{Manifest.permission.CAMERA},new PermissionManager.PermissionListener() {
+
                 @Override
                 public void onPermissionsGranted() {
                     showCamera();
@@ -211,6 +232,31 @@ public class AggiungiPazienteFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle(R.string.permesso_negato)
                             .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo)
+                            .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
+
+
+
+        caricaQRCode = view.findViewById(R.id.fab_carica_qr_aggiunta);
+        caricaQRCode.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(AggiungiPazienteFragment.this, new String[]{android.Manifest.permission.READ_MEDIA_IMAGES}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    selectImage();
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(R.string.permesso_negato)
+                            .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_galleria)
                             .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
                                 // Aprire le impostazioni
                                 openAppSettings();
@@ -235,6 +281,7 @@ public class AggiungiPazienteFragment extends Fragment {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
+    //Metodo per mostrare la fotocamera per la scansione del QR Code
     private void showCamera() {
         ScanOptions options = new ScanOptions();
         options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
@@ -247,33 +294,56 @@ public class AggiungiPazienteFragment extends Fragment {
         qrCodeLaucher.launch(options);
     }
 
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
+
     // Gestione della risposta alla richiesta di permesso
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 new PermissionManager.PermissionListener() {
                     @Override
                     public void onPermissionsGranted() {
-                        showCamera();
+                        if(permissions[0].equals(Manifest.permission.CAMERA)){
+                            showCamera();
+                        } else if(permissions[0].equals(Manifest.permission.READ_MEDIA_IMAGES)){
+                            selectImage();
+                        }
                         Log.d("EsercizioDenominazioneImmagine", "Permissions granted");
                     }
 
                     @Override
                     public void onPermissionsDenied() {
-                        // Permesso non concesso, mostra un dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle(R.string.permesso_negato)
-                                .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo)
-                                .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
-                                    // Aprire le impostazioni
-                                    openAppSettings();
-                                })
-                                .show();
-                        Log.d("EsercizioDenominazioneImmagine", "Permissions denied");
+                        if(permissions[0].equals(Manifest.permission.CAMERA)){
+                            // Permesso non concesso, mostra un dialog
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle(R.string.permesso_negato)
+                                    .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo)
+                                    .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
+                                        // Aprire le impostazioni
+                                        openAppSettings();
+                                    })
+                                    .show();
+                            Log.d("EsercizioDenominazioneImmagine", "Permissions denied");
+                        } else if(permissions[0].equals(Manifest.permission.READ_MEDIA_IMAGES)){
+                            // Permesso non concesso, mostra un dialog
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle(R.string.permesso_negato)
+                                    .setMessage(R.string.per_favore_fornisci_il_permesso_per_accedere_alla_galleria)
+                                    .setPositiveButton(R.string.impostazioni, (dialog, which) -> {
+                                        // Aprire le impostazioni
+                                        openAppSettings();
+                                    })
+                                    .show();
+                            Log.d("EsercizioDenominazioneImmagine", "Permissions denied");
+                        }
                     }
                 });
-
     }
 
     // Metodo per aprire le impostazioni dell'applicazione
@@ -283,5 +353,78 @@ public class AggiungiPazienteFragment extends Fragment {
         intent.setData(uri);
         startActivity(intent);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Controlla se il risultato proviene dalla richiesta di selezione dell'immagine
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImage = data.getData(); // Ottiene l'URI dell'immagine selezionata
+
+            try {
+                // Converte l'URI dell'immagine in un oggetto Bitmap
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+
+                // Mostra un dialogo di conferma per la scelta dell'immagine
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                // Crea un ImageView e imposta l'immagine
+                // Ridimensiona l'immagine
+                int width = 500; // Imposta la larghezza desiderata
+                int height = (int) (bitmap.getHeight() * ((double) width / bitmap.getWidth())); // Calcola l'altezza per mantenere le proporzioni
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+
+                ImageView imageView = new ImageView(getContext());
+                imageView.setImageBitmap(scaledBitmap);
+                builder.setView(imageView)
+                        .setTitle("Conferma selezione immagine")
+                        .setMessage("Sei sicuro di voler utilizzare questa immagine?")
+                        .setPositiveButton("Sì", (dialog, which) -> {
+                            // Continua con l'elaborazione dell'immagine
+                            processImage(bitmap);
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            // Annulla l'elaborazione dell'immagine
+                            dialog.dismiss();
+                        })
+                        .show();
+            } catch (IOException e) {
+                e.printStackTrace(); // Gestisce le eccezioni quando il QR code non viene trovato
+            }
+        }
+    }
+
+    private void processImage(Bitmap bitmap) {
+        // Inserisci qui il tuo codice per elaborare l'immagine
+        // Crea un array di interi per memorizzare i dati dei pixel dell'immagine
+        try {
+            int[] intArray = new int[bitmap.getWidth() * bitmap.getHeight()];
+
+            // Copia i dati dei pixel nell'array di interi
+            bitmap.getPixels(intArray, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+            // Crea una sorgente di luminanza da un array di interi
+            LuminanceSource source = new RGBLuminanceSource(bitmap.getWidth(), bitmap.getHeight(), intArray);
+
+            // Crea un'immagine binaria da una sorgente di luminanza
+            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+            // Crea un lettore per decodificare l'immagine binaria
+            Reader reader = new MultiFormatReader();
+
+            // Decodifica l'immagine binaria in un risultato
+            Result result = reader.decode(binaryBitmap);
+
+            // Ottiene il testo dal risultato (il contenuto del QR code)
+            String qrCodeResult = result.getText();
+
+            // Fai qualcosa con qrCodeResult (il contenuto del QR code)
+            tokenPaziente.setText(qrCodeResult);
+
+        } catch (ChecksumException | FormatException | NotFoundException e) {
+            e.printStackTrace(); // Gestisce le eccezioni di I/O
+        }
+    }
+
 
 }
