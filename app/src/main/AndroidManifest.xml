@@ -54,6 +54,13 @@
             android:label="@string/creazione_esercizio" >
         </activity>
 
+        <activity
+            android:name=".GiocoActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.FullScreen">
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -162,4 +162,13 @@
         <item name="android:yearListSelectorColor">@color/thirdGenitore</item>
         <item name="android:datePickerMode">calendar</item>
     </style>
+
+
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 </resources>

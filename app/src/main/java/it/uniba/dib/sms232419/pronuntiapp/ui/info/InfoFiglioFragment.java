@@ -34,6 +34,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import it.uniba.dib.sms232419.pronuntiapp.GiocoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
@@ -137,14 +138,14 @@ public class InfoFiglioFragment extends Fragment {
 
         //AVVIO GIOCO DA SPOSTARE
         FloatingActionButton avviaGioco = view.findViewById(R.id.avvio_gioco_figlio_button);
-        avviaGioco.setOnTouchListener(new View.OnTouchListener() {
+        avviaGioco.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.navigation_avvio_gioco);
-                return false;
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GiocoActivity.class);
+                startActivity(intent);
             }
         });
+
     }
 
     private void popUpToken(){
