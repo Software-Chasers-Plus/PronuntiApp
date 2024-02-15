@@ -131,5 +131,9 @@
     <string name="codice_fiscale_label">Codice Fiscale:</string>
     <string name="email_genitore_label">Email genitore:</string>
     <string name="codice_qr_del_token">Codice QR del token</string>
-    <string name="il_token_qr_un_codice_univoco_che_identifica_il_figlio_all_interno_dell_applicazione">Il token QR è un codice univoco che identifica il figlio all\'interno dell\'applicazione.</string>
+    <string name="il_token_qr_un_codice_univoco_che_identifica_il_figlio_all_interno_dell_applicazione">Il token QR è un codice univoco che identifica il figlio all\'interno dell\'applicazione. Puoi condividerlo con il tuo logopedista</string>
+    <string name="condividi_con">Condividi con</string>
+    <string name="questo_il_qr_code_del_token_del_bambino">"Questo è il QR code del token del bambino "</string>
+    <string name="per_l_applicazione_pronuntiapp">" per l'applicazione PronuntiApp."</string>
+    <string name="qr_code_token_bambino_pronuntiapp">Qr code token bambino PronuntiApp</string>
 </resources>

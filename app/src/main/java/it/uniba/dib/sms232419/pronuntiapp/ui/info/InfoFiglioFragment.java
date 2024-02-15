@@ -153,22 +153,24 @@ public class InfoFiglioFragment extends Fragment {
 
             qrCode.setImageBitmap(bitmap);
 
-
             FloatingActionButton shareButton = view.findViewById(R.id.condividi_qr_code_button);
             shareButton.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View v) {
                                                    // Condividi il QR code
 
-                                                   String bitmapPath = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap,"Qr code token bambino PronuntiApp",null);
+                                                   String bitmapPath = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap,getString(R.string.qr_code_token_bambino_pronuntiapp),null);
 
                                                    Uri uri = Uri.parse(bitmapPath);
                                                    Intent intent = new Intent(Intent.ACTION_SEND);
                                                    intent.setType("image/png");
                                                    intent.putExtra(Intent.EXTRA_STREAM, uri);
-                                                   startActivity(Intent.createChooser(intent, "Condividi con"));
+                                                   intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.questo_il_qr_code_del_token_del_bambino)+figlio.getNome()+getString(R.string.per_l_applicazione_pronuntiapp));
+                                                   startActivity(Intent.createChooser(intent, getString(R.string.condividi_con)));
                                                }
                                            });
+
+            dialog.setView(view);
             dialog.show();
             Log.d("InfoFiglioFragment", "QR code generato correttamente: ");
         } catch (Exception e) {

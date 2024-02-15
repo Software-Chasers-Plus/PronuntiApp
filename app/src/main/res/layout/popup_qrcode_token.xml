@@ -13,6 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="@string/codice_qr_del_token"
             android:textAlignment="center"
             android:textColor="@color/primaryGenitore"
@@ -35,6 +36,7 @@
             android:layout_marginRight="20dp"
             android:text="@string/il_token_qr_un_codice_univoco_che_identifica_il_figlio_all_interno_dell_applicazione"
             style="@style/txtPoppinsbold13"/>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/condividi_qr_code_button"
             android:layout_width="wrap_content"
