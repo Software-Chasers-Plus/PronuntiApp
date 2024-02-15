@@ -140,4 +140,12 @@
     <string name="gioca">Gioca</string>
     <string name="esci">Esci</string>
     <string name="avvio_gioco">Avvio Gioco</string>
+    <string name="dettagli">Dettagli</string>
+    <string name="scegli_il_giorno_per_l_esercizio">Scegli il giorno per l\'esercizio</string>
+    <string name="creazione_scheda">Creazione scheda</string>
+    <string name="spiegazione_creazione_scheda">Per creare una scheda seleziona gli esercizi tenendo premuto e poi per ognuno di quelli scegli una data</string>
+    <string name="crea_scheda">crea scheda</string>
+    <string name="conferma">conferma</string>
+    <string name="calendario">calendario</string>
+    <string name="nome_scheda">Nome scheda</string>
 </resources>

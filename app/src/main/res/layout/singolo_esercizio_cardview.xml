@@ -1,0 +1,98 @@
+<com.google.android.material.card.MaterialCardView android:id="@+id/cardView_eserecizio"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="3dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/materialCardViewElevatedStyle"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/nome_esercizio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nome_dell_esercizio"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:id="@+id/tipologia_esercizio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/sottotitolo_dell_esercizio"
+                android:fontFamily="@font/poppinsregular"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                />
+
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textInputLayoutStyle"
+                android:id="@+id/giorno_esercizio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/scegli_il_giorno_per_l_esercizio">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/giorno_esercizio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/imageViewCalendar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/baseline_calendar_month_24"
+                android:clickable="true"
+                android:contentDescription="@string/calendario"/>
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dettaglio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="@string/dettagli"
+            style="?attr/borderlessButtonStyle"
+            android:textColor="@color/blu_principale"
+            android:layout_gravity="center_vertical|end"
+            />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

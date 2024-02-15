@@ -65,4 +65,10 @@
         android:label="@string/riconoscimento_di_coppie"
         tools:layout="@layout/dettaglio_esercizio3" />
 
+    <fragment
+        android:id="@+id/navigation_creazione_scheda"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.eserciziBambino.EserciziBambinoFragment"
+        android:label="@string/creazione_scheda"
+        tools:layout="@layout/creazioneschedabambino" />
+
 </navigation>
