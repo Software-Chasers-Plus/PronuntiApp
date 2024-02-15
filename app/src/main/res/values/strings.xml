@@ -148,4 +148,6 @@
     <string name="conferma">conferma</string>
     <string name="calendario">calendario</string>
     <string name="nome_scheda">Nome scheda</string>
+    <string name="genitore">Genitore</string>
+    <string name="schede_del_bambino_da_completare">Schede del bambino da completare:</string>
 </resources>

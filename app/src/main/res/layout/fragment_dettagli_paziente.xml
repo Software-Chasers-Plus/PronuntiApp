@@ -1,183 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    android:layout_gravity="center"
+>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/figlio_imageview"
-        android:foreground="@drawable/bambino"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/label_nome_paziente"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/figlio_imageview"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Nome"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
+        android:orientation="vertical"
+        >
 
-    <TextView
-        android:id="@+id/nome_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_nome_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:id="@+id/figlio_imageview"
+            android:foreground="@drawable/bambino"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp" />
 
-    <TextView
-        android:id="@+id/label_cognome_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nome_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Cognome"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/cognome_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_cognome_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <!-- Data di nascita -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsbold13"/>
 
-    <TextView
-        android:id="@+id/label_codiceFiscale_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cognome_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Codice fiscale"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
-    <TextView
-        android:id="@+id/codiceFiscale_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_codiceFiscale_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+                    <TextView
+                        android:id="@+id/nome_paziente"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50pxh"
+                        android:paddingLeft="@dimen/_20pxh"
+                        android:inputType="text"
+                        android:gravity="center|left"
+                        android:text="@string/name"
+                        android:enabled="false"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsregular16black"
+                        android:background="@drawable/rectangle_border_radius_5"/>
 
-    <TextView
-        android:id="@+id/label_data_nascita_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/codiceFiscale_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Data di nascita"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
-    <TextView
-        android:id="@+id/data_nascita_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_data_nascita_paziente"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+                    <!-- Codice fiscale -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/surname"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsbold13"/>
 
-    <TextView
-        android:id="@+id/label_genitore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/data_nascita_paziente"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/parent"
-        android:textSize="14dp"
-        android:textColor="@color/grey"
-        />
-    <TextView
-        android:id="@+id/genitore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_genitore"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="3dp"
-        android:textSize="18dp"
-        android:background="@drawable/custom_bordo_inferiore"
-        android:textColor="@color/black"
-        />
+                    <TextView
+                        android:id="@+id/cognome_paziente"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50pxh"
+                        android:paddingLeft="@dimen/_20pxh"
+                        android:inputType="text"
+                        android:gravity="center|left"
+                        android:text="@string/surname"
+                        android:enabled="false"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsregular16black"
+                        android:background="@drawable/rectangle_border_radius_5"/>
+
+                    <!-- Token bambino -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/codicefiscale"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsbold13"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh">
+
+                        <TextView
+                            android:id="@+id/codiceFiscale_paziente"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_50pxh"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/_20pxh"
+                            android:inputType="text"
+                            android:gravity="center|left"
+                            android:text="@string/codicefiscale"
+                            android:enabled="false"
+                            style="@style/txtPoppinsregular16black"
+                            android:background="@drawable/rectangle_border_radius_5"/>
+
+                    </RelativeLayout>
+
+                    <!-- Email logopedista -->
+                    <TextView
+                        android:id="@+id/label_data_nascita_paziente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/data_di_nascita"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsbold13"/>
+
+                    <TextView
+                        android:id="@+id/data_nascita_paziente"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50pxh"
+                        android:paddingLeft="@dimen/_20pxh"
+                        android:inputType="text"
+                        android:gravity="center|left"
+                        android:text="@string/data_di_nascita"
+                        android:enabled="false"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        android:layout_marginBottom="@dimen/_10pxh"
+                        style="@style/txtPoppinsregular16black"
+                        android:background="@drawable/rectangle_border_radius_5"/>
+
+                    <!-- Genitore -->
+                    <TextView
+                        android:id="@+id/label_genitore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/genitore"
+                        android:layout_marginTop="@dimen/_10pxh"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        style="@style/txtPoppinsbold13"/>
+
+                    <TextView
+                        android:id="@+id/genitore"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50pxh"
+                        android:paddingLeft="@dimen/_20pxh"
+                        android:inputType="text"
+                        android:gravity="center|left"
+                        android:text="@string/genitore"
+                        android:enabled="false"
+                        android:layout_marginStart="@dimen/_10pxh"
+                        android:layout_marginEnd="@dimen/_10pxh"
+                        android:layout_marginBottom="@dimen/_10pxh"
+                        style="@style/txtPoppinsregular16black"
+                        android:background="@drawable/rectangle_border_radius_5"/>
 
 
-    <TextView
-        android:id="@+id/label_schede_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/genitore"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Schede del bambino da completare"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/schede_recycler_view_paziente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/label_schede_paziente"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:maxHeight="690dp" />
+                    <TextView
+                        android:id="@+id/label_schede_paziente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/genitore"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/schede_del_bambino_da_completare"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        />
 
-    </RelativeLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/schede_recycler_view_paziente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label_schede_paziente"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:maxHeight="690dp" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab_crea_scheda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="bottom|end"
-        android:contentDescription="@string/creazione_scheda"
-        android:text="@string/crea_scheda"
-        app:icon="@drawable/piu_icon_white"
-        android:backgroundTint="@color/secondaryGenitore"/>
+                </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            >
+            <!-- Floating button crea scheda -->
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/extended_fab_crea_scheda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/creazione_scheda"
+                android:text="@string/crea_scheda"
+                app:icon="@drawable/piu_icon_white"
+                android:backgroundTint="@color/secondaryGenitore"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

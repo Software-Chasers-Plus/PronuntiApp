@@ -141,8 +141,29 @@ public class InfoFiglioFragment extends Fragment {
         avviaGioco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GiocoActivity.class);
-                startActivity(intent);
+
+                // Creo dialog di conferma
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Conferma avvio gioco");
+                builder.setMessage("Sei sicuro di voler avviare il gioco?\n\nIl gioco non potrà essere interrotto senza il PIN.");
+                builder.setIcon(R.drawable.alert_avvio_gioco);
+                builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
+
+                // Aggiunta dei pulsanti
+                builder.setPositiveButton("Si", (dialog, which) -> {
+                    Intent intent = new Intent(getActivity(), GiocoActivity.class);
+                    startActivity(intent);
+                });
+
+                builder.setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+
+
+                // Mostra il dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
 

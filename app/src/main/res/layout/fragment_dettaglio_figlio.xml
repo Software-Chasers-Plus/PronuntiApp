@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center"
-    android:background="@color/blue_sfondo_dettaglio">
+    android:layout_gravity="center">
 
     <FrameLayout
         android:id="@+id/framelayout_dettaglio_schede"
@@ -19,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/collapsing_toolbar"
-                android:background="@color/blue_sfondo_dettaglio">
+               >
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
@@ -34,10 +33,13 @@
 
                         <TextView
                             android:id="@+id/nome_figlio_dettaglio"
-                            style="@style/txtPoppinsregular40italic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="64dp"
+                            android:font="@font/varelaround_regular"
+                            android:textSize="50dp"
+                            android:textColor="@color/white"
+                            android:textStyle="normal|bold"
                             android:text="@string/name"
                             app:layout_constraintEnd_toStartOf="@id/avatar_figlio_dettaglio"
                             app:layout_constraintHorizontal_bias="0.508"
@@ -46,12 +48,18 @@
 
                         <TextView
                             android:id="@+id/cognome_figlio_dettaglio"
-                            style="@style/txtPoppinsregular40italic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="25dp"
+                            android:font="@font/varelaround_regular"
+                            android:textColor="@color/white"
                             android:text="@string/surname"
+                            android:textStyle="italic"
+                            android:textSize="50dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/avatar_figlio_dettaglio"
+                            app:layout_constraintHorizontal_bias="0.533"
                             app:layout_constraintStart_toStartOf="parent" />
 
                         <ImageView
@@ -206,16 +214,20 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </FrameLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/avvio_gioco_figlio_button"
+        style="@style/Widget.Material3.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        app:srcCompat="@drawable/play_arrow"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/secondaryGenitore"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        style="@style/Widget.Material3.Button.Icon"
-        android:backgroundTint="@color/secondaryGenitore"/>
+        app:srcCompat="@drawable/play_arrow" />
 </RelativeLayout>

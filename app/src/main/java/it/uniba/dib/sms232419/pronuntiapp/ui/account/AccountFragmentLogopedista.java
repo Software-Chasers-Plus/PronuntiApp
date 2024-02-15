@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -109,9 +110,32 @@ public class AccountFragmentLogopedista extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), AccessoActivity.class));
-                getActivity().finish();
+                // Credo dialog per confermare il logout
+                // Creo dialog di conferma
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Stai per effettuare il logout.\n");
+                builder.setMessage("Sei sicuro di voler uscire?");
+                builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
+
+                // Personalizzazione dello stile dell'AlertDialog
+                builder.setIcon(R.drawable.alert_svgrepo_com); // Icona critica
+
+                // Aggiunta dei pulsanti
+                builder.setPositiveButton("Si", (dialog, which) -> {
+                    // Logout
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getActivity(), AccessoActivity.class));
+                    getActivity().finish();
+                });
+
+                builder.setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+
+
+                // Mostra il dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }
