@@ -2,6 +2,7 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
     private int selectedImageId = -1;
 
     // Array contenente gli ID delle risorse delle immagini
-    private final Integer[] images = {R.drawable.bambino_1, R.drawable.bambino_2, R.drawable.bambino_3, R.drawable.bambino_4, R.drawable.bambino_5, R.drawable.bambino_6};
+    private final Integer[] images = {0, 1, 2, 3, 4, 5};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
 
         RecyclerView imageRecyclerView = view.findViewById(R.id.imageRecyclerView);
         imageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        ImageAdapter imageAdapter = new ImageAdapter(images);
+        ImageAdapter imageAdapter = new ImageAdapter();
         imageAdapter.setOnImageSelectedListener(this); // Imposta il listener
         imageRecyclerView.setAdapter(imageAdapter);
 
@@ -180,7 +181,8 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
     // Metodo dell'interfaccia per la gestione della selezione dell'immagine
     @Override
     public void onImageSelected(int imageId) {
-        selectedImageId = imageId - 1;
+        selectedImageId = imageId;
+        Log.d("AggiungiFiglioFragment", "Immagine selezionata: " + imageId);
     }
 
     // Genera un token univoco a partire dal codice fiscale per ogni figlio

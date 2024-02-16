@@ -1,4 +1,5 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,11 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
-    private Integer[] images;
+    private final Integer[] images = {R.drawable.bambino_1, R.drawable.bambino_2, R.drawable.bambino_3, R.drawable.bambino_4, R.drawable.bambino_5, R.drawable.bambino_6};
     private int selectedImageId = -1;
     private OnImageSelectedListener listener;
 
-    public ImageAdapter(Integer[] images) {
-        this.images = images;
+    public ImageAdapter() {
     }
 
     public interface OnImageSelectedListener {
@@ -35,6 +35,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+
         Integer imageResId = images[position];
         holder.imageView.setImageResource(imageResId);
 
@@ -48,9 +49,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             @Override
             public void onClick(View v) {
                 selectedImageId = images[position];
+                Log.d("ImageAdapter", "Selected image: " + selectedImageId);
                 notifyDataSetChanged();
                 if (listener != null) {
-                    listener.onImageSelected(selectedImageId);
+                    listener.onImageSelected(position);
                 }
             }
         });

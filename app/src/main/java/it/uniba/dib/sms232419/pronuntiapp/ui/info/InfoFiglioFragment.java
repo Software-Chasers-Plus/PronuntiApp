@@ -79,7 +79,7 @@ public class InfoFiglioFragment extends Fragment {
             cognomeFiglio.setText(figlio.getCognome());
 
             ImageView avatarFiglio = view.findViewById(R.id.avatar_figlio_dettaglio);
-            avatarFiglio.setImageResource(figlio.getIdAvatar() + 1);
+            avatarFiglio.setImageResource(trovaIdAvatar(figlio.getIdAvatar()));
 
             TextView codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
             codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
@@ -167,6 +167,35 @@ public class InfoFiglioFragment extends Fragment {
             }
         });
 
+    }
+
+    private int trovaIdAvatar(int idAvatar) {
+
+        int avatarDrawableId;
+        switch (idAvatar) {
+            case 0:
+                avatarDrawableId = R.drawable.bambino_1;
+                break;
+            case 1:
+                avatarDrawableId = R.drawable.bambino_2;
+                break;
+            case 2:
+                avatarDrawableId = R.drawable.bambino_3;
+                break;
+            case 3:
+                avatarDrawableId = R.drawable.bambino_4;
+                break;
+            case 4:
+                avatarDrawableId = R.drawable.bambino_5;
+                break;
+            case 5:
+                avatarDrawableId = R.drawable.bambino_6;
+                break;
+            default:
+                avatarDrawableId = R.drawable.bambino;
+                break;
+        }
+        return avatarDrawableId;
     }
 
     private void popUpToken(){

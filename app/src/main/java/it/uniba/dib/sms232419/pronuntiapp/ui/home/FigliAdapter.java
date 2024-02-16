@@ -90,22 +90,22 @@ public class FigliAdapter extends RecyclerView.Adapter<FigliHolderView> {
         int avatarId = figlio.getIdAvatar();
         int avatarDrawableId;
         switch (avatarId) {
-            case 2131165308:
+            case 0:
                 avatarDrawableId = R.drawable.bambino_1;
                 break;
-            case 2131165309:
+            case 1:
                 avatarDrawableId = R.drawable.bambino_2;
                 break;
-            case 2131165310:
+            case 2:
                 avatarDrawableId = R.drawable.bambino_3;
                 break;
-            case 2131165311:
+            case 3:
                 avatarDrawableId = R.drawable.bambino_4;
                 break;
-            case 2131165312:
+            case 4:
                 avatarDrawableId = R.drawable.bambino_5;
                 break;
-            case 2131165313:
+            case 5:
                 avatarDrawableId = R.drawable.bambino_6;
                 break;
             default:
