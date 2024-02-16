@@ -9,22 +9,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="30dp"
+        app:cardElevation="4dp"
         android:layout_margin="20dp">
-    <ImageView
-        android:id="@+id/carousel_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:transitionName="image"
-        android:scaleType="centerCrop"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/carousel_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="image"
+                android:scaleType="centerCrop"/>
+
+            <!-- Contorno per l'immagine selezionata -->
+            <View
+                android:id="@+id/image_border"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/selected_border_sfondo"
+                android:visibility="gone" />
+
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
 </com.google.android.material.carousel.MaskableFrameLayout>
-
-
-
-

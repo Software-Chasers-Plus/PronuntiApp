@@ -52,6 +52,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 Log.d("ImageAdapter", "Selected image: " + selectedImageId);
                 notifyDataSetChanged();
                 if (listener != null) {
+                    listener.onImageSelected(selectedImageId);
                     listener.onImageSelected(position);
                 }
             }

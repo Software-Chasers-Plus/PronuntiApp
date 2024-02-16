@@ -74,8 +74,5 @@ public class ImpostazioniGiocoFragment extends Fragment{
                 }
             }
         });
-
-
-
     }
 }
