@@ -1,15 +1,12 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.eserciziBambino;
+package it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino;
 
 import android.widget.EditText;
-
-import androidx.cardview.widget.CardView;
 
 import com.google.android.material.card.MaterialCardView;
 
 public interface ClickEserciziBambinoListener {
-    void onItemClick(int position);
+    void onItemClick(int position, MaterialCardView cardView);
 
-    void onItemLongClick(int position, MaterialCardView cardView);
     void onDettaglioClick(int position);
 
     void onCalendarioClick(int position, EditText dataEsercizio);

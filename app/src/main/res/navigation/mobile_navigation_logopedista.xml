@@ -67,8 +67,14 @@
 
     <fragment
         android:id="@+id/navigation_creazione_scheda"
-        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.eserciziBambino.EserciziBambinoFragment"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino.EserciziBambinoFragment"
         android:label="@string/creazione_scheda"
         tools:layout="@layout/creazioneschedabambino" />
+
+    <fragment
+        android:id="@+id/navigation_esercizi"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.EserciziFragment"
+        android:label="Ritorno all'elenco degli esercizi"
+        tools:layout="@layout/fragment_esercizi" />
 
 </navigation>

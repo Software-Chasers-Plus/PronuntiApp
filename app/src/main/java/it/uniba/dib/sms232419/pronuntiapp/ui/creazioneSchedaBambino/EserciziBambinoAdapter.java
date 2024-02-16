@@ -1,4 +1,4 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.eserciziBambino;
+package it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino;
 
 import android.content.Context;
 import android.view.LayoutInflater;

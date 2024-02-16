@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.ui.home.ClickFigliListener;
 
 public class EserciziHolderView extends RecyclerView.ViewHolder implements View.OnClickListener{
     TextView textViewNomeEsercizio, textViewTipologiaEserciio;
-    ImageButton deleteButtonEsercizio;
+    MaterialButton deleteButtonEsercizio;
 
     private ClickEserciziListener clickEserciziListener;
 

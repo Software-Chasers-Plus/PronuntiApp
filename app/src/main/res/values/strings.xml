@@ -155,4 +155,7 @@
     <string name="per_favore_fornisci_il_permesso_per_accedere_alla_galleria">Per favore, fornisci il permesso per accedere alla galleria.</string>
     <string name="sfondo_gioco">Sfondo gioco:</string>
     <string name="sfondo">sfondo</string>
+    <string name="elimina">Elimina</string>
+    <string name="numero_esercizi_scheda">Numero esercizi</string>
+    <string name="avvia_scheda">Avvia</string>
 </resources>

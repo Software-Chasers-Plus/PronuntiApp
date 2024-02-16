@@ -1,4 +1,4 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.eserciziBambino;
+package it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,6 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -48,6 +49,8 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
     String TAG = "Esercizi Bambino Fragment";
     Map<String, Object> esercizi = null;
+
+    List<DocumentSnapshot> result;
     Figlio paziente;
     String  pazienteId;
     ArrayList<Esercizio> eserciziList = new ArrayList<>();
@@ -146,47 +149,38 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                     return;
                 }
 
-                //Definisco il CF
-                String codiceFiscale = paziente.getCodiceFiscale();
-
-                //Recupero l'id del paziente
-                db.collection("figli")
-                        .whereEqualTo("codiceFiscale", codiceFiscale)
+                db.collection("schede")
+                        .whereEqualTo("nomeScheda", nomeScheda)
                         .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    pazienteId = document.getId();
-                                    // Now you can use the documentId
-                                }
+                        .addOnSuccessListener(task -> {
+                            if (!task.getDocuments().isEmpty()) {
+                                textInputLayoutNomeScheda.setError("Nome non disponibile");
+                                Log.d(TAG, "Nome scheda già scelto");
                             } else {
-                                Log.e(TAG, "Errore durante la query per i figli", task.getException());
+                                //Definisco il CF
+                                String codiceFiscale = paziente.getCodiceFiscale();
+
+                                //Recupero l'id del paziente
+                                db.collection("figli")
+                                        .whereEqualTo("codiceFiscale", codiceFiscale)
+                                        .get()
+                                        .addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task2.getResult()) {
+                                                    pazienteId = document.getId();
+                                                    addScheda(db, nomeScheda, userId);
+                                                }
+                                            } else {
+                                                Log.e(TAG, "Errore durante la query per i figli", task2.getException());
+                                            }
+                                        });
                             }
+                        })
+                        .addOnFailureListener(e -> {
+                            // Gestisci eventuali errori durante l'esecuzione della query
+                            Log.e(TAG, "Errore durante il recupero dei documenti", e);
                         });
 
-                //Creo un array per salvare gli esercizi selezionati
-                ArrayList<String> eserciziSelezionati = new ArrayList<>();
-
-                Log.d(TAG, "Esercizi ricevuti: " + checkedPositions);
-                for (int i = 0; i < checkedPositions.size(); i++) {
-                    //Recupero l'id dell'esercizio selezionato
-                    db.collection("esercizi")
-                            .whereEqualTo("nome", eserciziList.get(checkedPositions.get(i)).getNome().toString())
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d(TAG, "Esercizio ID: " + document.getId());
-                                        eserciziSelezionati.add(document.getId());
-                                        Log.d(TAG, "Esercizi selezionati diocane: " + eserciziSelezionati);
-                                    }
-                                    //Salvo la scheda nel database
-                                    caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
-                                } else {
-                                    Log.e(TAG, "Errore durante la query per gli esercizi", task.getException());
-                                }
-                            });
-                }
             } else {
                 Snackbar.make(view, "Seleziona almeno un esercizio", Snackbar.LENGTH_SHORT).show();
             }
@@ -199,12 +193,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
     }
 
     @Override
-    public void onItemClick(int position) {
-        //TODO: Implementare il click
-    }
-
-    @Override
-    public void onItemLongClick(int position, MaterialCardView cardView) {
+    public void onItemClick(int position, MaterialCardView cardView) {
         //Seleziona la card view dopo una pressione prolungata
         cardView.setChecked(!cardView.isChecked());
 
@@ -344,5 +333,31 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                     Log.w(TAG, "Errore durante l'aggiunta del documento", e);
                 });
 
+    }
+
+    private void addScheda(FirebaseFirestore db, String nomeScheda, String userId) {
+        //Creo un array per salvare gli esercizi selezionati
+        ArrayList<String> eserciziSelezionati = new ArrayList<>();
+
+        Log.d(TAG, "Esercizi ricevuti: " + checkedPositions);
+        for (int i = 0; i < checkedPositions.size(); i++) {
+            //Recupero l'id dell'esercizio selezionato
+            db.collection("esercizi")
+                    .whereEqualTo("nome", eserciziList.get(checkedPositions.get(i)).getNome().toString())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, "Esercizio ID: " + document.getId());
+                                eserciziSelezionati.add(document.getId());
+                                Log.d(TAG, "Esercizi selezionati diocane: " + eserciziSelezionati);
+                            }
+                            //Salvo la scheda nel database
+                            caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
+                        } else {
+                            Log.e(TAG, "Errore durante la query per gli esercizi", task.getException());
+                        }
+                    });
+        }
     }
  }

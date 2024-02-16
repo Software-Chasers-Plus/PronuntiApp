@@ -1,0 +1,128 @@
+<com.google.android.material.card.MaterialCardView android:id="@+id/cardView_scheda"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    android:checkable="false"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="3dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/materialCardViewElevatedStyle"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- Media -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                app:srcCompat="@drawable/game_wallpaper"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/descrizione_immagine"
+                />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                >
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/nome_scheda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nome_scheda"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:id="@+id/numero_esercizi_scheda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/numero_esercizi_scheda"
+                android:fontFamily="@font/poppinsregular"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                />
+                
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/stato_scheda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/numero_esercizi_scheda"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+                <TextView
+                    android:id="@+id/esercizi_completati_scheda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/numero_esercizi_scheda"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:layout_gravity="end">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dettaglio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:text="@string/dettagli"
+                style="?attr/borderlessButtonStyle"
+                android:textColor="@color/blu_principale"
+                android:layout_gravity="center_vertical|end"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/avvia_scheda_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/avvia_scheda"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/blu_principale"
+                android:layout_gravity="center_vertical|end"
+                app:icon="@drawable/baseline_sports_esports_24"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

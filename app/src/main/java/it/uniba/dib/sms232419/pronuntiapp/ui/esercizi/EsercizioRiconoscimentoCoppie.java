@@ -28,6 +28,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -210,10 +212,15 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                         .add(data)
                         .addOnSuccessListener(documentReference -> {
                             Log.d("EsercizioRiconoscimentoCoppie", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+                            //Navigazione alla lista degli esercizi
+
                         })
                         .addOnFailureListener(e -> {
                             Log.w("EsercizioRiconoscimentoCoppie", "Errore durante l'aggiunta del documento", e);
                         });
+
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                navController.navigate(R.id.navigation_esercizi);
 
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore

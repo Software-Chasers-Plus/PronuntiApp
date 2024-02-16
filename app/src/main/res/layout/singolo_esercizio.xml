@@ -1,66 +1,58 @@
 <!-- exercise_item_layout.xml -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView android:id="@+id/cardView_eserecizio"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="7dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:background="@drawable/custom_border_item_figli">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="3dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/materialCardViewElevatedStyle"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp">
+
+    <!-- Title, secondary and supporting text -->
+    <TextView
+        android:id="@+id/esercizio_nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="@string/nome_dell_esercizio"
+        android:fontFamily="@font/poppinsmedium"
+        android:textSize="18sp"
+        />
+    <TextView
+        android:id="@+id/esercizio_tipologia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/sottotitolo_dell_esercizio"
+        android:fontFamily="@font/poppinsregular"
+        android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
+        />
 
-        <!-- Nome dell'esercizio -->
-
-        <!-- Sottotitolo dell'esercizio -->
-
-        <TextView
-            android:id="@+id/esercizio_nome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsmedium"
-            android:paddingBottom="4dp"
-            android:text="@string/nome_dell_esercizio"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/esercizio_tipologia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsregular"
-            android:text="@string/sottotitolo_dell_esercizio"
-            android:textColor="@color/grey"
-            android:textSize="14sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="@string/elimina"
+            style="?attr/borderlessButtonStyle"
+            android:textColor="#FFD60606"
+            android:layout_gravity="center_vertical|end"
+            />
 
     </LinearLayout>
 
-    <!-- ImageButton a destra -->
-
-    <ImageButton
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/delete_button"
-        android:src="@drawable/delete_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="#D60606" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -65,6 +65,7 @@ public class InfoPazienteFragment extends Fragment {
         TextView emailLogopedistapaziente = view.findViewById(R.id.genitore);
         emailLogopedistapaziente.setText(paziente.getEmailGenitore());
 
+        //Creazione di una scheda per il paziente
         ExtendedFloatingActionButton creaScheda = view.findViewById(R.id.extended_fab_crea_scheda);
         creaScheda.setOnClickListener(v -> {
 

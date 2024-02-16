@@ -1,20 +1,16 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.eserciziBambino;
+package it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.ClickFigliListener;
 
 public class EserciziBambinoHolderView extends RecyclerView.ViewHolder implements View.OnClickListener{
     TextView textViewNomeEsercizio, textViewTipologiaEserciio;
@@ -47,14 +43,6 @@ public class EserciziBambinoHolderView extends RecyclerView.ViewHolder implement
             }
         });
 
-        // Set the long click listener
-        cardView.setOnLongClickListener(v -> {
-            if(clickEserciziBambinoListener != null){
-                clickEserciziBambinoListener.onItemLongClick(getAdapterPosition(), cardView);
-            }
-            return true;
-        });
-
         iconaCalendario.setOnClickListener(v -> {
             if(clickEserciziBambinoListener != null){
                 clickEserciziBambinoListener.onCalendarioClick(getAdapterPosition(), dataEsercizio);
@@ -68,7 +56,7 @@ public class EserciziBambinoHolderView extends RecyclerView.ViewHolder implement
         // Verifica se il ClickListener è stato assegnato
         if (clickEserciziBambinoListener != null) {
             // Passa la posizione dell'elemento cliccato al ClickListener
-            clickEserciziBambinoListener.onItemClick(getAdapterPosition());
+            clickEserciziBambinoListener.onItemClick(getAdapterPosition(), (MaterialCardView) view);
 
         }
     }
