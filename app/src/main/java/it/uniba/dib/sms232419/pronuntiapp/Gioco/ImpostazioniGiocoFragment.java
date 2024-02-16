@@ -195,5 +195,6 @@ public class ImpostazioniGiocoFragment extends Fragment {
         super.onDestroyView();
         volumeSeekBar = null;
         audioImageView = null;
+        requireActivity().getContentResolver().unregisterContentObserver(volumeObserver);
     }
 }
