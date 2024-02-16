@@ -59,9 +59,9 @@
         </activity>
 
         <activity
-            android:name=".GiocoActivity"
+            android:name=".Gioco.GiocoActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/Theme.Gioco">
         </activity>
 
 

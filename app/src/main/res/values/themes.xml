@@ -42,4 +42,23 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Style per il logopedista-->
+    <style name="Theme.Gioco" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryDeserto</item>
+        <item name="colorPrimaryVariant">@color/secondaryDeserto</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/thirdDeserto</item>
+        <item name="colorSecondaryVariant">@color/fourthDeserto</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+    </style>
+
 </resources>

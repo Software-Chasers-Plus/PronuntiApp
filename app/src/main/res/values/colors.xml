@@ -36,4 +36,10 @@
     <color name="black_900">#000000</color>
     <color name="white_A700">#ffffff</color>
     <color name="blue_sfondo_dettaglio">#d5ecf4</color>
+
+
+    <color name="primaryDeserto">#F0E68C</color>
+    <color name="secondaryDeserto">#BC8F8F</color>
+    <color name="thirdDeserto">#8FBC8F</color>
+    <color name="fourthDeserto">#F2F1EB</color>
 </resources>

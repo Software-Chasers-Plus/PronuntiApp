@@ -153,4 +153,6 @@
     <string name="permesso_negato">Permesso negato</string>
     <string name="per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo">Per favore, fornisci il permesso per accedere alla fotocamera del dispositivo.</string>
     <string name="per_favore_fornisci_il_permesso_per_accedere_alla_galleria">Per favore, fornisci il permesso per accedere alla galleria.</string>
+    <string name="sfondo_gioco">Sfondo gioco:</string>
+    <string name="sfondo">sfondo</string>
 </resources>
