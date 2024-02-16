@@ -2,30 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/impostazioni_gioco"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/impostazioni_gioco"
     tools:context=".Gioco.GiocoActivity">
+
+
+
 
     <TextView
         android:id="@+id/titolo_impostazioni_gioco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
         android:text="@string/impostazioni"
-        android:textColor="@color/black"
+        android:textColor="@color/default_impostazioni"
         android:textStyle="bold"
-        android:fontFamily="@font/font_game"/>
-
+        android:textSize="30dp"
+        android:fontFamily="@font/font_game" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/titolo_impostazioni_gioco"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
@@ -35,30 +37,67 @@
             android:id="@+id/carousel_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
             app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/cardView">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:text="@string/sfondo_gioco"
-            android:textColor="@color/black"
-            android:fontFamily="@font/font_game"/>
+            android:textColor="@color/default_impostazioni"
+            android:fontFamily="@font/font_game" />
+
         <TextView
             android:id="@+id/sfondo_selezionato"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="@string/sfondo"
+            android:textStyle="bold"
             android:textColor="@color/black"
-            android:fontFamily="@font/font_game"/>
+            android:fontFamily="@font/font_game" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/linear_layout_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_horizontal">
+    <ImageView
+        android:id="@+id/audio"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/seekBar"
+        android:layout_toStartOf="@id/seekBar"
+        android:src="@drawable/audio_on"
+        android:layout_gravity="center"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/linear_layout"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/default_impostazioni"
+            android:max="100"
+            android:paddingHorizontal="20dp"
+            android:progressTint="@color/default_impostazioni"
+            android:thumbTint="@color/default_impostazioni" />
+    </LinearLayout>
 
 </RelativeLayout>

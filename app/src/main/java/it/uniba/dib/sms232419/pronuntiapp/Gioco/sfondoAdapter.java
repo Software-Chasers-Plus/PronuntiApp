@@ -27,6 +27,13 @@ public class sfondoAdapter extends RecyclerView.Adapter<sfondoAdapter.ViewHolder
         this.arrayList = arrayList;
     }
 
+    // Imposta il contorno della prima immagine come selezionato di default
+    public void setDefaultSelectedItemView(View view) {
+        selectedItemView = view;
+        updateImageViewBorder(view);
+    }
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

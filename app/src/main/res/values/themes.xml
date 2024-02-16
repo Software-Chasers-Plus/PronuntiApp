@@ -51,7 +51,6 @@
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/thirdDeserto</item>
-        <item name="colorSecondaryVariant">@color/fourthDeserto</item>
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="android:windowNoTitle">true</item>

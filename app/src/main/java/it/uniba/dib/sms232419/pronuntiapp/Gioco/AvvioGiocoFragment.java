@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,10 @@ import android.widget.ImageView;
 import it.uniba.dib.sms232419.pronuntiapp.LoginFragment;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
+
 public class AvvioGiocoFragment extends Fragment {
 
-    private MediaPlayer mediaPlayer;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private boolean isMediaPlayerPaused = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,19 +31,13 @@ public class AvvioGiocoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-
-        // Inizializza il MediaPlayer con il file audio desiderato
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.audio_sottofondo);
-
-        // Avvia la riproduzione
-        mediaPlayer.start();
+        // Debug per verificare quando il MediaPlayer viene avviato
+        Log.d("AvvioGiocoFragment", "MediaPlayer avviato");
 
         ImageView backButton = view.findViewById(R.id.exit_button_start_game);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Quando si fa clic sul pulsante di uscita, ferma la riproduzione della musica
-                mediaPlayer.stop();
                 getActivity().finish();
             }
         });
@@ -54,23 +46,13 @@ public class AvvioGiocoFragment extends Fragment {
         impostazioni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Avvia la transizione al fragment ImpostazioniGiocoFragment e lo aggiunge al back stack
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.avvio_gioco_fragment, ImpostazioniGiocoFragment.class, null)
+                        .addToBackStack(null) // Aggiunge al back stack
                         .commit();
             }
         });
-
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Assicurati di rilasciare le risorse del MediaPlayer quando l'activity viene distrutta
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
     }
 }

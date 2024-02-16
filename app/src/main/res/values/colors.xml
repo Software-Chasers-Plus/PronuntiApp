@@ -37,9 +37,21 @@
     <color name="white_A700">#ffffff</color>
     <color name="blue_sfondo_dettaglio">#d5ecf4</color>
 
+    <color name="default_impostazioni">#FF5722</color> <!-- Giallo -->
 
-    <color name="primaryDeserto">#F0E68C</color>
-    <color name="secondaryDeserto">#BC8F8F</color>
-    <color name="thirdDeserto">#8FBC8F</color>
-    <color name="fourthDeserto">#F2F1EB</color>
+    <color name="primaryDeserto">#FFE0B2</color> <!-- Sabbia -->
+    <color name="secondaryDeserto">#FFB74D</color> <!-- Arancione terra -->
+    <color name="thirdDeserto">#8D6E63</color> <!-- Marrone chiaro -->
+
+
+    <color name="primaryAntartide">#64B5F6</color>
+    <color name="secondaryAntartide">#1976D2</color>
+    <color name="thirdAntartide">#FFAB40</color>
+
+
+    <color name="primaryGiungla">#689F38</color> <!-- Verde -->
+    <color name="secondaryGiungla">#33691E</color> <!-- Verde più scuro -->
+    <color name="thirdGiungla">#FFD740</color> <!-- Giallo -->
+
+
 </resources>

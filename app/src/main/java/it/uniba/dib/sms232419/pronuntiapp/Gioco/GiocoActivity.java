@@ -1,34 +1,42 @@
 package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import it.uniba.dib.sms232419.pronuntiapp.LoginFragment;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class GiocoActivity extends AppCompatActivity {
 
-    public int sfondo = 0; //0 = deserto, 1 = antartide, 2 = giungla
+    public MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gioco);
 
+        // Inizializza il MediaPlayer con il file audio desiderato
+        mediaPlayer = MediaPlayer.create(this, R.raw.audio_sottofondo);
+
+        // Avvia la riproduzione in loop
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.avvio_gioco_fragment, AvvioGiocoFragment.class, null)
                 .commit();
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Rilascia il MediaPlayer quando l'attività viene distrutta
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }
-
