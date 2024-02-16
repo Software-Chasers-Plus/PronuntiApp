@@ -162,7 +162,7 @@ public class AggiungiPazienteFragment extends Fragment {
                                     Log.d("AggiungiPazienteFragment", "Figlio trovato: " + document.get("nome").toString());
                                     if (document.get("logopedista").toString().isEmpty()) {
                                         figlioUid = document.getId();
-                                        avatarPaziente.setImageResource(Integer.valueOf(document.get("idAvatar").toString()));
+                                        avatarPaziente.setImageResource(trovaIdAvatar(Integer.valueOf(document.get("idAvatar").toString())));
                                         nomePaziente.setText(document.get("nome").toString() + " " + document.get("cognome").toString());
                                         dataNascitaPaziente.setText(document.get("dataNascita").toString());
                                         codiceFiscalePaziente.setText(document.get("codiceFiscale").toString());
@@ -426,5 +426,33 @@ public class AggiungiPazienteFragment extends Fragment {
         }
     }
 
+    private int trovaIdAvatar(int idAvatar) {
+
+        int avatarDrawableId;
+        switch (idAvatar) {
+            case 0:
+                avatarDrawableId = R.drawable.bambino_1;
+                break;
+            case 1:
+                avatarDrawableId = R.drawable.bambino_2;
+                break;
+            case 2:
+                avatarDrawableId = R.drawable.bambino_3;
+                break;
+            case 3:
+                avatarDrawableId = R.drawable.bambino_4;
+                break;
+            case 4:
+                avatarDrawableId = R.drawable.bambino_5;
+                break;
+            case 5:
+                avatarDrawableId = R.drawable.bambino_6;
+                break;
+            default:
+                avatarDrawableId = R.drawable.bambino;
+                break;
+        }
+        return avatarDrawableId;
+    }
 
 }
