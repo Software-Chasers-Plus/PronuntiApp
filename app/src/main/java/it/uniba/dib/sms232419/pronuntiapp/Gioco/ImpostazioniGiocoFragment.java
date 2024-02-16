@@ -1,9 +1,17 @@
 package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
+import static java.lang.Math.abs;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +40,30 @@ public class ImpostazioniGiocoFragment extends Fragment {
     private ImageView audioImageView;
     private boolean isAudioOn = true;
 
+    int previousVolume;
+
+    ContentObserver volumeObserver;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Inizializza l'AudioManager
         audioManager = (AudioManager) requireActivity().getSystemService(requireActivity().AUDIO_SERVICE);
+        previousVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        volumeObserver = new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                super.onChange(selfChange);
+                // Ottieni il volume corrente dal ContentResolver
+                int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                volumeSeekBar.setProgress(volume);
+                // Fai qualcosa con il volume
+                Log.d("ImpostazioniGiocoFragment", "Volume: " + volume);
+            }
+        };
+        // Registra il ContentObserver per rilevare i cambiamenti del volume e aggiornare la SeekBar
+        requireActivity().getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, volumeObserver);
     }
 
     @Nullable

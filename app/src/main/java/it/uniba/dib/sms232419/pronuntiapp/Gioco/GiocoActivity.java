@@ -2,6 +2,8 @@ package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

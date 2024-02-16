@@ -89,7 +89,7 @@
         app:cardCornerRadius="@dimen/_15pxh"
         app:strokeColor="@color/primaryLogopedista"
         app:strokeWidth="1dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
