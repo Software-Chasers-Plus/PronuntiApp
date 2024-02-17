@@ -33,6 +33,25 @@ public class GiocoActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        // Metti in pausa la riproduzione del MediaPlayer quando l'attività entra in pausa
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Riprendi la riproduzione del MediaPlayer se era in pausa quando l'attività è entrata in pausa
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         // Rilascia il MediaPlayer quando l'attività viene distrutta
