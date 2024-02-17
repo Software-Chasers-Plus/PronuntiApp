@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nitish.typewriterview.TypeWriterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,13 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+
+        // The TypeWriterView is a simple extension of the TextView class that provides a typing animation.
+        TypeWriterView typeWriterView = findViewById(R.id.text_pronuntiapp);
+        typeWriterView.setCharacterDelay(70);
+        typeWriterView.animateText("PronuntiApp");
         View decorView = getWindow().getDecorView();
+
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         decorView.setSystemUiVisibility(uiOptions);
         fetchDataFromDataBase();

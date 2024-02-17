@@ -18,6 +18,17 @@
             android:layout_gravity="center_horizontal"
             android:src="@mipmap/ic_launcher" />
 
+        <com.nitish.typewriterview.TypeWriterView
+            android:id="@+id/text_pronuntiapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/font_name_app"
+            android:textColor="@color/blue_A200"
+            android:textSize="60dp"
+            />
+
+        <!--
         <TextView
             android:id="@+id/text_pronuntiapp"
             android:layout_width="wrap_content"
@@ -27,6 +38,9 @@
             android:text="PronuntiApp"
             android:textColor="@color/blue_A200"
             android:textSize="60dp" />
+            -->
+
+
     </LinearLayout>
 
 </FrameLayout>
