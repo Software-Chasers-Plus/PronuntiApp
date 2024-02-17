@@ -35,6 +35,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+
 public class RegistrazioneLogopedistaFragment extends Fragment {
 
     private FirebaseAuth auth;
@@ -338,12 +340,12 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
 
                                         dialog.show();
                                     }else{
-                                        Toast.makeText(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT).show();
+                                        Toasty.error(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT, true).show();
                                     }
                                 }
                             });
                 }else{
-                    Toast.makeText(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT).show();
+                    Toasty.error(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT, true).show();
                 }
             }
         });

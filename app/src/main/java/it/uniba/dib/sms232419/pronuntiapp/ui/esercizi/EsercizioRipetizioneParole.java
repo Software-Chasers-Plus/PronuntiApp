@@ -42,6 +42,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class EsercizioRipetizioneParole extends Fragment {
@@ -154,7 +155,7 @@ public class EsercizioRipetizioneParole extends Fragment {
                 navController.navigate(R.id.navigation_esercizi);
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                Toast.makeText(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
             }
         });
 

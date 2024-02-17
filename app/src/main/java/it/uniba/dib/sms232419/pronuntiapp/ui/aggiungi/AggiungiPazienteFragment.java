@@ -59,6 +59,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.io.IOException;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Logopedista;
@@ -96,7 +97,7 @@ public class AggiungiPazienteFragment extends Fragment {
         if(result != null){
             tokenPaziente.setText(result.getContents());
         }else{
-            Toast.makeText(getContext(), "Nessun QR Code trovato", Toast.LENGTH_SHORT).show();
+            Toasty.error(getActivity(), R.string.nessun_qr_code_trovato, Toast.LENGTH_SHORT).show();
         }
     });
 
@@ -183,18 +184,18 @@ public class AggiungiPazienteFragment extends Fragment {
                                                     }
                                                 });
                                     } else {
-                                        Toast.makeText(getContext(), "Il paziente è già associato ad un logopedista", Toast.LENGTH_SHORT).show();
+                                        Toasty.warning(getContext(), R.string.il_paziente_gi_associato_ad_un_logopedista, Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             } else {
                                 Log.e("AggiungiPazienteFragment", "Figlio non trovato");
-                                Toast.makeText(getContext(), "Il token inserito non è associato a nessun pazziente", Toast.LENGTH_LONG).show();
+                                Toasty.warning(getContext(), "Il token inserito non è associato a nessun pazziente", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                             }
                         } else {
                             Log.e("AggiungiPazienteFragment", "Errore nella ricerca del figlio");
-                            Toast.makeText(getContext(), "Il token inserito non è associato a nessun pazziente", Toast.LENGTH_SHORT).show();
+                            Toasty.warning(getContext(), "Il token inserito non è associato a nessun pazziente", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     });
@@ -210,7 +211,7 @@ public class AggiungiPazienteFragment extends Fragment {
                     db.collection("figli")
                             .document(figlioUid)
                             .update("logopedista", logopedista.getUID());
-                    Toast.makeText(getContext(), "Paziente aggiunto correttamente", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(),"Paziente aggiunto correttamente", Toast.LENGTH_SHORT).show();
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
                     navController.navigate(R.id.navigation_home_logopedista);
                 } else {

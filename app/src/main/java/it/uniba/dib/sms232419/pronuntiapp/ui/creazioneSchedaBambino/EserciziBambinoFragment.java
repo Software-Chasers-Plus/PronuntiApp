@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Esercizio;
@@ -324,12 +325,12 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                 .add(data)
                 .addOnSuccessListener(documentReference -> {
                     progressIndicator.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Scheda creata con successo", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Scheda creata con successo", Toast.LENGTH_SHORT, true).show();
                     Log.d(TAG, "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
                     progressIndicator.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Errore durante il caricamento della scheda", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Errore durante il caricamento della scheda", Toast.LENGTH_SHORT, true).show();
                     Log.w(TAG, "Errore durante l'aggiunta del documento", e);
                 });
 

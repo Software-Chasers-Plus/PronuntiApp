@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
@@ -126,7 +127,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
                 String dataNascita = dataNascitaFiglio.getText().toString().trim();
 
                 if (nome.isEmpty() || cognome.isEmpty() || codiceFiscale.isEmpty() || dataNascita.isEmpty() || selectedImageId == -1) {
-                    Toast.makeText(getContext(), "Inserisci tutti i dati e seleziona un'immagine", Toast.LENGTH_SHORT).show();
+                    Toasty.info(getContext(), R.string.inserisci_tutti_i_dati_e_seleziona_un_immagine, Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
@@ -152,11 +153,11 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if (task.isSuccessful()) {
                                     figli.add(new Figlio(nome, cognome, codiceFiscale, "", genitoreUid, dataNascita, selectedImageId, token));
-                                    Toast.makeText(mActivity, "Figlio aggiunto con successo", Toast.LENGTH_SHORT).show();
+                                    Toasty.success(mActivity, R.string.figlio_aggiunto_con_successo, Toast.LENGTH_SHORT, true).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_home);
                                 } else {
-                                    Toast.makeText(mActivity, "Registrazione fallita", Toast.LENGTH_SHORT).show();
+                                    Toasty.error(getContext(), R.string.registrazione_fallita, Toast.LENGTH_SHORT, true).show();
                                 }
                             }
                         });

@@ -33,6 +33,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+
 public class RegistrazioneGenitoreFragment extends Fragment{
 
     private FirebaseAuth auth;
@@ -269,18 +271,18 @@ public class RegistrazioneGenitoreFragment extends Fragment{
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(mActivity, R.string.registrazione_avvenuta_con_successo, Toast.LENGTH_SHORT).show();
+                                        Toasty.success(mActivity, R.string.registrazione_avvenuta_con_successo, Toast.LENGTH_SHORT).show();
                                         mActivity.getSupportFragmentManager().beginTransaction()
                                                 .setReorderingAllowed(true)
                                                 .replace(R.id.login_signup_fragment, new LoginFragment(), null)
                                                 .commit();
                                     }else{
-                                        Toast.makeText(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT).show();
+                                        Toasty.error(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT, true).show();
                                     }
                                 }
                             });
                 }else{
-                    Toast.makeText(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT).show();
+                    Toasty.error(mActivity, R.string.registrazione_fallita, Toast.LENGTH_SHORT, true).show();
                 }
             }
         });

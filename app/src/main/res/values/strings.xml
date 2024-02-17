@@ -158,4 +158,8 @@
     <string name="elimina">Elimina</string>
     <string name="numero_esercizi_scheda">Numero esercizi</string>
     <string name="avvia_scheda">Avvia</string>
+    <string name="inserisci_tutti_i_dati_e_seleziona_un_immagine">Inserisci tutti i dati e seleziona un\'immagine</string>
+    <string name="figlio_aggiunto_con_successo">Figlio aggiunto con successo</string>
+    <string name="nessun_qr_code_trovato">Nessun QR Code trovato</string>
+    <string name="il_paziente_gi_associato_ad_un_logopedista">Il paziente è già associato ad un logopedista</string>
 </resources>

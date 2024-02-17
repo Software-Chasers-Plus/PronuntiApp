@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PermissionManager;
 
@@ -263,7 +264,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                Toast.makeText(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
             }
         });
 

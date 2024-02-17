@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
 public class LoginFragment extends Fragment {
@@ -91,7 +94,7 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    //metodo per la visibilità della password
+    // Metodo per la visibilità della password
     private void togglePasswordVisibility() {
 
         if (!passwordVisible) {
@@ -99,20 +102,20 @@ public class LoginFragment extends Fragment {
             loginPassword.setInputType(InputType.TYPE_CLASS_TEXT);
             passwordVisible = true;
 
-            //Posizionamento del cursore alla fine della stringa
+            // Posizionamento del cursore alla fine della stringa
             loginPassword.setSelection(loginPassword.getText().length());
 
-            //aggiornamento dell'imagine per la visibilità della password
+            // Aggiornamento dell'imagine per la visibilità della password
             imageClockPassword.setImageResource(R.drawable.visibility);
         } else {
             // Password visibile
             loginPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             passwordVisible = false;
 
-            //Posizionamento del cursore alla fine della stringa
+            // Posizionamento del cursore alla fine della stringa
             loginPassword.setSelection(loginPassword.getText().length());
 
-            //aggiornamento dell'imagine per la visibilità della password
+            // Aggiornamento dell'imagine per la visibilità della password
             imageClockPassword.setImageResource(R.drawable.invisible);
         }
     }
@@ -153,6 +156,13 @@ public class LoginFragment extends Fragment {
             loginEmail.requestFocus();
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+            // Animazione per la validazione della password
+            YoYo.with(Techniques.Shake)
+                    .duration(700)
+                    .repeat(3)
+                    .playOn(getActivity().findViewById(R.id.textInputLayoutEmail));
+
             loginEmail.setError(getString(R.string.inserisci_una_email_valida));
             loginEmail.requestFocus();
             return false;
@@ -176,8 +186,16 @@ public class LoginFragment extends Fragment {
                     checkUserType(authResult.getUser().getUid());
                 })
                 .addOnFailureListener(mActivity, e -> {
-                    Toast.makeText(mActivity, R.string.login_fallito, Toast.LENGTH_SHORT).show();
+
+                    // Animazione per la validazione della password
+                    YoYo.with(Techniques.Shake)
+                            .duration(700)
+                            .repeat(2)
+                            .playOn(getActivity().findViewById(R.id.textInputLayoutPassword));
+
+                    Toasty.error(mActivity, R.string.login_fallito, Toast.LENGTH_SHORT, true).show();
                 });
+
     }
 
 
@@ -207,7 +225,7 @@ public class LoginFragment extends Fragment {
                             if (isAbilitato) {
                                 retrievePatients(userId);
                             } else {
-                                Toast.makeText(mActivity, R.string.non_ancora_abilitato_come_logopedista, Toast.LENGTH_SHORT).show();
+                                Toasty.error(mActivity, R.string.non_ancora_abilitato_come_logopedista, Toast.LENGTH_SHORT).show();
                             }
                         }
                     } else {
