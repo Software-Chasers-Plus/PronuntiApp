@@ -142,7 +142,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_personaggio"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="220dp"
         android:layout_below="@+id/linear_layout_personaggio"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
