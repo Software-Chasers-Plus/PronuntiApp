@@ -54,5 +54,18 @@ public class AvvioGiocoFragment extends Fragment {
                         .commit();
             }
         });
+
+        ImageView startButton = view.findViewById(R.id.play_button_start_game);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia la transizione al fragment GiocoFragment e lo aggiunge al back stack
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.avvio_gioco_fragment, GiocoFragment.class, null)
+                        .addToBackStack(null) // Aggiunge al back stack
+                        .commit();
+            }
+        });
     }
 }

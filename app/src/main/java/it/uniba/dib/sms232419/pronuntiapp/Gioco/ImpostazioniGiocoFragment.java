@@ -37,6 +37,7 @@ public class ImpostazioniGiocoFragment extends Fragment{
     private SeekBar volumeSeekBar;
     private ImageView audioImageView;
     private boolean isAudioOn = true;
+    private GiocoActivity giocoActivity;
 
     int previousVolume;
 
@@ -49,6 +50,7 @@ public class ImpostazioniGiocoFragment extends Fragment{
         // Inizializza l'AudioManager
         audioManager = (AudioManager) requireActivity().getSystemService(requireActivity().AUDIO_SERVICE);
         previousVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        giocoActivity = (GiocoActivity) getActivity();
         volumeObserver = new ContentObserver(new Handler()) {
             @Override
             public void onChange(boolean selfChange, Uri uri) {
@@ -162,6 +164,7 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                         personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
+                        giocoActivity.sfondoSelezionato = 0;
                         break;
                     case 1:
                         fragmentLayout.setBackgroundResource(R.drawable.antartide);
@@ -170,6 +173,7 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
                         cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
                         personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                        giocoActivity.sfondoSelezionato = 1;
                         break;
                     case 2:
                         fragmentLayout.setBackgroundResource(R.drawable.giungla);
@@ -178,6 +182,7 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
                         cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
                         personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryGiungla));
+                        giocoActivity.sfondoSelezionato = 2;
                         break;
                 }
             }
@@ -201,15 +206,19 @@ public class ImpostazioniGiocoFragment extends Fragment{
                 switch (path) {
                     case 0:
                         personaggioSelezionato.setText("Leone");
+                        giocoActivity.personaggioSelezionato = 0;
                         break;
                     case 1:
                         personaggioSelezionato.setText("Coccodrillo");
+                        giocoActivity.personaggioSelezionato = 1;
                         break;
                     case 2:
                         personaggioSelezionato.setText("Serpente");
+                        giocoActivity.personaggioSelezionato = 2;
                         break;
                     case 3:
                         personaggioSelezionato.setText("Panda");
+                        giocoActivity.personaggioSelezionato = 3;
                         break;
                 }
             }

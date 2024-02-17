@@ -27,11 +27,12 @@
             android:textColor="@color/white"
             android:fontFamily="@font/font_game"/>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/play_button_start_game"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:src="@drawable/play_button_game"/>
+            android:src="@drawable/play_button_game"
+            android:background="?attr/selectableItemBackgroundBorderless" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,11 +48,12 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/settings_button_start_game"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/settings_button_game"/>
+                android:src="@drawable/settings_button_game"
+                android:background="?attr/selectableItemBackgroundBorderless" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -70,11 +72,12 @@
             android:gravity="center_horizontal"
             android:layout_marginStart="20dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/exit_button_start_game"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/exit_button_game"/>
+                android:src="@drawable/exit_button_game"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +86,8 @@
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                android:fontFamily="@font/font_game"/>
+                android:fontFamily="@font/font_game"
+                />
         </LinearLayout>
     </LinearLayout>
 

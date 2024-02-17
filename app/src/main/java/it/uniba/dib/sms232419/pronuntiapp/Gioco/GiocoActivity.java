@@ -13,6 +13,7 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 public class GiocoActivity extends AppCompatActivity {
 
     public MediaPlayer mediaPlayer;
+    public Integer sfondoSelezionato = 0,personaggioSelezionato = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
