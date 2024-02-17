@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.carousel.MaskableFrameLayout android:id="@+id/carousel_item_container"
+    android:layout_width="220dp"
+    android:layout_height="220dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_gravity="center"
+    android:foreground="?attr/selectableItemBackground"
+    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
+
+        <ImageView
+            android:id="@+id/carousel_image_view_personaggio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transitionName="image"
+            android:scaleType="fitXY"/>
+
+        <!-- Contorno per l'immagine selezionata -->
+        <View
+            android:id="@+id/image_border_personaggio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/selected_border_sfondo"
+            android:visibility="gone" />
+
+    </FrameLayout>
+</com.google.android.material.carousel.MaskableFrameLayout>

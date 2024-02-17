@@ -113,4 +113,50 @@
             android:thumbTint="@color/default_impostazioni" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linear_layout_personaggio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear_layout_audio"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/personaggio_gioco"
+            android:textColor="@color/default_impostazioni"
+            android:fontFamily="@font/font_game" />
+
+        <TextView
+            android:id="@+id/personaggio_selezionato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/sfondo"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_game" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_personaggio"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@+id/linear_layout_personaggio"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="25dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carousel_recycler_view_personaggio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

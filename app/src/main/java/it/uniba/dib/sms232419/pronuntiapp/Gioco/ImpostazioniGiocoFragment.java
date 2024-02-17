@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +25,13 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
-public class ImpostazioniGiocoFragment extends Fragment {
+public class ImpostazioniGiocoFragment extends Fragment{
 
     private AudioManager audioManager;
     private SeekBar volumeSeekBar;
@@ -150,6 +148,8 @@ public class ImpostazioniGiocoFragment extends Fragment {
         TextView sfondoSelezionato = view.findViewById(R.id.sfondo_selezionato);
         RelativeLayout fragmentLayout = view.findViewById(R.id.impostazioni_gioco);
         CardView cardView = view.findViewById(R.id.cardView);
+        CardView cardViewPersonaggio = view.findViewById(R.id.cardView_personaggio);
+        TextView personaggioSelezionato = view.findViewById(R.id.personaggio_selezionato);
 
         adapter.setOnItemClickListener(new sfondoAdapter.OnItemClickListener() {
             @Override
@@ -159,19 +159,57 @@ public class ImpostazioniGiocoFragment extends Fragment {
                         fragmentLayout.setBackgroundResource(R.drawable.deserto);
                         sfondoSelezionato.setText("Deserto");
                         sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryDeserto));
+                        cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
+                        personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
                         break;
                     case 1:
                         fragmentLayout.setBackgroundResource(R.drawable.antartide);
                         sfondoSelezionato.setText("Antartide");
                         sfondoSelezionato.setTextColor(getResources().getColor(R.color.secondaryAntartide));
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
+                        cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
+                        personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryAntartide));
                         break;
                     case 2:
                         fragmentLayout.setBackgroundResource(R.drawable.giungla);
                         sfondoSelezionato.setText("Giungla");
                         sfondoSelezionato.setTextColor(getResources().getColor(R.color.secondaryGiungla));
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
+                        cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
+                        personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryGiungla));
+                        break;
+                }
+            }
+        });
+
+        ArrayList<Integer> personaggiGioco = new ArrayList<>();
+        personaggiGioco.add(R.drawable.leone);
+        personaggiGioco.add(R.drawable.coccodrillo);
+        personaggiGioco.add(R.drawable.serpente);
+        personaggiGioco.add(R.drawable.panda);
+
+
+        RecyclerView recyclerViewPersonaggio = view.findViewById(R.id.carousel_recycler_view_personaggio);
+
+        PersonaggioAdapter adapterPersonaggio = new PersonaggioAdapter(getActivity(), personaggiGioco);
+        recyclerViewPersonaggio.setAdapter(adapterPersonaggio);
+
+        adapterPersonaggio.setOnItemClickListener(new PersonaggioAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(ImageView imageView, Integer path) {
+                switch (path) {
+                    case 0:
+                        personaggioSelezionato.setText("Leone");
+                        break;
+                    case 1:
+                        personaggioSelezionato.setText("Coccodrillo");
+                        break;
+                    case 2:
+                        personaggioSelezionato.setText("Serpente");
+                        break;
+                    case 3:
+                        personaggioSelezionato.setText("Panda");
                         break;
                 }
             }
@@ -185,7 +223,10 @@ public class ImpostazioniGiocoFragment extends Fragment {
                 fragmentLayout.setBackgroundResource(R.drawable.deserto);
                 sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryDeserto));
                 cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
+                cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
+                adapterPersonaggio.setDefaultSelectedItemView(recyclerViewPersonaggio.getChildAt(0));
                 sfondoSelezionato.setText("Deserto");
+                personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
             }
         });
     }
