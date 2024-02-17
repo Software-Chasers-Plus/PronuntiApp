@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:text="@string/numero_esercizi_scheda"
+                    android:text="@string/stato_scheda"
                     android:fontFamily="@font/poppinsregular"
                     android:textSize="14sp"
                     android:textColor="?android:attr/textColorSecondary"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:text="@string/numero_esercizi_scheda"
+                    android:text="@string/esercizi_completati_scheda"
                     android:fontFamily="@font/poppinsregular"
                     android:textSize="14sp"
                     android:textColor="?android:attr/textColorSecondary"
@@ -99,18 +99,17 @@
             android:layout_gravity="end">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/dettaglio_button"
+                android:id="@+id/elimina_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
-                android:text="@string/dettagli"
-                style="?attr/borderlessButtonStyle"
-                android:textColor="@color/blu_principale"
+                android:text="@string/elimina"
+                android:backgroundTint="@color/red"
                 android:layout_gravity="center_vertical|end"
                 />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/avvia_scheda_button"
+                android:id="@+id/avvia_gioco_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/avvia_scheda"

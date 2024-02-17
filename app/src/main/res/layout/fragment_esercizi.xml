@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,24 +17,29 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:text="@string/non_sono_stati_creati_esercizi"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/raised_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Floating button crea scheda -->
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/raised_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="204dp"
-        android:layout_height="63dp"
-        android:text="@string/aggiungi_esercizio"
-        app:cornerRadius="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/secondaryGenitore"
+        android:contentDescription="@string/crea_esercizio"
+        android:text="@string/crea_esercizio"
+        app:icon="@drawable/piu_icon_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_esercizi"
         app:layout_constraintVertical_bias="0.976" />
 
     <TextView
@@ -50,12 +56,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_esercizi"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="9dp"
+        android:paddingBottom="36dp"
+        app:layout_constraintBottom_toTopOf="@id/raised_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intestazione_esercizi"
-        app:layout_constraintVertical_bias="0.015" />
+        app:layout_constraintTop_toBottomOf="@+id/intestazione_esercizi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

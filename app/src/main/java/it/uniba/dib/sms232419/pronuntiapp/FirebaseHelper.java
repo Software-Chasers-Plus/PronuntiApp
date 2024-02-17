@@ -4,23 +4,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import android.media.MediaPlayer;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 public class FirebaseHelper {
     private static MediaPlayer mediaPlayer;
@@ -90,5 +86,30 @@ public class FirebaseHelper {
             // Set the Bitmap to the ImageView
             immagine.setImageBitmap(bitmap);
         });
+    }
+
+    public static ArrayList<ArrayList<String>> creaArrayListEsercizi(QueryDocumentSnapshot document){
+        ArrayList<ArrayList<String>> esercizi = new ArrayList<>();
+
+        for (int i = 0; i < 7; i++){
+            ArrayList<String> esercizio;
+
+            esercizio = (ArrayList<String>) document.get("esercizio" + i);
+            if(esercizio != null){
+                esercizi.add(esercizio);
+            }
+        }
+
+        return esercizi;
+
+    }
+
+    public static Scheda creazioneScheda(QueryDocumentSnapshot document) {
+        Scheda scheda = new Scheda(document.getString("nomeScheda"),
+                document.getString("logopedista"),
+                document.getString("figlio"),
+                FirebaseHelper.creaArrayListEsercizi(document));
+
+        return scheda;
     }
 }

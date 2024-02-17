@@ -163,4 +163,8 @@
     <string name="nessun_qr_code_trovato">Nessun QR Code trovato</string>
     <string name="il_paziente_gi_associato_ad_un_logopedista">Il paziente è già associato ad un logopedista</string>
     <string name="personaggio_gioco">Personaggio gioco:</string>
+    <string name="stato_scheda">Stato scheda</string>
+    <string name="esercizi_completati_scheda">Esercizi completati</string>
+    <string name="non_sono_state_create_schede">Non sono state create schede</string>
+    <string name="esercizi">"Esercizi: "</string>
 </resources>

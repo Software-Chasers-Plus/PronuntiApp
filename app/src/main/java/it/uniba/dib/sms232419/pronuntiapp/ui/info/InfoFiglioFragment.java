@@ -15,25 +15,39 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.util.ArrayList;
+
+import it.uniba.dib.sms232419.pronuntiapp.FirebaseHelper;
 import it.uniba.dib.sms232419.pronuntiapp.Gioco.GiocoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
+import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
+import it.uniba.dib.sms232419.pronuntiapp.ui.schedeBambino.ClickSchedeBambinoListener;
+import it.uniba.dib.sms232419.pronuntiapp.ui.schedeBambino.SchedeBambinoAdapter;
 
-public class InfoFiglioFragment extends Fragment {
+public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoListener {
 
+    String TAG = "InfoFiglioFragment";
     private Figlio figlio;
     private FirebaseFirestore db;
+    private ArrayList<Scheda> schedaList;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,9 +57,9 @@ public class InfoFiglioFragment extends Fragment {
             // recupero il figlio dal bundle passato al fragment
             figlio = getArguments().getParcelable("figlio");
 
-            Log.d("InfoFiglioFragment", "Figlio recuperato: "+figlio.getNome());
+            Log.d(TAG, "Figlio recuperato: "+figlio.getNome());
         } else {
-            Log.d("InfoFiglioFragment", "Bundle nullo");
+            Log.d(TAG, "Bundle nullo");
         }
 
         // Inizializzazione di Firestore
@@ -62,6 +76,10 @@ public class InfoFiglioFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        recyclerView = view.findViewById(R.id.schede_recycler_view_paziente);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        TextView codiceFiscaleFiglio = null;
         if (figlio != null) {
             TextView nomeFiglio = view.findViewById(R.id.nome_figlio_dettaglio);
             nomeFiglio.setText(figlio.getNome());
@@ -72,7 +90,7 @@ public class InfoFiglioFragment extends Fragment {
             ImageView avatarFiglio = view.findViewById(R.id.avatar_figlio_dettaglio);
             avatarFiglio.setImageResource(trovaIdAvatar(figlio.getIdAvatar()));
 
-            TextView codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
+            codiceFiscaleFiglio = view.findViewById(R.id.codice_fiscale_figlio_dettaglio);
             codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
 
             TextView dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio_dettaglio);
@@ -108,7 +126,7 @@ public class InfoFiglioFragment extends Fragment {
                                         emailLogopedistaFiglio.setText("Nessun logopedista");
                                     }
                                 } else {
-                                    Log.d("InfoFiglioFragment", "Il documento del logopedista non esiste");
+                                    Log.d(TAG, "Il documento del logopedista non esiste");
                                     emailLogopedistaFiglio.setText("Nessun logopedista");
                                 }
                             }
@@ -116,7 +134,7 @@ public class InfoFiglioFragment extends Fragment {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.d("InfoFiglioFragment", "Errore nel recuperare l'email del logopedista: " + e.getMessage());
+                                Log.d(TAG, "Errore nel recuperare l'email del logopedista: " + e.getMessage());
                                 emailLogopedistaFiglio.setText("Errore nel recuperare l'email del logopedista");
                             }
                         });
@@ -124,8 +142,57 @@ public class InfoFiglioFragment extends Fragment {
                 emailLogopedistaFiglio.setText("Nessun logopedista");
             }
         } else {
-            Log.d("InfoFiglioFragment", "Figlio nullo");
+            Log.d(TAG, "Figlio nullo");
         }
+
+        TextView schedeNonCreate = view.findViewById(R.id.text_dashboard);
+
+
+        //Recupero delle schede e aggiornamento della recycler view
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        //Recupero id del paziente
+        db.collection("figli")
+                .whereEqualTo("codiceFiscale", codiceFiscaleFiglio.getText().toString())
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String pazienteId = document.getId();
+                                    Log.d(TAG, "PazienteId: " + pazienteId);
+                                    //Recupero le schede del paziente
+                                    db.collection("schede")
+                                            .whereEqualTo("figlio", pazienteId)
+                                            .get()
+                                            .addOnCompleteListener(task2 -> {
+                                                if (task2.isSuccessful()) {
+                                                    schedaList = new ArrayList<>();
+
+                                                    for (QueryDocumentSnapshot document2 : task2.getResult()) {
+                                                        Log.d(TAG, "Scheda prima della conversione: " + document2.getString("nome"));
+                                                        schedaList.add(FirebaseHelper.creazioneScheda(document2));
+                                                    }
+
+                                                    Log.d(TAG, "Schede disponibili: " + schedaList.size());
+
+                                                    if (!schedaList.isEmpty()) {
+                                                        Log.d(TAG, "Scheda dopo la conversione: " + schedaList.get(0).getNome());
+                                                        recyclerView.setAdapter(new SchedeBambinoAdapter(requireContext(), schedaList, InfoFiglioFragment.this));
+                                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                                    } else {
+                                                        schedeNonCreate.setVisibility(View.VISIBLE);
+                                                        Log.d(TAG, "Nessun scheda disponibile");
+                                                    }
+
+                                                } else {
+                                                    Log.e(TAG, "Errore durante la query per le schede disponibili", task2.getException());
+                                                }
+                                            });
+                                }
+                            } else {
+                                Log.e(TAG, "Errore durante la query per i figli", task.getException());
+                            }
+                        });
 
         //AVVIO GIOCO DA SPOSTARE
         FloatingActionButton avviaGioco = view.findViewById(R.id.avvio_gioco_figlio_button);
@@ -227,10 +294,25 @@ public class InfoFiglioFragment extends Fragment {
 
             dialog.setView(view);
             dialog.show();
-            Log.d("InfoFiglioFragment", "QR code generato correttamente: ");
+            Log.d(TAG, "QR code generato correttamente: ");
         } catch (Exception e) {
             dialog.show();
-            Log.d("InfoFiglioFragment", "Errore nella generazione del QR code: " + e.getMessage());
+            Log.d(TAG, "Errore nella generazione del QR code: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        //TODO: implementare la visualizzazione dei dettagli scheda
+    }
+
+    @Override
+    public void onEliminaClick(int position) {
+        //Non e' necessario implementarlo poiche' non e' possibile eliminare le schede da parte del genitore
+    }
+
+    @Override
+    public void onAvviaGiocoClick(int position) {
+        //TODO: implementare l'avvio del gioco
     }
 }

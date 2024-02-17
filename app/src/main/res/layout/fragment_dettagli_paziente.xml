@@ -29,6 +29,7 @@
             android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="64dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.cardview.widget.CardView
@@ -183,6 +184,22 @@
                         android:textColor="@color/black"
                         />
 
+                    <TextView
+                        android:id="@+id/text_dashboard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        android:text="@string/non_sono_state_create_schede"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/schede_recycler_view_paziente"
                         android:layout_width="match_parent"
@@ -203,19 +220,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             >
-            <!-- Floating button crea scheda -->
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/extended_fab_crea_scheda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/creazione_scheda"
-                android:text="@string/crea_scheda"
-                app:icon="@drawable/piu_icon_white"
-                android:backgroundTint="@color/secondaryGenitore"/>
+
         </LinearLayout>
 
     </LinearLayout>
 
+    <!-- Floating button crea scheda -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_fab_crea_scheda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/creazione_scheda"
+        android:text="@string/crea_scheda"
+        app:icon="@drawable/piu_icon_white"
+        android:backgroundTint="@color/secondaryGenitore"
+        />
 
 </RelativeLayout>
