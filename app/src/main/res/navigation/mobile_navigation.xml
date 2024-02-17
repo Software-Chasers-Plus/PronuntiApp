@@ -41,4 +41,10 @@
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
 
+    <fragment
+        android:id="@+id/navigation_aggiungi_prenotazione"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.AggiungiPrenotazioneFragment"
+        android:label="Aggiungi Prenotazione"
+        tools:layout="@layout/aggiungi_prenotazioni_fragment"  />
+
 </navigation>

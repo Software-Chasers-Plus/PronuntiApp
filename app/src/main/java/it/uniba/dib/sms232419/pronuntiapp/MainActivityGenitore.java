@@ -16,12 +16,15 @@ import java.util.List;
 
 import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
+import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
 public class MainActivityGenitore extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
     public List<Figlio> figli ;
+
+    public List<Prenotazione> prenotazioni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,8 @@ public class MainActivityGenitore extends AppCompatActivity {
             if(src.getExtras() != null){
                 Bundle bundle = src.getExtras();
                 figli = bundle.getParcelableArrayList("figli");
-                Log.d("MainActivity", "onCreate: " + figli.size());
+                prenotazioni=bundle.getParcelableArrayList("prenotazioni");
+                Log.d("MainActivity", "onCreate: " + prenotazioni.size());
             }else{
                 Log.d("MainActivity", "src.getExtras() è null");
             }

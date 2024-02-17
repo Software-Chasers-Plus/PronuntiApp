@@ -31,6 +31,10 @@
     <string name="request_for_logopedista_registration">To be qualified as a speech therapist, send the request email with all certificates to: pronuntiapp@info.com</string>
     <string name="bookings">Bookings</string>
     <string name="logopedista_name">Logopedista name</string>
+    <string name="le_tue_prenotazioni">Your bookings:</string>
+    <string name="add_booking">Add a booking</string>
+    <string name="select_logopedista">Select logopedista</string>
+
 
 
 </resources>

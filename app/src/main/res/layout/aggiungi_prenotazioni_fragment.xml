@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".ui.prenotazioni.AggiungiPrenotazioneFragment">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/menuLogopedisti"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
+        android:hint="@string/select_logopedista">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:id="@+id/autoCompleteTextView"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/logopedista_inputPrenotazione"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:hint="logopedista"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/err_logopedistaPrenotazione"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/required_field"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/data_inputPrenotazione"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:layout_marginTop="20dp"
+            android:padding="8dp"
+            android:hint="Data prenotazione"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/imageViewCalendarPrenotazione"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/baseline_calendar_month_24"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="55dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:clickable="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/err_dataPrenotazione"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/required_field"
+            android:textColor="@color/red"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ora_inputPrenotazione"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:hint="ora prenotazione"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/err_oraPrenotazione"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="0dp"
+        android:text="@string/required_field"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/conferma_aggiungi_prenotazione_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/imageRecyclerView"
+        android:layout_marginTop="10dp"
+        android:text="@string/add"
+        android:textSize = "18dp"
+        android:backgroundTint="@color/secondaryGenitore"/>
+
+
+</LinearLayout>

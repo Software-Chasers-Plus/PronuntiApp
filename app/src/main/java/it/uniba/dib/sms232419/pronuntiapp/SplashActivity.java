@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
 
@@ -33,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean loggato = false;
     private boolean fecthCompletato = false;
     private List<Figlio> figli = new ArrayList<>();
+    private List<Prenotazione> prenotazioni=new ArrayList<>();
 
     private static final long MIN_WAIT_INTERVAL = 1500L;
     private static final long MAX_WAIT_INTERVAL = 6000L;
@@ -117,6 +119,8 @@ public class SplashActivity extends AppCompatActivity {
                             if (document != null && document.exists()) {
                                 genitore = true;
                                 retrieveFigliForGenitore(auth);
+                                retrieveAppuntamentiForGenitore(auth);
+
                             } else {
                                 fecthCompletato = true;
                             }
@@ -125,6 +129,7 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
     private void retrieveFigliForGenitore(final FirebaseAuth auth) {
@@ -233,6 +238,44 @@ public class SplashActivity extends AppCompatActivity {
                 });
     }
 
+    private void retrieveAppuntamentiForGenitore(final FirebaseAuth auth)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("prenotazioni")
+                .whereEqualTo("genitore", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> prenotazione = document.getData();
+
+                                if(prenotazione.get("logopedista") != null){
+                                    prenotazioni.add(new Prenotazione(
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            prenotazione.get("logopedista").toString(),
+                                            currentUser.getUid()
+                                    ));
+                                }else{
+                                    prenotazioni.add(new Prenotazione(
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                           "",
+                                            currentUser.getUid()
+                                    ));
+                                }
+
+                            }
+                            loggato = true;
+                            fecthCompletato = true;
+                            mHandler.sendEmptyMessage(FECTH_TERMINATO);
+                        }
+                    }
+                });
+    }
+
 
 
     private void startMainActivity() {
@@ -240,6 +283,8 @@ public class SplashActivity extends AppCompatActivity {
             // Creo il bundle da passare all'activity principale
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
+            bundle.putParcelableArrayList("prenotazioni",(ArrayList<? extends Parcelable>) prenotazioni);
+
             Intent intent = new Intent(this, MainActivityGenitore.class);
             intent.putExtras(bundle);
 
@@ -250,6 +295,7 @@ public class SplashActivity extends AppCompatActivity {
             // Creo il bundle da passare all'activity principale
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
+            bundle.putParcelableArrayList("prenotazioni",(ArrayList<? extends Parcelable>) prenotazioni);
 
             Log.d("Accessoactivity", "Figli grandezza" + figli.size());
             Intent intent = new Intent(this, MainActivityLogopedista.class);

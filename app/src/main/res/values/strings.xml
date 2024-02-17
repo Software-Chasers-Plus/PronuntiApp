@@ -167,4 +167,12 @@
     <string name="esercizi_completati_scheda">Esercizi completati</string>
     <string name="non_sono_state_create_schede">Non sono state create schede</string>
     <string name="esercizi">"Esercizi: "</string>
+    <string name="le_tue_prenotazioni">Le tue prenotazioni:</string>
+    <string name="add_booking">Prenota un appuntamento</string>
+    <string name="select_logopedista">Seleziona un logopedista</string>
+    <string name="data_prenotazione_label">Data:</string>
+    <string name="data_prenotazione">data</string>
+    <string name="ora_label">Ora:</string>
+    <string name="ora_prenotazione">ora</string>
+
 </resources>

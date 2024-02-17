@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:background="@drawable/custom_border_item_figli">
+
+
+
+        <!-- TextView per il logopedista -->
+
+        <TextView
+            android:id="@+id/email_logopedista_label_prenotazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="6dp"
+            android:text="@string/logopedista_label"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/logopedista_prenotazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/logopedista"
+            android:layout_below="@id/email_logopedista_label_prenotazione"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"/>
+
+        <!-- TextView per la data della prenotazione -->
+        <TextView
+            android:id="@+id/data_prenotazione_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_prenotazione_label"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/logopedista_prenotazione"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/data_prenotazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/data_prenotazione"
+            android:layout_below="@id/data_prenotazione_label"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"/>
+
+        <!-- TextView per il logopedista del figlio -->
+        <TextView
+            android:id="@+id/ora_prenotazione_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ora_label"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/data_prenotazione"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/ora_prenotazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/ora_prenotazione"
+            android:layout_below="@id/ora_prenotazione_label"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="6dp"/>
+
+        <!-- CardView per l'avatar del figlio con ombra -->
+
+        <!-- ImageView per l'avatar del figlio -->
+        <ImageView
+            android:id="@+id/myImageView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/baseline_access_time_24"
+            android:layout_marginRight="15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+</RelativeLayout>
