@@ -151,12 +151,59 @@
         android:layout_gravity="center"
         app:cardCornerRadius="25dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/bottone_personaggio_precedente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/baseline_arrow_back_ios_24"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp"
+                style="@style/Widget.Material3.Button.Icon"
+                android:background="@color/secondaryDeserto"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/transparent">
+                <ImageView
+                    android:id="@+id/personaggio_selezionato_immagine"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/panda"/>
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/bottone_personaggio_successivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp"
+                style="@style/Widget.Material3.Button.Icon"
+                android:background="@color/secondaryDeserto"/>
+
+
+        </LinearLayout>
+        <!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/carousel_recycler_view_personaggio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+        -->
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

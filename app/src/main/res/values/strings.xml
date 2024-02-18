@@ -174,5 +174,12 @@
     <string name="data_prenotazione">data</string>
     <string name="ora_label">Ora:</string>
     <string name="ora_prenotazione">ora</string>
+    <string name="leone">Leone</string>
+    <string name="coccodrillo">Coccodrillo</string>
+    <string name="serpente">Serpente</string>
+    <string name="panda">Panda</string>
+    <string name="deserto">Deserto</string>
+    <string name="antartide">Antartide</string>
+    <string name="giungla">Giungla</string>
 
 </resources>

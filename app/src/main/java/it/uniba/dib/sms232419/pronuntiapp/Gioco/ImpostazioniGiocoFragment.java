@@ -3,6 +3,7 @@ package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 import static java.lang.Math.abs;
 
 import android.Manifest;
+import android.animation.AnimatorSet;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.media.AudioManager;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -26,6 +29,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -146,13 +151,15 @@ public class ImpostazioniGiocoFragment extends Fragment{
         sfondoAdapter adapter = new sfondoAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(adapter);
 
-        RelativeLayout impostazioni = view.findViewById(R.id.impostazioni_gioco);
         TextView sfondoSelezionato = view.findViewById(R.id.sfondo_selezionato);
         RelativeLayout fragmentLayout = view.findViewById(R.id.impostazioni_gioco);
         CardView cardView = view.findViewById(R.id.cardView);
         CardView cardViewPersonaggio = view.findViewById(R.id.cardView_personaggio);
         TextView personaggioSelezionato = view.findViewById(R.id.personaggio_selezionato);
+        FloatingActionButton fab_successivo = view.findViewById(R.id.bottone_personaggio_successivo);
+        FloatingActionButton fab_precedente = view.findViewById(R.id.bottone_personaggio_precedente);
 
+        //listener che si attiva quando l'utente seleziona un'immagine modifica lo sfondo del gioco e il tema delle impostazioni
         adapter.setOnItemClickListener(new sfondoAdapter.OnItemClickListener() {
             @Override
             public void onClick(ImageView imageView, Integer path) {
@@ -160,10 +167,12 @@ public class ImpostazioniGiocoFragment extends Fragment{
                     case 0:
                         fragmentLayout.setBackgroundResource(R.drawable.deserto);
                         sfondoSelezionato.setText("Deserto");
-                        sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryDeserto));
+                        sfondoSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
                         cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                         personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
+                        fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryDeserto));
+                        fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryDeserto));
                         giocoActivity.sfondoSelezionato = 0;
                         break;
                     case 1:
@@ -173,6 +182,8 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
                         cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
                         personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                        fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryAntartide));
+                        fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryAntartide));
                         giocoActivity.sfondoSelezionato = 1;
                         break;
                     case 2:
@@ -182,45 +193,138 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
                         cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
                         personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryGiungla));
+                        fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryGiungla));
+                        fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryGiungla));
                         giocoActivity.sfondoSelezionato = 2;
                         break;
                 }
             }
         });
 
+        // Inizializza la lista di personaggi del gioco
         ArrayList<Integer> personaggiGioco = new ArrayList<>();
         personaggiGioco.add(R.drawable.leone);
         personaggiGioco.add(R.drawable.coccodrillo);
         personaggiGioco.add(R.drawable.serpente);
         personaggiGioco.add(R.drawable.panda);
 
+        ImageView personaggio = view.findViewById(R.id.personaggio_selezionato_immagine);
+        // Imposta l'immagine del personaggio selezionato
+        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+        // Imposta il nome del personaggio selezionato
+        switch (giocoActivity.personaggioSelezionato) {
+            case 0:
+                personaggioSelezionato.setText(R.string.leone);
+                break;
+            case 1:
+                personaggioSelezionato.setText(R.string.coccodrillo);
+                break;
+            case 2:
+                personaggioSelezionato.setText(R.string.serpente);
+                break;
+            case 3:
+                personaggioSelezionato.setText(R.string.panda);
+                break;
+        }
 
-        RecyclerView recyclerViewPersonaggio = view.findViewById(R.id.carousel_recycler_view_personaggio);
-
-        PersonaggioAdapter adapterPersonaggio = new PersonaggioAdapter(getActivity(), personaggiGioco);
-        recyclerViewPersonaggio.setAdapter(adapterPersonaggio);
-
-        adapterPersonaggio.setOnItemClickListener(new PersonaggioAdapter.OnItemClickListener() {
+        // Oggetto Animation per lo scorrimento in entrata da sinistra verso il centro
+        Animation enterSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.enter_slide_left);
+        // Ogggetto Animation per lo scorrimento in uscita dal centro verso destra
+        Animation exitSlideRight = AnimationUtils.loadAnimation(getContext(), R.anim.exit_slide_right);
+        // Imposta un listener per l'animazione che si atttiva quando l'utente passa al personaggio successivo
+        exitSlideRight.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onClick(ImageView imageView, Integer path) {
-                switch (path) {
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //cambio immagine del personaggio
+                if(giocoActivity.personaggioSelezionato != personaggiGioco.size() - 1) {
+                    giocoActivity.personaggioSelezionato++;
+                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                } else {
+                    giocoActivity.personaggioSelezionato = 0;
+                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                }
+                //avvio animazione di entrata
+                personaggio.startAnimation(enterSlideLeft);
+                switch (giocoActivity.personaggioSelezionato) {
                     case 0:
-                        personaggioSelezionato.setText("Leone");
-                        giocoActivity.personaggioSelezionato = 0;
+                        personaggioSelezionato.setText(R.string.leone);
                         break;
                     case 1:
-                        personaggioSelezionato.setText("Coccodrillo");
-                        giocoActivity.personaggioSelezionato = 1;
+                        personaggioSelezionato.setText(R.string.coccodrillo);
                         break;
                     case 2:
-                        personaggioSelezionato.setText("Serpente");
-                        giocoActivity.personaggioSelezionato = 2;
+                        personaggioSelezionato.setText(R.string.serpente);
                         break;
                     case 3:
-                        personaggioSelezionato.setText("Panda");
-                        giocoActivity.personaggioSelezionato = 3;
+                        personaggioSelezionato.setText(R.string.panda);
                         break;
                 }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        // Oggetto Animation per lo scorrimento in entrata da destra verso il centro
+        Animation enterSlideRight = AnimationUtils.loadAnimation(getContext(), R.anim.enter_slide_right);
+        // Oggetto Animation per lo scorrimento in sucita dal centro verso sinistra
+        Animation slideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.exit_slide_left);
+        // Imposta un listener per l'animazione che si attiva quando l'utente passa al personaggio precedente
+        slideLeft.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //cambio immagine del personaggio
+                if(giocoActivity.personaggioSelezionato == 0) {
+                    giocoActivity.personaggioSelezionato = personaggiGioco.size() - 1;
+                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                } else {
+                    giocoActivity.personaggioSelezionato--;
+
+                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                }
+                //avvio animazione di entrata
+                personaggio.startAnimation(enterSlideRight);
+                switch (giocoActivity.personaggioSelezionato) {
+                    case 0:
+                        personaggioSelezionato.setText(R.string.leone);
+                        break;
+                    case 1:
+                        personaggioSelezionato.setText(R.string.coccodrillo);
+                        break;
+                    case 2:
+                        personaggioSelezionato.setText(R.string.serpente);
+                        break;
+                    case 3:
+                        personaggioSelezionato.setText(R.string.panda);
+                        break;
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        fab_successivo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                personaggio.startAnimation(exitSlideRight);
+            }
+        });
+
+        fab_precedente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                personaggio.startAnimation(slideLeft);
             }
         });
 
@@ -228,14 +332,42 @@ public class ImpostazioniGiocoFragment extends Fragment{
         recyclerView.post(new Runnable() {
             @Override
             public void run() {
-                adapter.setDefaultSelectedItemView(recyclerView.getChildAt(0));
-                fragmentLayout.setBackgroundResource(R.drawable.deserto);
-                sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryDeserto));
-                cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
-                cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
-                adapterPersonaggio.setDefaultSelectedItemView(recyclerViewPersonaggio.getChildAt(0));
-                sfondoSelezionato.setText("Deserto");
-                personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
+                // Scrolla il RecyclerView alla posizione dello sfondo selezionato
+                recyclerView.scrollToPosition(giocoActivity.sfondoSelezionato);
+
+                // Imposta il colore del testo e del tema in base allo sfondo selezionato
+                switch (giocoActivity.sfondoSelezionato){
+                    case 0:
+                        fragmentLayout.setBackgroundResource(R.drawable.deserto);
+                        sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryDeserto));
+                        cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
+                        cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
+                        sfondoSelezionato.setText(R.string.deserto);
+                        personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryDeserto));
+                        fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryDeserto));
+                        fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryDeserto));
+                        break;
+                    case 1:
+                        fragmentLayout.setBackgroundResource(R.drawable.antartide);
+                        sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryAntartide));
+                        cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
+                        cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
+                        sfondoSelezionato.setText(R.string.antartide);
+                        personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                        fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryAntartide));
+                        fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryAntartide));
+                        break;
+                    case 2:
+                        fragmentLayout.setBackgroundResource(R.drawable.giungla);
+                        sfondoSelezionato.setTextColor(getResources().getColor(R.color.primaryGiungla));
+                        cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
+                        cardViewPersonaggio.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
+                        sfondoSelezionato.setText(R.string.giungla);
+                        personaggioSelezionato.setTextColor(getResources().getColor(R.color.secondaryGiungla));
+                        fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryGiungla));
+                        fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryGiungla));
+                        break;
+                }
             }
         });
     }
