@@ -10,11 +10,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 public class GameView extends View {
 
@@ -29,8 +34,27 @@ public class GameView extends View {
     private int xPersonaggio,yPersonaggio;
     private Bitmap personaggioImage;
     private int checkPointAttuale;
-
-    public GameView(Context context, AttributeSet attrs) {
+    private boolean personaggioInMovimento = false;
+    private int xBottone,yBottone;
+    private long mInizioAnimazione = 0L;
+    private static final int DISEGNA_BOTTONE = 1;
+    private static final long DURATA_ANIMAZIONE = 1000L;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DISEGNA_BOTTONE:
+                    long elapsedTime = SystemClock.uptimeMillis() - mInizioAnimazione;
+                    if (elapsedTime >= DURATA_ANIMAZIONE) {
+                        personaggioInMovimento = false;
+                        invalidate();
+                    }
+                    break;
+            }
+        }
+    };
+    private Scheda scheda;
+    public GameView(Context context, AttributeSet attrs, Scheda scheda) {
         super(context, attrs);
         giocoActivity = (GiocoActivity) context;
         //seleziona l'immagine di sfondo
@@ -51,7 +75,8 @@ public class GameView extends View {
         // Imposta le dimensioni del checkpoint
         checkpointWidth = 200; // Larghezza ideale del checkpoint
         checkpointHeight = 200; // Altezza ideale del checkpoint
-
+        this.scheda = scheda;
+        Log.d("GameView", "Numero esercizi: " + scheda.getNumeroEsercizi());
         // Calcola le posizioni dei checkpoint in base alle dimensioni dello schermo
         calculateCheckpointPositions();
 
@@ -82,12 +107,11 @@ public class GameView extends View {
     }
 
     private void calculateCheckpointPositions() {
-        int numCheckpoints = 5; // Numero di checkpoint desiderati
+        int numCheckpoints = scheda.getNumeroEsercizi(); // Numero di checkpoint desiderati
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
 
         // Calcola lo spazio verticale tra i checkpoint
-        int verticalGap = (int) (screenHeight * 0.8) / (numCheckpoints - 1);
         int topMargin = (int) (screenHeight * 0.2); // Margine superiore
         int bottomMargin = (int) (screenHeight * 0.3); // Margine inferiore
 
@@ -95,13 +119,19 @@ public class GameView extends View {
         checkpointXPositions = new int[numCheckpoints];
         checkpointYPositions = new int[numCheckpoints];
 
-        for (int i = 0; i < numCheckpoints; i++) {
-            if (i % 2 == 0) { // Se i è pari, muovi orizzontalmente
-                checkpointXPositions[i] = screenWidth / 4; // Posizione X centrata
-                checkpointYPositions[i] = topMargin + i * (screenHeight - topMargin - bottomMargin) / (numCheckpoints - 1); // Posizione Y lungo il percorso verticale
-            } else { // Se i è dispari, muovi verticalmente
-                checkpointXPositions[i] = screenWidth / 4 + screenWidth / 3; // Posizione X spostata a destra
-                checkpointYPositions[i] = topMargin + (i - 1) * (screenHeight - topMargin - bottomMargin) / (numCheckpoints - 1); // Posizione Y lungo il percorso verticale
+
+        if(numCheckpoints == 1){
+            checkpointXPositions[0] = screenWidth / 2 - checkpointWidth / 2;
+            checkpointYPositions[0] = screenHeight / 2 - checkpointHeight / 2;
+        }else {
+            for (int i = 0; i < numCheckpoints; i++) {
+                if (i % 2 == 0) { // Se i è pari, muovi orizzontalmente
+                    checkpointXPositions[i] = screenWidth / 4; // Posizione X centrata
+                    checkpointYPositions[i] = topMargin + i * (screenHeight - topMargin - bottomMargin) / (numCheckpoints - 1); // Posizione Y lungo il percorso verticale
+                } else { // Se i è dispari, muovi verticalmente
+                    checkpointXPositions[i] = screenWidth / 4 + screenWidth / 3; // Posizione X spostata a destra
+                    checkpointYPositions[i] = topMargin + (i - 1) * (screenHeight - topMargin - bottomMargin) / (numCheckpoints - 1); // Posizione Y lungo il percorso verticale
+                }
             }
         }
     }
@@ -150,6 +180,16 @@ public class GameView extends View {
             // Disegna un cerchio rosso attorno al checkpoint
             canvas.drawCircle(centerX, centerY, checkpointWidth / 2 + 5, redPaint); // Aggiungi 5 per compensare lo spessore del contorno
 
+            if(personaggioInMovimento == false && i == checkPointAttuale){
+                // Disegna l'immagine solo se il checkpoint è stato raggiunto
+                int imageWidth = 100; // Larghezza dell'immagine
+                int imageHeight = 100; // Altezza dell'immagine
+                xBottone = centerX - imageWidth / 2;
+                yBottone = (centerY + checkpointHeight / 2)+40;
+                Bitmap playButtonLevel = BitmapFactory.decodeResource(getResources(), R.drawable.bottone_avvia_gioco);
+                Bitmap scaledImage = Bitmap.createScaledBitmap(playButtonLevel, imageWidth, imageHeight, true);
+                canvas.drawBitmap(scaledImage, xBottone, yBottone, null);
+            }
 
         }
         // Calcola il centro del checkpoint
@@ -180,9 +220,16 @@ public class GameView extends View {
                         AnimatorSet animSetXY = new AnimatorSet();
                         animSetXY.playTogether(animX, animY);
                         animSetXY.setDuration(1000); // Imposta la durata dell'animazione in millisecondi (1 secondo)
+                        personaggioInMovimento = true;
+                        mInizioAnimazione = SystemClock.uptimeMillis();
+                        final Message goAheadMessage = mHandler.obtainMessage(DISEGNA_BOTTONE);
+                        mHandler.sendMessageAtTime(goAheadMessage, mInizioAnimazione + DURATA_ANIMAZIONE);
                         animSetXY.start();
                         break;
                     }
+                } else if (touchX >= xBottone && touchX <= xBottone + 170
+                        && touchY >= yBottone && touchY <= yBottone + 170) {
+                        giocoActivity.avviaEsercizio(scheda.getEsercizi().get(checkPointAttuale));
                 }
             }
         }
