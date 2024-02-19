@@ -20,10 +20,12 @@ public class PrenotazioniHolderView extends RecyclerView.ViewHolder implements V
     private ClickPrenotazioniListener clickPrenotazioniListener;
 
     // Costruttore che riceve un'istanza di ClickListener
-    public PrenotazioniHolderView(View itemView) {
+    public PrenotazioniHolderView(View itemView, ClickPrenotazioniListener listener) {
         super(itemView);
         // Imposta questo ViewHolder come gestore di clic
         itemView.setOnClickListener(this);
+
+        this.clickPrenotazioniListener = listener;
 
         textViewLogopedistaFiglio = itemView.findViewById(R.id.logopedista_prenotazione);
         textViewDataPrenotazione = itemView.findViewById(R.id.data_prenotazione);

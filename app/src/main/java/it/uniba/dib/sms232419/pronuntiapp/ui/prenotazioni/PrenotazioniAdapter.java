@@ -37,7 +37,7 @@ public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolder
     @NonNull
     @Override
     public PrenotazioniHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PrenotazioniHolderView(LayoutInflater.from(context).inflate(R.layout.item_prenotazioni_view, parent, false));
+        return new PrenotazioniHolderView(LayoutInflater.from(context).inflate(R.layout.item_prenotazioni_view, parent, false), clickPrenotazioniListener);
     }
 
     @Override
