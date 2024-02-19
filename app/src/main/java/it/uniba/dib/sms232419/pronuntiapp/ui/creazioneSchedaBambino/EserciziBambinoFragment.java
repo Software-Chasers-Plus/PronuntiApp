@@ -71,7 +71,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
             //recupero il paziente dal bundle passato al fragment
             paziente = getArguments().getParcelable("paziente");
 
-            Log.d(TAG, "Paziente recuperato: "+paziente.getNome());
+            Log.d(TAG, "Paziente recuperato: " + paziente.getNome());
         }else{
             Log.d(TAG, "Bundle nullo");
         }
@@ -353,12 +353,13 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                                 eserciziSelezionati.add(document.getId());
                                 Log.d(TAG, "Esercizi selezionati diocane: " + eserciziSelezionati);
                             }
-                            //Salvo la scheda nel database
-                            caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
                         } else {
                             Log.e(TAG, "Errore durante la query per gli esercizi", task.getException());
                         }
                     });
         }
+
+        //Salvo la scheda nel database
+        caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
     }
  }

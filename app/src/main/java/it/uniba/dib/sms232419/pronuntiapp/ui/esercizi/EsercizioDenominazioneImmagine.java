@@ -1,13 +1,12 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,10 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,19 +39,22 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PermissionManager;
+import it.uniba.dib.sms232419.pronuntiapp.RecordAudio;
+import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 
 public class EsercizioDenominazioneImmagine extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_IMAGE_PICK = 1;
-    private static final int REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_CODE_PICK_AUDIO_BUTTON1 = 31;
     private static final int REQUEST_CODE_PICK_AUDIO_BUTTON2 = 32;
     private static final int REQUEST_CODE_PICK_AUDIO_BUTTON3 = 33;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 2;
+
+    boolean mStartRecording = true;
+    boolean mStartPlaying = true;
 
     Uri imageUri;
     Uri audioUri1;
@@ -72,6 +71,8 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
     String path_audio2;
     String path_audio3;
 
+    String audioName;
+
     String descrizione_immagine;
 
     private ImageView imageView;
@@ -87,10 +88,14 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         return view;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Record to the external cache directory for visibility
+        audioName = getActivity().getExternalCacheDir().getAbsolutePath();
+        audioName += "/audiorecord.mp3";
 
         ImageView imageView = view.findViewById(R.id.image_view);
         ImageButton upload_audio1_button = view.findViewById(R.id.upload_audio1_button);
@@ -99,6 +104,15 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         EditText editText = view.findViewById(R.id.edit_text_esercizio1);
         Button conferma_button = view.findViewById(R.id.crea_esercizio_button);
         TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio1);
+
+        ImageButton record_audio1_button = view.findViewById(R.id.record_audio1_button);
+        ImageButton play_audio1_button = view.findViewById(R.id.play_audio1_button);
+
+        ImageButton record_audio2_button = view.findViewById(R.id.record_audio2_button);
+        ImageButton play_audio2_button = view.findViewById(R.id.play_audio2_button);
+
+        ImageButton record_audio3_button = view.findViewById(R.id.record_audio3_button);
+        ImageButton play_audio3_button = view.findViewById(R.id.play_audio3_button);
 
 
         /*
@@ -156,6 +170,42 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON1);
         });
 
+        record_audio1_button.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    audioUri1 = recordAudio(record_audio1_button);
+                    // Ottieni il riferimento all'EditText per il testo dell'audio 1
+                    TextView testo_audio1 = requireView().findViewById(R.id.audio1_testo);
+                    // Esegui la logica per caricare l'audio e l'immagine
+                    testo_audio1.setText(R.string.audio1 + " " + "audioRegistrato1");
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Permesso negato")
+                            .setMessage("Per favore, fornisci il permesso per registrare l'audio.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
+
+        play_audio1_button.setOnClickListener(v -> {
+            RecordAudio.onPlay(mStartPlaying , audioName);
+            if (mStartPlaying) {
+                play_audio1_button.setImageResource(R.drawable.pause_icon_white_24);
+            } else {
+                play_audio1_button.setImageResource(R.drawable.baseline_play_arrow_24);
+            }
+            mStartPlaying = !mStartPlaying;
+        });
+
         //Gestione bottone audio 2
         upload_audio2_button.setOnClickListener(v -> {
             // Crea un Intent per selezionare un file audio
@@ -164,12 +214,84 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON2);
         });
 
+        record_audio2_button.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    audioUri2 = recordAudio(record_audio2_button);
+                    // Ottieni il riferimento all'EditText per il testo dell'audio 1
+                    TextView testo_audio2 = requireView().findViewById(R.id.audio2_testo);
+                    // Esegui la logica per caricare l'audio e l'immagine
+                    testo_audio2.setText(R.string.audio2 + " " + "audioRegistrato2");
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Permesso negato")
+                            .setMessage("Per favore, fornisci il permesso per registrare l'audio.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
+
+        play_audio2_button.setOnClickListener(v -> {
+            RecordAudio.onPlay(mStartPlaying , audioName);
+            if (mStartPlaying) {
+                play_audio2_button.setImageResource(R.drawable.pause_icon_white_24);
+            } else {
+                play_audio2_button.setImageResource(R.drawable.baseline_play_arrow_24);
+            }
+            mStartPlaying = !mStartPlaying;
+        });
+
         //Gestione bottone audio 3
         upload_audio3_button.setOnClickListener(v -> {
             // Crea un Intent per selezionare un file audio
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("audio/*"); // Specifica che stai cercando file audio
             startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON3);
+        });
+
+        record_audio3_button.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    audioUri3 = recordAudio(record_audio3_button);
+                    // Ottieni il riferimento all'EditText per il testo dell'audio 1
+                    TextView testo_audio3 = requireView().findViewById(R.id.audio3_testo);
+                    // Esegui la logica per caricare l'audio e l'immagine
+                    testo_audio3.setText(R.string.audio3 + " " + "audioRegistrato3");
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Permesso negato")
+                            .setMessage("Per favore, fornisci il permesso per registrare l'audio.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
+
+        play_audio3_button.setOnClickListener(v -> {
+            RecordAudio.onPlay(mStartPlaying , audioName);
+            if (mStartPlaying) {
+                play_audio3_button.setImageResource(R.drawable.pause_icon_white_24);
+            } else {
+                play_audio3_button.setImageResource(R.drawable.baseline_play_arrow_24);
+            }
+            mStartPlaying = !mStartPlaying;
         });
 
         //Gestione bottone conferma
@@ -309,7 +431,12 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                 new PermissionManager.PermissionListener() {
                     @Override
                     public void onPermissionsGranted() {
-                        selectImage();
+                        if (requestCode == REQUEST_IMAGE_PICK) {
+                            // Se il permesso è già stato concesso, puoi procedere con la logica per selezionare un'immagine
+                            selectImage();
+                        } else if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
+
+                        }
                         Log.d("EsercizioDenominazioneImmagine", "Permissions granted");
                     }
 
@@ -357,25 +484,22 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                         case REQUEST_CODE_PICK_AUDIO_BUTTON1:
                             // Ottieni il riferimento all'EditText per il testo dell'audio 1
                             TextView testo_audio1 = requireView().findViewById(R.id.audio1_testo);
-                            String testo_corrente1 = testo_audio1.getText().toString();
                             // Esegui la logica per caricare l'audio e l'immagine
-                            testo_audio1.setText(testo_corrente1 + " " + getAudioFileNameFromUri(getActivity(), audioUri));
+                            testo_audio1.setText(R.string.audio1 + " " + getAudioFileNameFromUri(getActivity(), audioUri));
                             audioUri1 = audioUri;
                             break;
                         case REQUEST_CODE_PICK_AUDIO_BUTTON2:
                             // Ottieni il riferimento all'EditText per il testo dell'audio 2
                             TextView testo_audio2 = requireView().findViewById(R.id.audio2_testo);
-                            String testo_corrente2 = testo_audio2.getText().toString();
                             // Esegui la logica per caricare l'audio e l'immagine
-                            testo_audio2.setText(testo_corrente2 +  " "  +getAudioFileNameFromUri(getActivity(), audioUri));
+                            testo_audio2.setText(R.string.audio2 +  " "  +getAudioFileNameFromUri(getActivity(), audioUri));
                             audioUri2 = audioUri;
                             break;
                         case REQUEST_CODE_PICK_AUDIO_BUTTON3:
                             // Ottieni il riferimento all'EditText per il testo dell'audio 3
                             TextView testo_audio3 = requireView().findViewById(R.id.audio3_testo);
-                            String testo_corrente3 = testo_audio3.getText().toString();
                             // Esegui la logica per caricare l'audio e l'immagine
-                            testo_audio3.setText(testo_corrente3 +  " " + getAudioFileNameFromUri(getActivity(), audioUri));
+                            testo_audio3.setText(R.string.audio3 +  " " + getAudioFileNameFromUri(getActivity(), audioUri));
                             audioUri3 = audioUri;
                             break;
                     }
@@ -474,4 +598,21 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         void onUploadComplete(boolean success, String id_immagine);
     }
 
+    private Uri recordAudio(ImageButton record_audio_button) {
+        Uri audioUri = null;
+
+        RecordAudio.onRecord(mStartRecording, audioName);
+        if (mStartRecording) {
+            record_audio_button.setImageResource(R.drawable.stop_icon_24);
+            Toasty.success(getContext(), "Registrazione in corso", Toast.LENGTH_SHORT, true).show();
+        } else {
+            File fileAudio = new File(audioName);
+            audioUri = Uri.fromFile(fileAudio);
+            record_audio_button.setImageResource(R.drawable.mic_fill0_wght400_grad0_opsz24);
+            Toasty.success(getContext(), "Registrazione interrotta", Toast.LENGTH_SHORT, true).show();
+        }
+        mStartRecording = !mStartRecording;
+
+        return audioUri;
+    }
 }

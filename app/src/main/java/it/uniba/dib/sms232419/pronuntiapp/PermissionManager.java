@@ -1,4 +1,4 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni;
+package it.uniba.dib.sms232419.pronuntiapp;
 
 import android.content.pm.PackageManager;
 import android.os.Build;

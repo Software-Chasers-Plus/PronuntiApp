@@ -37,6 +37,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:fontFamily="@font/poppinsmedium"
             android:gravity="center_vertical"/>
 
         <!-- ImageView per la prima immagine -->
@@ -45,7 +46,7 @@
             android:id="@+id/image_view1_esercizio3"
             android:layout_width="340dp"
             android:layout_height="340dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="15dp"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:scaleType="centerCrop"
@@ -62,6 +63,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:fontFamily="@font/poppinsmedium"
             android:gravity="center_vertical"/>
 
         <!-- ImageView per la seconda immagine -->
@@ -70,7 +72,7 @@
             android:id="@+id/image_view2_esercizio3"
             android:layout_width="340dp"
             android:layout_height="340dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="15dp"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:scaleType="centerCrop"
@@ -87,35 +89,61 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:fontFamily="@font/poppinsmedium"
             android:gravity="center_vertical"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginBottom="15dp">
+
             <TextView
                 android:id="@+id/audio_esercizio3_testo"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/audio"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:textSize="18sp"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/upload_audio_button_esercizio3"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/upload_audio"
-                android:backgroundTint="@color/blu_principale"
-                app:srcCompat="@drawable/upload_icon_white"/>
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/upload_audio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="@color/blu_principale"
+                    app:srcCompat="@drawable/upload_icon_white"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/record_audio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#E53935"
+                    app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/play_audio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#7CB342"
+                    app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -128,15 +156,15 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:fontFamily="@font/poppinsmedium"
             android:gravity="center_vertical"/>
 
         <RadioGroup
             android:id="@+id/radioGroup_esercizio3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:padding="5dp"
+            android:layout_marginBottom="15dp"
+            android:padding="10dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -147,9 +175,9 @@
                 android:id="@+id/radioButtonImmagine1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:background="@drawable/radio_selectror"
                 android:button="@android:color/transparent"
+                android:layout_margin="10dp"
                 android:elevation="4dp"
                 android:padding="10dp"
                 android:text="@string/immagine_1"
@@ -159,7 +187,7 @@
                 android:id="@+id/radioButtonImmagine2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/radio_selectror"
                 android:button="@android:color/transparent"
                 android:elevation="4dp"

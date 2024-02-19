@@ -47,6 +47,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:layout_marginTop="15dp"
             android:hint="@string/contenuto_dell_immagine"
             android:maxLines="5"
             android:inputType="textShortMessage"
@@ -63,95 +64,169 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:fontFamily="@font/poppinsmedium"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="5dp">
-        <TextView
-            android:id="@+id/audio1_testo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/audio1"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textSize="18sp"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/upload_audio1_button"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/audio1_testo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/upload_audio"
-                android:backgroundTint="@color/blu_principale"
-                app:srcCompat="@drawable/upload_icon_white"/>
+                android:text="@string/audio1"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/upload_audio1_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="@color/blu_principale"
+                    app:srcCompat="@drawable/upload_icon_white"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/record_audio1_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#E53935"
+                    app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/play_audio1_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#7CB342"
+                    app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="5dp">
+
             <TextView
                 android:id="@+id/audio2_testo"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/audio2"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:textSize="18sp"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/upload_audio2_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/upload_audio"
-                android:backgroundTint="@color/blu_principale"
-                app:srcCompat="@drawable/upload_icon_white"/>
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/upload_audio2_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="@color/blu_principale"
+                    app:srcCompat="@drawable/upload_icon_white"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/record_audio2_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#E53935"
+                    app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/play_audio2_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#7CB342"
+                    app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="5dp">
+
             <TextView
                 android:id="@+id/audio3_testo"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/audio3"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:textSize="18sp"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/upload_audio3_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/upload_audio"
-                android:backgroundTint="@color/blu_principale"
-                app:srcCompat="@drawable/upload_icon_white"/>
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/upload_audio3_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="@color/blu_principale"
+                    app:srcCompat="@drawable/upload_icon_white"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/record_audio3_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#E53935"
+                    app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/play_audio3_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/upload_audio"
+                    android:backgroundTint="#7CB342"
+                    app:srcCompat="@drawable/baseline_play_arrow_24"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

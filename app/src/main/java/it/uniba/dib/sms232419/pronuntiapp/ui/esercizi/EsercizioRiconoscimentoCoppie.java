@@ -1,6 +1,7 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.RecordAudio;
 
 public class EsercizioRiconoscimentoCoppie extends Fragment {
     private static final int REQUEST_IMAGE_PICK1 = 11;
@@ -64,8 +69,12 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
     private ImageView image1View;
     private ImageView image2View;
 
+    String audioName;
 
-    int riferimento_immagine_audio;
+    boolean mStartRecording = true;
+    boolean mStartPlaying = true;
+
+    int riferimento_immagine_audio = 0;
 
     @Nullable
     @Override
@@ -82,10 +91,17 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton upload_audio_button = view.findViewById(R.id.upload_audio_button_esercizio3);
+        // Record to the external cache directory for visibility
+        audioName = getActivity().getExternalCacheDir().getAbsolutePath();
+        audioName += "/audiorecord.mp3";
+
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup_esercizio3);
         Button conferma_button = view.findViewById(R.id.crea_esercizio3_button);
         TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio3);
+
+        ImageButton upload_audio_button = view.findViewById(R.id.upload_audio_button);
+        ImageButton record_audio_button = view.findViewById(R.id.record_audio_button);
+        ImageButton play_audio_button = view.findViewById(R.id.play_audio_button);
 
         image1View.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_MEDIA_IMAGES)
@@ -125,19 +141,52 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
             startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON);
         });
 
-        // Puoi aggiungere qui la logica per inizializzare i componenti UI o gestire gli eventi
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-              @Override
-              public void onCheckedChanged(RadioGroup group, int checkedId) {
-                  if (checkedId == R.id.radioButtonImmagine1) {
-                      riferimento_immagine_audio = 1;
-                  } else if (checkedId == R.id.radioButtonImmagine2) {
-                      riferimento_immagine_audio = 2;
-                  } else {
-                      return;
-                  }
-              }
-          });
+        record_audio_button.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(EsercizioRiconoscimentoCoppie.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    audioUri = recordAudio(record_audio_button);
+                    // Ottieni il riferimento all'EditText per il testo dell'audio 1
+                    TextView testo_audio = requireView().findViewById(R.id.audio_esercizio3_testo);
+                    // Esegui la logica per caricare l'audio e l'immagine
+                    testo_audio.setText(R.string.audio + " " + "audioRegistrato");
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Permesso negato")
+                            .setMessage("Per favore, fornisci il permesso per registrare l'audio.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
+
+        play_audio_button.setOnClickListener(v -> {
+            RecordAudio.onPlay(mStartPlaying , audioName);
+            if (mStartPlaying) {
+                play_audio_button.setImageResource(R.drawable.pause_icon_white_24);
+            } else {
+                play_audio_button.setImageResource(R.drawable.baseline_play_arrow_24);
+            }
+            mStartPlaying = !mStartPlaying;
+        });
+
+
+        //Selezione immagine corretta
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioButtonImmagine1) {
+                riferimento_immagine_audio = 1;
+            } else if (checkedId == R.id.radioButtonImmagine2) {
+                riferimento_immagine_audio = 2;
+            } else {
+            }
+        });
 
         //Gestione bottone conferma
         conferma_button.setOnClickListener(v -> {
@@ -146,6 +195,15 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
 
             // Ottieni il nome dell'esercizio
             String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
+            if(nome_esercizio.isEmpty()) {
+                nome_esercizio_textView.setError("Il nome dell'esercizio è obbligatorio");
+                return;
+            }
+
+            if(riferimento_immagine_audio == 0) {
+                Toasty.error(getContext(), "Seleziona quale immagine e' corretta", Toast.LENGTH_SHORT, true).show();
+                return;
+            }
 
 
             //Creazione dei percorsi per Firebase Storage
@@ -171,7 +229,13 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                 }
             });
 
-            // Carica l'audio 2 su Firebase Storage
+
+            // Carica l'audio  su Firebase Storage
+            // Carica l'audio su Firebase Storage
+            if(audioUri == null) {
+                Toasty.error(getContext(), "Seleziona un file audio", Toast.LENGTH_SHORT, true).show();
+                return;
+            }
             uploadFileToFirebaseStorage(audioUri, path_audio, (success, id_audio) -> {
                 if (success) {
                     ID_audio = id_audio;
@@ -350,6 +414,32 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
     // Interfaccia per il callback quando il caricamento è completato
     interface OnUploadCompleteListener {
         void onUploadComplete(boolean success, String id_immagine);
+    }
+
+    private Uri recordAudio(ImageButton record_audio_button) {
+        Uri audioUri = null;
+
+        RecordAudio.onRecord(mStartRecording, audioName);
+        if (mStartRecording) {
+            record_audio_button.setImageResource(R.drawable.stop_icon_24);
+            Toasty.success(getContext(), "Registrazione in corso", Toast.LENGTH_SHORT, true).show();
+        } else {
+            File fileAudio = new File(audioName);
+            audioUri = Uri.fromFile(fileAudio);
+            record_audio_button.setImageResource(R.drawable.mic_fill0_wght400_grad0_opsz24);
+            Toasty.success(getContext(), "Registrazione interrotta", Toast.LENGTH_SHORT, true).show();
+        }
+        mStartRecording = !mStartRecording;
+
+        return audioUri;
+    }
+
+    // Metodo per aprire le impostazioni dell'applicazione
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }
 

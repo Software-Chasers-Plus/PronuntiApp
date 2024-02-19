@@ -2,6 +2,7 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +45,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
+import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.RecordAudio;
 
 public class EsercizioRipetizioneParole extends Fragment {
     private static final int REQUEST_CODE_PICK_AUDIO_BUTTON = 31;
-    Uri audioUri;
+    Uri audioUri = null;
 
     String ID_audio;
 
     String trascrizione_audio;
+
+    String audioName;
+
+    boolean mStartRecording = true;
+    boolean mStartPlaying = true;
 
     @Nullable
     @Override
@@ -65,11 +74,17 @@ public class EsercizioRipetizioneParole extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Record to the external cache directory for visibility
+        audioName = getActivity().getExternalCacheDir().getAbsolutePath();
+        audioName += "/audiorecord.mp3";
 
-        ImageButton upload_audio_button = view.findViewById(R.id.upload_audio_button);
         EditText editText = view.findViewById(R.id.edit_text_esercizio2);
         Button conferma_button = view.findViewById(R.id.crea_esercizio2_button);
         TextInputLayout nome_esercizio_textView = view.findViewById(R.id.TextFieldNomeEsercizio2);
+
+        ImageButton upload_audio_button = view.findViewById(R.id.upload_audio_button);
+        ImageButton record_audio_button = view.findViewById(R.id.record_audio_button);
+        ImageButton play_audio_button = view.findViewById(R.id.play_audio_button);
 
         editText.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -90,22 +105,70 @@ public class EsercizioRipetizioneParole extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleziona un file audio"), REQUEST_CODE_PICK_AUDIO_BUTTON);
         });
 
+        record_audio_button.setOnClickListener(v -> {
+            PermissionManager.requestPermissions(EsercizioRipetizioneParole.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
+                @Override
+                public void onPermissionsGranted() {
+                    audioUri = recordAudio(record_audio_button);
+                    // Ottieni il riferimento all'EditText per il testo dell'audio 1
+                    TextView testo_audio = requireView().findViewById(R.id.audio_esercizio2_testo);
+                    // Esegui la logica per caricare l'audio e l'immagine
+                    testo_audio.setText(R.string.audio + " " + "audioRegistrato");
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    // Permesso non concesso, mostra un dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Permesso negato")
+                            .setMessage("Per favore, fornisci il permesso per registrare l'audio.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                // Aprire le impostazioni
+                                openAppSettings();
+                            })
+                            .show();
+                }
+            });
+        });
+
+        play_audio_button.setOnClickListener(v -> {
+            RecordAudio.onPlay(mStartPlaying , audioName);
+            if (mStartPlaying) {
+                play_audio_button.setImageResource(R.drawable.pause_icon_white_24);
+            } else {
+                play_audio_button.setImageResource(R.drawable.baseline_play_arrow_24);
+            }
+            mStartPlaying = !mStartPlaying;
+        });
+
 
         //Gestione bottone conferma
         conferma_button.setOnClickListener(v -> {
 
             final boolean[] esito = {true};
 
-            // Ottieni il testo dell'immagine
-            trascrizione_audio = editText.getText().toString();
-
             // Ottieni il nome dell'esercizio
             String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
+            if(nome_esercizio.isEmpty()) {
+                nome_esercizio_textView.setError("Il nome dell'esercizio è obbligatorio");
+                return;
+            }
+
+            // Ottieni il testo dell'immagine
+            trascrizione_audio = editText.getText().toString();
+            if(trascrizione_audio.isEmpty()) {
+                editText.setError("Inserire la trascrizione dell'audio");
+                return;
+            }
 
             //Creazione dei percorsi per Firebase Storage
             String path_audio = "esercizio2/" + nome_esercizio + trascrizione_audio + "_audio.mp3";
 
             // Carica l'audio su Firebase Storage
+            if(audioUri == null) {
+                Toasty.error(getContext(), "Seleziona un file audio", Toast.LENGTH_SHORT, true).show();
+                return;
+            }
             uploadFileToFirebaseStorage(audioUri, path_audio, (success, id_audio) -> {
                 if (success) {
                     ID_audio = id_audio;
@@ -262,5 +325,31 @@ public class EsercizioRipetizioneParole extends Fragment {
     // Interfaccia per il callback quando il caricamento è completato
     interface OnUploadCompleteListener {
         void onUploadComplete(boolean success, String id_immagine);
+    }
+
+    private Uri recordAudio(ImageButton record_audio_button) {
+        Uri audioUri = null;
+
+        RecordAudio.onRecord(mStartRecording, audioName);
+        if (mStartRecording) {
+            record_audio_button.setImageResource(R.drawable.stop_icon_24);
+            Toasty.success(getContext(), "Registrazione in corso", Toast.LENGTH_SHORT, true).show();
+        } else {
+            File fileAudio = new File(audioName);
+            audioUri = Uri.fromFile(fileAudio);
+            record_audio_button.setImageResource(R.drawable.mic_fill0_wght400_grad0_opsz24);
+            Toasty.success(getContext(), "Registrazione interrotta", Toast.LENGTH_SHORT, true).show();
+        }
+        mStartRecording = !mStartRecording;
+
+        return audioUri;
+    }
+
+    // Metodo per aprire le impostazioni dell'applicazione
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }
