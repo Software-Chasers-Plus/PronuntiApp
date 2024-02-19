@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="5dp"
     android:padding="5dp">
 
@@ -111,21 +112,16 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="6dp"/>
 
-        <TextView
+        <Button
             android:id="@+id/elimina_prenotazione_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:textSize="16dp"
-            android:text="@string/elimina_prenotazione"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:text="@string/elimina"
             android:layout_alignParentRight="true"
-            android:layout_alignBaseline="@id/email_logopedista_label_prenotazione"
-            android:visibility="gone"
-            />
+            android:backgroundTint="@color/red"
+            app:cornerRadius="8dp"
+            android:layout_gravity="center_vertical|end"/>
 
         <!-- CardView per l'avatar del figlio con ombra -->
 

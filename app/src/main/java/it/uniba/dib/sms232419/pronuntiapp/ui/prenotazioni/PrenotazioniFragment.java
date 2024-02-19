@@ -164,6 +164,12 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
 
     @Override
     public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onEliminaClick(int position) {
+        Log.d("PrenotazioniFragment","Cliccato bottone eliminazione");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Eliminazione prenotazione\n");
         builder.setMessage("Sei sicuro di voler eliminare questa prenotazione?");
