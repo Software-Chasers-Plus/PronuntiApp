@@ -186,5 +186,8 @@
     <string name="audio_3_non_disponibile">Aiuto 3 non disponibile</string>
     <string name="husky">Husky</string>
     <string name="pinguino">Pinguino</string>
+    <string name="note_prenotazione_label">Note appuntamento:</string>
+    <string name="note_prenotazione">note prenotazione</string>
+    <string name="elimina_prenotazione">Elimina prenotazione...</string>
 
 </resources>

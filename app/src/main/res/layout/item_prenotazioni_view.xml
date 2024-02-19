@@ -87,6 +87,46 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="6dp"/>
 
+        <TextView
+            android:id="@+id/informazioni_prenotazione_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note_prenotazione_label"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/ora_prenotazione"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/informazioni_prenotazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/note_prenotazione"
+            android:layout_below="@id/informazioni_prenotazione_label"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:id="@+id/elimina_prenotazione_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="16dp"
+            android:text="@string/elimina_prenotazione"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignBaseline="@id/email_logopedista_label_prenotazione"
+            android:visibility="gone"
+            />
+
         <!-- CardView per l'avatar del figlio con ombra -->
 
         <!-- ImageView per l'avatar del figlio -->

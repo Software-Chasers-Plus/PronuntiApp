@@ -253,17 +253,21 @@ public class SplashActivity extends AppCompatActivity {
 
                                 if(prenotazione.get("logopedista") != null){
                                     prenotazioni.add(new Prenotazione(
+                                            document.getId(),
                                             prenotazione.get("data").toString(),
                                             prenotazione.get("ora").toString(),
                                             prenotazione.get("logopedista").toString(),
-                                            currentUser.getUid()
+                                            currentUser.getUid(),
+                                            prenotazione.get("note").toString()
                                     ));
                                 }else{
                                     prenotazioni.add(new Prenotazione(
+                                            document.getId(),
                                             prenotazione.get("data").toString(),
                                             prenotazione.get("ora").toString(),
                                            "",
-                                            currentUser.getUid()
+                                            currentUser.getUid(),
+                                            prenotazione.get("note").toString()
                                     ));
                                 }
 

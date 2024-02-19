@@ -45,8 +45,8 @@ public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolder
         Prenotazione prenotazione = items.get(position);
         holder.textViewDataPrenotazione.setText(prenotazione.getData());
         holder.textViewOraPrenotazione.setText(prenotazione.getOra());
+        holder.textViewNotePrenotazione.setText(prenotazione.getNote());
 
-        Log.d("PrenotazioniAdapter","prenotazione:"+prenotazione.getLogopedista());
 
         db.collection("logopedisti")
                 .document(prenotazione.getLogopedista())

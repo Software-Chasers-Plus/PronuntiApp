@@ -11,19 +11,41 @@ public class Prenotazione implements Parcelable {
     private String logopedista;
     private String genitore;
 
+    private String prenotazioneId;
+
+    private String note;
+
     private boolean conferma;
 
 
 
 
 
-    public Prenotazione(String data, String ora, String logopedista, String genitore)
+    public Prenotazione(String prenotazioneId,String data, String ora, String logopedista, String genitore, String note)
     {
+        this.prenotazioneId=prenotazioneId;
         this.ora=ora;
         this.data=data;
         this.logopedista=logopedista;
         this.genitore=genitore;
+        this.note=note;
         conferma=false;
+    }
+
+    public String getPrenotazioneId() {
+        return prenotazioneId;
+    }
+
+    public void setPrenotazioneId(String prenotazioneId) {
+        this.prenotazioneId = prenotazioneId;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getOra() {
@@ -71,10 +93,12 @@ public class Prenotazione implements Parcelable {
     }
 
     protected Prenotazione(Parcel in) {
+        prenotazioneId=in.readString();
         ora = in.readString();
         data = in.readString();
         logopedista = in.readString();
         genitore = in.readString();
+        note = in.readString();
         conferma = in.readByte() != 0;
     }
 
@@ -97,10 +121,12 @@ public class Prenotazione implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(prenotazioneId);
         dest.writeString(ora);
         dest.writeString(data);
         dest.writeString(logopedista);
         dest.writeString(genitore);
+        dest.writeString(note);
         dest.writeByte((byte) (conferma ? 1 : 0));
     }
 }

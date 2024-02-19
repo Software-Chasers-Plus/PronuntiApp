@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -93,6 +94,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
         EditText logopedistaPrenotazione=view.findViewById(R.id.logopedista_inputPrenotazione);
         EditText dataPrenotazione=view.findViewById(R.id.data_inputPrenotazione);
         EditText oraPrenotazione=view.findViewById(R.id.ora_inputPrenotazione);
+        EditText notePrenotazione = view.findViewById(R.id.note_inputPrenotazione);
         ImageView iconaCalendario = view.findViewById(R.id.imageViewCalendarPrenotazione);
 
         iconaCalendario.setOnClickListener(new View.OnClickListener() {
@@ -155,8 +157,9 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                 String logopedista = logopedistiId.get(selectedLogopedist);
                 String data = dataPrenotazione.getText().toString().trim();
                 String ora = oraPrenotazione.getText().toString().trim();
-                if (logopedista==null || data.isEmpty() || ora.isEmpty()) {
-                    Toast.makeText(getContext(), "Inserisci tutti i dati!", Toast.LENGTH_SHORT).show();
+                String note = notePrenotazione.getText().toString().trim();
+                if (logopedista==null || data.isEmpty() || ora.isEmpty() || note.isEmpty()) {
+                    Toasty.error(getContext(), "Inserisci tutti i dati!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //Salvataggio prenotazione nel database
@@ -167,6 +170,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                 prenotazione.put("logopedista",logopedista);
                 prenotazione.put("data",data);
                 prenotazione.put("ora",ora);
+                prenotazione.put("note",note);
                 prenotazione.put("conferma",false);
                 db.collection("prenotazioni")
                         .add(prenotazione)
@@ -175,7 +179,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if(task.isSuccessful())
                                 {
-                                    prenotazioni.add(new Prenotazione(data,ora,logopedista,genitoreUid));
+                                    prenotazioni.add(new Prenotazione(task.getResult().getId(),data,ora,logopedista,genitoreUid,note));
                                     Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_prenotazioni);

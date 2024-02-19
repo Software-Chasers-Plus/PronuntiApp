@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -63,6 +64,8 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
     private FragmentPrenotazioniBinding binding;
 
     private FloatingActionButton buttonAggiungiPrenotazione;
+
+    private RecyclerView recyclerView;
 
 
     private Genitore genitore;
@@ -132,7 +135,7 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.prenotazioni_recycler_view);
+        recyclerView = view.findViewById(R.id.prenotazioni_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivityGenitore.getApplicationContext()));
 
         // Ottieni gli ID degli avatar dai figli
@@ -161,7 +164,32 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
 
     @Override
     public void onItemClick(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Eliminazione prenotazione\n");
+        builder.setMessage("Sei sicuro di voler eliminare questa prenotazione?");
+        builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
 
+        // Personalizzazione dello stile dell'AlertDialog
+        builder.setIcon(R.drawable.alert_svgrepo_com); // Icona critica
+
+        // Aggiunta dei pulsanti
+        builder.setPositiveButton("Si", (dialog, which) -> {
+            // Cancellazione prenotazione
+
+            db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).delete();
+            prenotazioni.remove(prenotazioni.get(position));
+            recyclerView.getAdapter().notifyDataSetChanged();
+
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+
+        // Mostra il dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

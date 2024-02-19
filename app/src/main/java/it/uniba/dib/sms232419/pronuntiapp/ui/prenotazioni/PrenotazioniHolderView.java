@@ -11,7 +11,7 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class PrenotazioniHolderView extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    TextView textViewLogopedistaFiglio, textViewDataPrenotazione, textViewOraPrenotazione;
+    TextView textViewLogopedistaFiglio, textViewDataPrenotazione, textViewOraPrenotazione,textViewNotePrenotazione;
 
     private ClickPrenotazioniListener clickPrenotazioniListener;
 
@@ -24,6 +24,7 @@ public class PrenotazioniHolderView extends RecyclerView.ViewHolder implements V
         textViewLogopedistaFiglio = itemView.findViewById(R.id.logopedista_prenotazione);
         textViewDataPrenotazione = itemView.findViewById(R.id.data_prenotazione);
         textViewOraPrenotazione = itemView.findViewById(R.id.ora_prenotazione);
+        textViewNotePrenotazione = itemView.findViewById(R.id.informazioni_prenotazione);
     }
 
     // Metodo chiamato quando un elemento della RecyclerView viene cliccato

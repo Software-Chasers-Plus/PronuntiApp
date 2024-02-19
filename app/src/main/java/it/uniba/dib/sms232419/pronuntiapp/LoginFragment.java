@@ -323,17 +323,21 @@ public class LoginFragment extends Fragment {
 
                                 if (prenotazione.get("logopedista") != null) {
                                     prenotazioni.add(new Prenotazione(
+                                            document.getId(),
                                             prenotazione.get("data").toString(),
                                             prenotazione.get("ora").toString(),
                                             prenotazione.get("logopedista").toString(),
-                                            userId
+                                            userId,
+                                            prenotazione.get("note").toString()
                                     ));
                                 } else {
                                     prenotazioni.add(new Prenotazione(
+                                            document.getId(),
                                             prenotazione.get("data").toString(),
                                             prenotazione.get("ora").toString(),
                                             "",
-                                            userId
+                                            userId,
+                                            prenotazione.get("note").toString()
                                     ));
                                 }
                             }
