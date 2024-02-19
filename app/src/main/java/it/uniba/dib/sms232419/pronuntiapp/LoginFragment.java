@@ -1,8 +1,6 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,11 +27,8 @@ import androidx.fragment.app.Fragment;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,12 +41,17 @@ import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
+import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
 public class LoginFragment extends Fragment {
     private AccessoActivity mActivity;
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
+
+    private Bundle bundle = new Bundle();
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     private ImageView imageClockPassword;
 
     private Button loginButton;
@@ -142,7 +142,7 @@ public class LoginFragment extends Fragment {
             String password = loginPassword.getText().toString();
 
             if (isValidEmail(email) && isValidPassword(password)) {
-                if(verificaConnessioneInternet()){
+                if (verificaConnessioneInternet()) {
                     loginUser(email, password);
                 }
             }
@@ -207,6 +207,7 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+                            retrieveAppuntamentiForGenitore(userId);
                             retrieveChildren(userId);
                         }
                     } else {
@@ -224,6 +225,7 @@ public class LoginFragment extends Fragment {
                             boolean isAbilitato = Boolean.TRUE.equals(document.getBoolean(getString(R.string.abilitazione)));
                             if (isAbilitato) {
                                 retrievePatients(userId);
+                                retrieveAppuntamentiForGenitore(userId);
                             } else {
                                 Toasty.error(mActivity, R.string.non_ancora_abilitato_come_logopedista, Toast.LENGTH_SHORT).show();
                             }
@@ -245,7 +247,7 @@ public class LoginFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Map<String, Object> childData = document.getData();
 
-                            if (childData.get("logopedista") != null){
+                            if (childData.get("logopedista") != null) {
                                 childrenList.add(new Figlio(
                                         childData.get("nome").toString(),
                                         childData.get("cognome").toString(),
@@ -256,7 +258,7 @@ public class LoginFragment extends Fragment {
                                         Integer.parseInt(childData.get("idAvatar").toString()),
                                         childData.get("token").toString()
                                 ));
-                            }else{
+                            } else {
                                 childrenList.add(new Figlio(
                                         childData.get("nome").toString(),
                                         childData.get("cognome").toString(),
@@ -270,7 +272,9 @@ public class LoginFragment extends Fragment {
                             }
 
                         }
-                        startMainActivity(childrenList, MainActivityGenitore.class);
+                        bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) childrenList);
+                        startMainActivityGenitore(MainActivityGenitore.class);
+
                     }
                 });
     }
@@ -295,14 +299,65 @@ public class LoginFragment extends Fragment {
                                     patientData.get("token").toString()
                             ));
                         }
-                        startMainActivity(patientsList, MainActivityLogopedista.class);
+                        startMainActivityLogopedista(patientsList, MainActivityLogopedista.class);
                     }
                 });
     }
 
+    private void retrieveAppuntamentiForGenitore(String userId) {
+
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("prenotazioni")
+                .whereEqualTo("genitore", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> prenotazione = document.getData();
+
+
+                                if (prenotazione.get("logopedista") != null) {
+                                    prenotazioni.add(new Prenotazione(
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            prenotazione.get("logopedista").toString(),
+                                            userId
+                                    ));
+                                } else {
+                                    prenotazioni.add(new Prenotazione(
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            "",
+                                            userId
+                                    ));
+                                }
+                            }
+                            bundle.putParcelableArrayList("prenotazioni", (ArrayList<? extends Parcelable>) prenotazioni);
+                        }
+                    }
+                });
+    }
+
+
+
+
+
     // Metodo per avviare l'activity principale
-    private void startMainActivity(List<Figlio> dataList, Class<?> activityClass) {
-        Bundle bundle = new Bundle();
+    private void startMainActivityGenitore( Class<?> activityClass) {
+
+        Intent intent = new Intent(getContext(), activityClass);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+        mActivity.finish();
+    }
+
+    private void startMainActivityLogopedista(List<Figlio> dataList, Class<?> activityClass) {
         bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) dataList);
 
         Intent intent = new Intent(getContext(), activityClass);
