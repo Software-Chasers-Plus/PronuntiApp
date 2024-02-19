@@ -54,4 +54,6 @@ dependencies {
     implementation 'com.github.NitishGadangi:TypeWriter-TextView:v1.3'
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     implementation 'com.github.GrenderG:Toasty:1.5.2'
+    implementation 'org.apache.commons:commons-text:1.9'
+    implementation 'com.assemblyai:assemblyai-java:1.0.0'
 }

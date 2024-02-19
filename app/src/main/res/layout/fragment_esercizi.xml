@@ -33,7 +33,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/secondaryGenitore"
         android:contentDescription="@string/crea_esercizio"
-        android:text="@string/crea_esercizio"
+        android:text="@string/aggiungi_esercizio"
         app:icon="@drawable/piu_icon_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

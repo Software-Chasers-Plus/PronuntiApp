@@ -219,6 +219,14 @@ public class EsercizioRipetizioneParole extends Fragment {
         progressDialog.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
         progressDialog.show();
 
+
+        // Carica il file su Firebase Storage
+        if(fileUri == null) {
+            progressDialog.dismiss();
+            callback.onUploadComplete(true, null);
+            return;
+        }
+
         // Carica il file su Firebase Storage
         fileRef.putFile(fileUri)
                 .addOnProgressListener(snapshot -> {

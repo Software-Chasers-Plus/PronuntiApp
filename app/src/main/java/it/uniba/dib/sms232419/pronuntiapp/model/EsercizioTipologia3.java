@@ -3,6 +3,11 @@ package it.uniba.dib.sms232419.pronuntiapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.apache.commons.text.similarity.LevenshteinDistance;
+
 public class EsercizioTipologia3 extends Esercizio {
     private String audio;
     private String immagine1;
@@ -54,6 +59,21 @@ public class EsercizioTipologia3 extends Esercizio {
     }
 
     @Override
+    public void eliminaFileDaStorage() {
+        // Eliminazione file immagine e audio
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        StorageReference refImg1 = storage.getReference().child(immagine1);
+        refImg1.delete();
+
+        StorageReference refImg2 = storage.getReference().child(immagine2);
+        refImg2.delete();
+
+        StorageReference refAudio = storage.getReference().child(audio);
+        refAudio.delete();
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(audio);
@@ -65,6 +85,10 @@ public class EsercizioTipologia3 extends Esercizio {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public boolean correzioneEsercizio(int risposta) {
+        return risposta == immagineCorretta;
     }
 }
 

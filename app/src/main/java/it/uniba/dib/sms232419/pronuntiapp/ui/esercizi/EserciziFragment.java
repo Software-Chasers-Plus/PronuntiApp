@@ -40,6 +40,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,6 +159,11 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
             public void onConfirm() {
                 Esercizio esercizio = eserciziList.get(position);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                //Eliminazione dei file multimediali
+                esercizio.eliminaFileDaStorage();
+
+                //Eliminazione dell'esercizio dal database
                 db.collection("esercizi").document(esercizio.getEsercizioId()).delete();
                 eserciziList.remove(position);
                 recyclerView.getAdapter().notifyDataSetChanged();

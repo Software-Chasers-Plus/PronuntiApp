@@ -219,8 +219,8 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                             Log.w("EsercizioRiconoscimentoCoppie", "Errore durante l'aggiunta del documento", e);
                         });
 
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                navController.navigate(R.id.navigation_esercizi);
+                //NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                //navController.navigate(R.id.navigation_esercizi);
 
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
@@ -307,6 +307,13 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
         progressDialog.setMessage("Caricamento in corso...");
         progressDialog.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
         progressDialog.show();
+
+        // Carica il file su Firebase Storage
+        if(fileUri == null) {
+            progressDialog.dismiss();
+            callback.onUploadComplete(true, null);
+            return;
+        }
 
         // Carica il file su Firebase Storage
         fileRef.putFile(fileUri)

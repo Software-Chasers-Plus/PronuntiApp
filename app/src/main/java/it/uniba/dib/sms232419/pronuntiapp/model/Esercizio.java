@@ -3,6 +3,8 @@ package it.uniba.dib.sms232419.pronuntiapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.storage.FirebaseStorage;
+
 public class Esercizio implements Parcelable {
     private String esercizioId;
     private String nome;
@@ -50,6 +52,8 @@ public class Esercizio implements Parcelable {
     public String getEsercizioId() {
         return esercizioId;
     }
+
+    public void eliminaFileDaStorage() {}
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {

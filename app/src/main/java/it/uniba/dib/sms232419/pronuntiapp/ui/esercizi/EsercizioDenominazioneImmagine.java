@@ -67,6 +67,11 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
     String ID_audio2;
     String ID_audio3;
 
+    String path_img;
+    String path_audio1;
+    String path_audio2;
+    String path_audio3;
+
     String descrizione_immagine;
 
     private ImageView imageView;
@@ -172,19 +177,30 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
             final boolean[] esito = {true};
 
-            // Ottieni il testo dell'immagine
-            descrizione_immagine = editText.getText().toString();
-
             // Ottieni il nome dell'esercizio
             String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
 
+            if(nome_esercizio.isEmpty()) {
+                nome_esercizio_textView.setError("Il nome dell'esercizio è obbligatorio");
+                return;
+            }
+
+            // Ottieni il testo dell'immagine
+            descrizione_immagine = editText.getText().toString();
+
+            if(descrizione_immagine.isEmpty()) {
+                editText.setError("Inserire la descrizione dell'immagine");
+                return;
+            }
+
             //Creazione dei percorsi per Firebase Storage
-            String path_img = "esercizio1/" + nome_esercizio + descrizione_immagine + ".jpg";
-            String path_audio1 = "esercizio1/" + nome_esercizio + "_audio1.mp3";
-            String path_audio2 = "esercizio1/" + nome_esercizio + "_audio2.mp3";
-            String path_audio3 = "esercizio1/" + nome_esercizio + "_audio3.mp3";
+            path_img = "esercizio1/" + nome_esercizio + descrizione_immagine + ".jpg";
+            path_audio1 = "esercizio1/" + nome_esercizio + "_audio1.mp3";
+            path_audio2 = "esercizio1/" + nome_esercizio + "_audio2.mp3";
+            path_audio3 = "esercizio1/" + nome_esercizio + "_audio3.mp3";
 
             // Carica l'immagine su Firebase Storage
+            Log.d("EsercizioDenominazioneImmagine", imageUri.toString() + " " + path_img);
             uploadFileToFirebaseStorage(imageUri, path_img, (success, id_img) -> {
                 if (success) {
                     ID_immagine = id_img;
@@ -197,6 +213,11 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             uploadFileToFirebaseStorage(audioUri1, path_audio1, (success, id_audio1) -> {
                 if (success) {
                     ID_audio1 = id_audio1;
+
+                    // Se l'ID dell'audio 1 è nullo, imposta il percorso su null
+                    if (ID_audio1 == null) {
+                        path_audio1 = "null";
+                    }
                 }else {
                     esito[0] = false;
                 }
@@ -206,6 +227,11 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             uploadFileToFirebaseStorage(audioUri2, path_audio2, (success, id_audio2) -> {
                 if (success) {
                     ID_audio2 = id_audio2;
+
+                    // Se l'ID dell'audio 2 è nullo, imposta il percorso su null
+                    if(ID_audio2 == null) {
+                        path_audio2 = "null";
+                    }
                 }else {
                     esito[0] = false;
                 }
@@ -215,6 +241,11 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             uploadFileToFirebaseStorage(audioUri3, path_audio3, (success, id_audio3) -> {
                 if (success) {
                     ID_audio3 = id_audio3;
+
+                    // Se l'ID dell'audio 3 è nullo, imposta il percorso su null
+                    if(ID_audio3 == null) {
+                        path_audio3 = "null";
+                    }
                 }else {
                     esito[0] = false;
                 }
@@ -259,8 +290,8 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                         });
 
                 //Navigazione alla lista degli esercizi
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                navController.navigate(R.id.navigation_esercizi);
+                //NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                //navController.navigate(R.id.navigation_esercizi);
 
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
@@ -273,25 +304,6 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
     // Gestione della risposta alla richiesta di permesso
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        /*
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permesso concesso, puoi aprire la galleria
-                selectImage();
-            } else {
-                // Permesso non concesso, mostra un dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Permesso negato")
-                        .setMessage("Per favore, fornisci il permesso per accedere alla galleria.")
-                        .setPositiveButton("Impostazioni", (dialog, which) -> {
-                            // Aprire le impostazioni
-                            openAppSettings();
-                        })
-                        .show();
-            }
-        }
-         */
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 new PermissionManager.PermissionListener() {
@@ -421,6 +433,11 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         progressDialog.show();
 
         // Carica il file su Firebase Storage
+        if(fileUri == null) {
+            progressDialog.dismiss();
+            callback.onUploadComplete(true, null);
+            return;
+        }
         fileRef.putFile(fileUri)
                 .addOnProgressListener(snapshot -> {
                     // Aggiorna la percentuale di completamento

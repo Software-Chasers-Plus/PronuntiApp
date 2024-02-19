@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.Objects;
 
 import it.uniba.dib.sms232419.pronuntiapp.FirebaseHelper;
 import it.uniba.dib.sms232419.pronuntiapp.R;
@@ -65,19 +68,46 @@ public class DettaglioEsercizioDenominazioneImmagini extends Fragment {
         FirebaseHelper.downloadImmagine(immagine, pathImmagine);
 
         //recupero l'audio 1 da firebase storage
-        String pathAudio1 = esercizio.getAudio1();
-        FloatingActionButton playButton1 = view.findViewById(R.id.play_audio1_button); // Replace with your Button ID
-        FirebaseHelper.playAudioFromFirebaseStorage(pathAudio1, playButton1);
+        if(!Objects.equals(esercizio.getAudio1(), "null")){
+            String pathAudio1 = esercizio.getAudio1();
+            FloatingActionButton playButton1 = view.findViewById(R.id.play_audio1_button); // Replace with your Button ID
+            FirebaseHelper.playAudioFromFirebaseStorage(pathAudio1, playButton1);
+        } else {
+            FloatingActionButton playButton1 = view.findViewById(R.id.play_audio1_button);
+            playButton1.setVisibility(View.GONE);
+            TextView testo1 = view.findViewById(R.id.audio1_testo);
+            testo1.setText(R.string.audio_1_non_disponibile);
+        }
+
+
 
         //recupero l'audio 2 da firebase storage
-        String pathAudio2 = esercizio.getAudio2();
-        FloatingActionButton playButton2 = view.findViewById(R.id.play_audio2_button); // Replace with your Button ID
-        FirebaseHelper.playAudioFromFirebaseStorage(pathAudio2, playButton2);
+        if(!Objects.equals(esercizio.getAudio2(), "null")){
+            String pathAudio2 = esercizio.getAudio2();
+            FloatingActionButton playButton2 = view.findViewById(R.id.play_audio2_button); // Replace with your Button ID
+            FirebaseHelper.playAudioFromFirebaseStorage(pathAudio2, playButton2);
+        } else {
+            FloatingActionButton playButton2 = view.findViewById(R.id.play_audio2_button);
+            playButton2.setVisibility(View.GONE);
+            TextView testo2 = view.findViewById(R.id.audio2_testo);
+            testo2.setText(R.string.audio_2_non_disponibile);
+        }
+
+
 
         //recupero l'audio 3 da firebase storage
-        String pathAudio3 = esercizio.getAudio3();
-        FloatingActionButton playButton3 = view.findViewById(R.id.play_audio3_button); // Replace with your Button ID
-        FirebaseHelper.playAudioFromFirebaseStorage(pathAudio3, playButton3);
+        if(!Objects.equals(esercizio.getAudio3(), "null")){
+            String pathAudio3 = esercizio.getAudio3();
+            FloatingActionButton playButton3 = view.findViewById(R.id.play_audio3_button); // Replace with your Button ID
+            FirebaseHelper.playAudioFromFirebaseStorage(pathAudio3, playButton3);
+        } else {
+            FloatingActionButton playButton3 = view.findViewById(R.id.play_audio3_button);
+            playButton3.setVisibility(View.GONE);
+            TextView testo3 = view.findViewById(R.id.audio3_testo);
+            testo3.setText(R.string.audio_3_non_disponibile);
+        }
+
+
     }
 
 }

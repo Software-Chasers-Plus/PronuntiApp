@@ -1,6 +1,9 @@
 package it.uniba.dib.sms232419.pronuntiapp.model;
 
 import android.os.Parcel;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 
 public class EsercizioTipologia1 extends Esercizio {
     private String immagine;
@@ -60,6 +63,30 @@ public class EsercizioTipologia1 extends Esercizio {
     }
 
     @Override
+    public void eliminaFileDaStorage() {
+        // Eliminazione file immagine e audio
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        StorageReference refImg = storage.getReference().child(immagine);
+        refImg.delete();
+
+        if(!audio1.equals("null")){
+            StorageReference refAudio1 = storage.getReference().child(audio1);
+            refAudio1.delete();
+        }
+
+        if(!audio2.equals("null")){
+            StorageReference refAudio2 = storage.getReference().child(audio2);
+            refAudio2.delete();
+        }
+
+        if(!audio3.equals("null")){
+            StorageReference refAudio3 = storage.getReference().child(audio3);
+            refAudio3.delete();
+        }
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(immagine);
@@ -72,5 +99,12 @@ public class EsercizioTipologia1 extends Esercizio {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public boolean correzioneEsercizio(String risposta) {
+        int distance = LevenshteinDistance.getDefaultInstance().apply(descrizione_immagine, risposta);
+        double similarity = 1 - ((double) distance / Math.max(descrizione_immagine.length(), risposta.length()));
+
+        return similarity > 0.8;
     }
 }

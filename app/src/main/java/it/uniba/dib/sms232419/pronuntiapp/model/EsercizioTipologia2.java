@@ -2,6 +2,11 @@ package it.uniba.dib.sms232419.pronuntiapp.model;
 
 import android.os.Parcel;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.apache.commons.text.similarity.LevenshteinDistance;
+
 public class EsercizioTipologia2 extends Esercizio {
     private String audio;
     private String trasctrizione_audio;
@@ -39,6 +44,15 @@ public class EsercizioTipologia2 extends Esercizio {
     }
 
     @Override
+    public void eliminaFileDaStorage() {
+        // Eliminazione file immagine e audio
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        StorageReference refAudio = storage.getReference().child(audio);
+        refAudio.delete();
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(audio);
@@ -52,5 +66,12 @@ public class EsercizioTipologia2 extends Esercizio {
 
     public String getTrascrizione_audio() {
         return trasctrizione_audio;
+    }
+
+    public boolean correzioneEsercizio(String risposta) {
+        int distance = LevenshteinDistance.getDefaultInstance().apply(trasctrizione_audio, risposta);
+        double similarity = 1 - ((double) distance / Math.max(trasctrizione_audio.length(), risposta.length()));
+
+        return similarity > 0.8;
     }
 }

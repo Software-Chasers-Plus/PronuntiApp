@@ -13,10 +13,14 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import android.widget.ImageView;
 
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
+
+import com.assemblyai.api.AssemblyAI;
+import com.assemblyai.api.resources.transcripts.types.*;
 
 public class FirebaseHelper {
     private static MediaPlayer mediaPlayer;
@@ -111,5 +115,15 @@ public class FirebaseHelper {
                 FirebaseHelper.creaArrayListEsercizi(document));
 
         return scheda;
+    }
+
+    public static Optional<String> audioToText(String url){
+        AssemblyAI client = AssemblyAI.builder()
+                .apiKey("286ee5eb6e504845b16116ed09264ed9" )
+                .build();
+
+        Transcript transcript = client.transcripts().transcribe(url);
+
+        return transcript.getText();
     }
 }
