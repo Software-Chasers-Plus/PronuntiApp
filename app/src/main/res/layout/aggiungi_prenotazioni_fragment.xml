@@ -85,15 +85,41 @@
             android:visibility="gone"/>
     </RelativeLayout>
 
-    <EditText
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <RadioGroup
+    android:id="@+id/ora_inputPrenotazione"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/radio_button_1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ora_inputPrenotazione"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:hint="ora prenotazione"
-        android:textColor="@color/black"/>
+        android:layout_height="match_parent"
+        android:buttonTint="@color/black"
+        android:text="9:30"/>
+    <RadioButton
+        android:id="@+id/radio_button_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:buttonTint="@color/black"
+        android:text="11:00"/>
+    <RadioButton
+        android:id="@+id/radio_button_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:buttonTint="@color/black"
+        android:text="15:00"/>
+    <RadioButton
+        android:id="@+id/radio_button_4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:buttonTint="@color/black"
+        android:text="16:30"/>
+    <RadioButton
+        android:id="@+id/radio_button_5"
+        android:layout_width="match_parent"
+        android:buttonTint="@color/black"
+        android:layout_height="match_parent"
+        android:text="18:00"/>
+</RadioGroup>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

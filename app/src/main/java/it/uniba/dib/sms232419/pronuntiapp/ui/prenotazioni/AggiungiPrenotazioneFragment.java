@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -93,7 +95,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
         super.onViewCreated(view,savedInstanceState);
         EditText logopedistaPrenotazione=view.findViewById(R.id.logopedista_inputPrenotazione);
         EditText dataPrenotazione=view.findViewById(R.id.data_inputPrenotazione);
-        EditText oraPrenotazione=view.findViewById(R.id.ora_inputPrenotazione);
+        RadioGroup oraPrenotazione=view.findViewById(R.id.ora_inputPrenotazione);
         EditText notePrenotazione = view.findViewById(R.id.note_inputPrenotazione);
         ImageView iconaCalendario = view.findViewById(R.id.imageViewCalendarPrenotazione);
 
@@ -156,7 +158,16 @@ public class AggiungiPrenotazioneFragment extends Fragment {
             public void onClick(View v) {
                 String logopedista = logopedistiId.get(selectedLogopedist);
                 String data = dataPrenotazione.getText().toString().trim();
-                String ora = oraPrenotazione.getText().toString().trim();
+                String ora;
+                if(oraPrenotazione.getCheckedRadioButtonId()!=-1) {
+                    RadioButton selectedRadioButton = view.findViewById(oraPrenotazione.getCheckedRadioButtonId());
+                    ora = selectedRadioButton.getText().toString();
+                }
+                else{
+                    ora="";
+                }
+
+                // Ottieni il testo del RadioButton selezionato
                 String note = notePrenotazione.getText().toString().trim();
                 if (logopedista==null || data.isEmpty() || ora.isEmpty() || note.isEmpty()) {
                     Toasty.error(getContext(), "Inserisci tutti i dati!", Toast.LENGTH_SHORT).show();
