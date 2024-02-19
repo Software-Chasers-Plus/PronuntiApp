@@ -23,6 +23,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import es.dmoral.toasty.Toasty;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -174,7 +176,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                                 if(task.isSuccessful())
                                 {
                                     prenotazioni.add(new Prenotazione(data,ora,logopedista,genitoreUid));
-                                    Toast.makeText(mActivity, "Prenotazione aggiunta con successo", Toast.LENGTH_SHORT).show();
+                                    Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_prenotazioni);
 
