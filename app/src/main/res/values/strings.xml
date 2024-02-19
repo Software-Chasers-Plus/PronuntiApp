@@ -189,6 +189,10 @@
     <string name="note_prenotazione_label">Note appuntamento:</string>
     <string name="note_prenotazione">note prenotazione</string>
     <string name="elimina_prenotazione">Elimina prenotazione...</string>
+    <string name="esercizio_gioco_tipologia_1">Esercizio gioco tipologia 1</string>
+    <string name="riproduci_aiuto">Riproduci aiuto:</string>
+    <string name="aiuti_utilizzati">Aiuti utilizzati:</string>
+    <string name="inserisci_risposta">Inserisci la risposta:</string>
+    <string name="conferma_risposta">CONFERMA RISPOSTA</string>
     <string name="tipologia_esercizio">Tipologia esercizio:</string>
-
 </resources>
