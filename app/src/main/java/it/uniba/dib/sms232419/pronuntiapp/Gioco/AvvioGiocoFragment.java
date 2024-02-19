@@ -14,11 +14,23 @@ import android.widget.ImageView;
 
 import it.uniba.dib.sms232419.pronuntiapp.LoginFragment;
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 
 public class AvvioGiocoFragment extends Fragment {
 
     private boolean isMediaPlayerPaused = false;
+    private Scheda scheda;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Recupera la scheda selezionata dall'utente
+        if(getArguments() != null && getArguments().getParcelable("scheda") != null) {
+            scheda = getArguments().getParcelable("scheda");
+            Log.d("AvvioGiocoFragment", "Scheda: " + scheda.getNome() + " caricata");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,9 +72,11 @@ public class AvvioGiocoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Avvia la transizione al fragment GiocoFragment e lo aggiunge al back stack
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("scheda", scheda);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.avvio_gioco_fragment, GiocoFragment.class, null)
+                        .replace(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
                         .addToBackStack(null) // Aggiunge al back stack
                         .commit();
             }

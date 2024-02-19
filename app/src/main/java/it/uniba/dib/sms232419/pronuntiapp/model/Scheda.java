@@ -101,4 +101,8 @@ public class Scheda implements Parcelable {
     public Object getLogopedista() {
         return logopedista;
     }
+
+    public ArrayList<ArrayList<String>> getEsercizi() {
+        return esercizi;
+    }
 }

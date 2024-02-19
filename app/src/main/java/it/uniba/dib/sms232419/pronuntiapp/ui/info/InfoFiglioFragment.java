@@ -291,7 +291,11 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
 
         // Aggiunta dei pulsanti
         builder.setPositiveButton("Si", (dialog, which) -> {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", schedaList.get(position));
             Intent intent = new Intent(getActivity(), GiocoActivity.class);
+            intent.putExtras(bundle);
+            Log.d(TAG, "Avvio gioco con la scheda: " + schedaList.get(position).getNome());
             startActivity(intent);
         });
 
