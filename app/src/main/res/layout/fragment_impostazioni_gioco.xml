@@ -91,14 +91,14 @@
         android:gravity="center_horizontal">
 
 
-    <ImageView
-        android:id="@+id/audio"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBottom="@id/seekBar"
-        android:layout_toStartOf="@id/seekBar"
-        android:src="@drawable/audio_on"
-        android:layout_gravity="center"/>
+        <ImageView
+            android:id="@+id/audio"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@id/seekBar"
+            android:layout_toStartOf="@id/seekBar"
+            android:src="@drawable/audio_on"
+            android:layout_gravity="center"/>
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -177,8 +177,7 @@
                     android:id="@+id/personaggio_selezionato_immagine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/panda"/>
+                    android:layout_margin="10dp"/>
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

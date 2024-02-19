@@ -204,9 +204,9 @@ public class ImpostazioniGiocoFragment extends Fragment{
         // Inizializza la lista di personaggi del gioco
         ArrayList<Integer> personaggiGioco = new ArrayList<>();
         personaggiGioco.add(R.drawable.leone);
-        personaggiGioco.add(R.drawable.coccodrillo);
+        personaggiGioco.add(R.drawable.husky);
         personaggiGioco.add(R.drawable.serpente);
-        personaggiGioco.add(R.drawable.panda);
+        personaggiGioco.add(R.drawable.pinguino);
 
         ImageView personaggio = view.findViewById(R.id.personaggio_selezionato_immagine);
         // Imposta l'immagine del personaggio selezionato
@@ -217,13 +217,13 @@ public class ImpostazioniGiocoFragment extends Fragment{
                 personaggioSelezionato.setText(R.string.leone);
                 break;
             case 1:
-                personaggioSelezionato.setText(R.string.coccodrillo);
+                personaggioSelezionato.setText(R.string.husky);
                 break;
             case 2:
                 personaggioSelezionato.setText(R.string.serpente);
                 break;
             case 3:
-                personaggioSelezionato.setText(R.string.panda);
+                personaggioSelezionato.setText(R.string.pinguino);
                 break;
         }
 
@@ -254,13 +254,13 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         personaggioSelezionato.setText(R.string.leone);
                         break;
                     case 1:
-                        personaggioSelezionato.setText(R.string.coccodrillo);
+                        personaggioSelezionato.setText(R.string.husky);
                         break;
                     case 2:
                         personaggioSelezionato.setText(R.string.serpente);
                         break;
                     case 3:
-                        personaggioSelezionato.setText(R.string.panda);
+                        personaggioSelezionato.setText(R.string.pinguino);
                         break;
                 }
             }
@@ -298,13 +298,13 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         personaggioSelezionato.setText(R.string.leone);
                         break;
                     case 1:
-                        personaggioSelezionato.setText(R.string.coccodrillo);
+                        personaggioSelezionato.setText(R.string.husky);
                         break;
                     case 2:
                         personaggioSelezionato.setText(R.string.serpente);
                         break;
                     case 3:
-                        personaggioSelezionato.setText(R.string.panda);
+                        personaggioSelezionato.setText(R.string.pinguino);
                         break;
                 }
             }

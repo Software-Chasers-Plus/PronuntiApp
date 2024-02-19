@@ -184,5 +184,7 @@
     <string name="audio_1_non_disponibile">Aiuto 1 non disponibile</string>
     <string name="audio_2_non_disponibile">Aiuto 2 non disponibile</string>
     <string name="audio_3_non_disponibile">Aiuto 3 non disponibile</string>
+    <string name="husky">Husky</string>
+    <string name="pinguino">Pinguino</string>
 
 </resources>

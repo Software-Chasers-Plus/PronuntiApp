@@ -1,5 +1,7 @@
 package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +26,9 @@ public class GameView extends View {
     private int checkpointHeight;
     private Paint roadPaint;
     private GiocoActivity giocoActivity;
+    private int xPersonaggio,yPersonaggio;
+    private Bitmap personaggioImage;
+    private int checkPointAttuale;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,10 +60,29 @@ public class GameView extends View {
         roadPaint.setColor(Color.GRAY);
         roadPaint.setStrokeWidth(20);
         roadPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
+        switch (giocoActivity.personaggioSelezionato){
+            case 0:
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
+                break;
+            case 1:
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.husky);
+                break;
+            case 2:
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.serpente);
+                break;
+            case 3:
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.pinguino);
+                break;
+        }
+        xPersonaggio = checkpointXPositions[0];
+        yPersonaggio = checkpointYPositions[0];
+        checkPointAttuale = 0;
     }
 
     private void calculateCheckpointPositions() {
-        int numCheckpoints = 7; // Numero di checkpoint desiderati
+        int numCheckpoints = 5; // Numero di checkpoint desiderati
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
 
@@ -111,43 +136,29 @@ public class GameView extends View {
         redPaint.setStyle(Paint.Style.STROKE);
         redPaint.setStrokeWidth(5); // Imposta lo spessore del contorno
 
+        int centerX, centerY;
+
         for (int i = 0; i < checkpointXPositions.length; i++) {
             // Ridimensiona l'immagine del checkpoint
             Bitmap scaledCheckpoint = Bitmap.createScaledBitmap(checkpointImage, checkpointWidth, checkpointHeight, true);
             canvas.drawBitmap(scaledCheckpoint, checkpointXPositions[i], checkpointYPositions[i], null);
 
             // Calcola il centro del checkpoint
-            int centerX = checkpointXPositions[i] + checkpointWidth / 2;
-            int centerY = checkpointYPositions[i] + checkpointHeight / 2;
+            centerX = checkpointXPositions[i] + checkpointWidth / 2;
+            centerY = checkpointYPositions[i] + checkpointHeight / 2;
 
             // Disegna un cerchio rosso attorno al checkpoint
             canvas.drawCircle(centerX, centerY, checkpointWidth / 2 + 5, redPaint); // Aggiungi 5 per compensare lo spessore del contorno
 
-            // Disegna un personaggio sopra il primo checkpoint
-            if (i == 0) {
-                // Assumiamo che il personaggio sia rappresentato da un'immagine chiamata "personaggioImage"
-                //seleziona l'immagine del personaggio
-                Bitmap personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
-                switch (giocoActivity.personaggioSelezionato){
-                    case 0:
-                        personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
-                        break;
-                    case 1:
-                        personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.coccodrillo);
-                        break;
-                    case 2:
-                        personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.serpente);
-                        break;
-                    case 3:
-                        personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.panda);
-                        break;
-                }
-                int personaggioWidth = 100; // Larghezza del personaggio
-                int personaggioHeight = 100; // Altezza del personaggio
-                Bitmap scaledPersonaggio = Bitmap.createScaledBitmap(personaggioImage, personaggioWidth, personaggioHeight, true);
-                canvas.drawBitmap(scaledPersonaggio, centerX - personaggioWidth / 2, centerY - personaggioHeight / 2, null);
-            }
+
         }
+        // Calcola il centro del checkpoint
+        centerX = xPersonaggio + checkpointWidth / 2;
+        centerY = yPersonaggio + checkpointHeight / 2;
+        int personaggioWidth = 170; // Larghezza del personaggio
+        int personaggioHeight = 170; // Altezza del personaggio
+        Bitmap scaledPersonaggio = Bitmap.createScaledBitmap(personaggioImage, personaggioWidth, personaggioHeight, true);
+        canvas.drawBitmap(scaledPersonaggio, centerX - personaggioWidth / 2, centerY - personaggioHeight / 2, null);
     }
 
 
@@ -161,8 +172,17 @@ public class GameView extends View {
             for (int i = 0; i < checkpointXPositions.length; i++) {
                 if (touchX >= checkpointXPositions[i] && touchX <= checkpointXPositions[i] + checkpointWidth
                         && touchY >= checkpointYPositions[i] && touchY <= checkpointYPositions[i] + checkpointHeight) {
-                    // Esegui un'azione quando viene toccato un checkpoint
-                    break;
+                    if(i == checkPointAttuale + 1 || i == checkPointAttuale - 1) {
+                        checkPointAttuale = i;
+                        // Esegui un'azione quando viene toccato un checkpoint
+                        ObjectAnimator animX = ObjectAnimator.ofFloat(this, "personaggioX", xPersonaggio, checkpointXPositions[i]);
+                        ObjectAnimator animY = ObjectAnimator.ofFloat(this, "personaggioY", yPersonaggio, checkpointYPositions[i]);
+                        AnimatorSet animSetXY = new AnimatorSet();
+                        animSetXY.playTogether(animX, animY);
+                        animSetXY.setDuration(1000); // Imposta la durata dell'animazione in millisecondi (1 secondo)
+                        animSetXY.start();
+                        break;
+                    }
                 }
             }
         }
@@ -174,5 +194,25 @@ public class GameView extends View {
         path.moveTo(startX, startY);
         path.cubicTo(controlX1, controlY1, controlX2, controlY2, endX, endY);
         return path;
+    }
+
+    // Metodi getter e setter per personaggioX
+    public float getPersonaggioX() {
+        return xPersonaggio;
+    }
+
+    public void setPersonaggioX(float x) {
+        xPersonaggio = (int) x;
+        invalidate(); // Richiama onDraw() per ridisegnare la vista con la nuova posizione del personaggio
+    }
+
+    // Metodi getter e setter per personaggioY
+    public float getPersonaggioY() {
+        return yPersonaggio;
+    }
+
+    public void setPersonaggioY(float y) {
+        yPersonaggio = (int) y;
+        invalidate(); // Richiama onDraw() per ridisegnare la vista con la nuova posizione del personaggio
     }
 }
