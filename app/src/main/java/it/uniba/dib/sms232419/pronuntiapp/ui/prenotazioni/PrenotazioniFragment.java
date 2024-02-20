@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
+import dev.shreyaspatil.MaterialDialog.MaterialDialog;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
@@ -169,33 +172,29 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
 
     @Override
     public void onEliminaClick(int position) {
-        Log.d("PrenotazioniFragment","Cliccato bottone eliminazione");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Eliminazione prenotazione\n");
-        builder.setMessage("Sei sicuro di voler eliminare questa prenotazione?");
-        builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
 
-        // Personalizzazione dello stile dell'AlertDialog
-        builder.setIcon(R.drawable.alert_svgrepo_com); // Icona critica
-
-        // Aggiunta dei pulsanti
-        builder.setPositiveButton("Si", (dialog, which) -> {
-            // Cancellazione prenotazione
-
-            db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).delete();
-            prenotazioni.remove(prenotazioni.get(position));
-            recyclerView.getAdapter().notifyDataSetChanged();
-
-        });
-
-        builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.dismiss();
-        });
+        BottomSheetMaterialDialog mDialog = new BottomSheetMaterialDialog.Builder(getActivity())
+                .setTitle("Eliminazione prenotazione")
+                .setMessage("Sei sicuro di voler eliminare questa prenotazione?")
+                .setCancelable(false)
+                .setAnimation(R.raw.delete_anim)
+                .setPositiveButton("Si", (dialogInterface, which) -> {
+                    // Cancellazione prenotazione
+                    db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).delete();
+                    prenotazioni.remove(prenotazioni.get(position));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("No", (dialogInterface, which) -> {
+                    dialogInterface.dismiss();
+                })
+                .setAnimation("delete_anim.json")
+                .build();
 
 
-        // Mostra il dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        // Show Dialog
+        mDialog.show();
+
     }
 
 }
