@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 
@@ -24,11 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
-import dev.shreyaspatil.MaterialDialog.MaterialDialog;
 import dev.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import es.dmoral.toasty.Toasty;
 
@@ -41,8 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import org.checkerframework.checker.units.qual.A;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -54,11 +49,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityGenitore;
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
-import it.uniba.dib.sms232419.pronuntiapp.model.Logopedista;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
 public class AggiungiPrenotazioneFragment extends Fragment {
@@ -129,15 +123,15 @@ public class AggiungiPrenotazioneFragment extends Fragment {
 
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         logopedisti = new ArrayList<>();
-        HashMap<String,String> logopedistiId = new HashMap<>();
+        HashMap<String, String> logopedistiId = new HashMap<>();
         db.collection("logopedisti").get().addOnCompleteListener(querySnapshot -> {
             if(querySnapshot.isSuccessful())
             {
                 for(QueryDocumentSnapshot document: querySnapshot.getResult()) {
                     if(document.getId() != null && document.get("Email")!= null)
                     {
-                        logopedisti.add( document.get("Email").toString());
-                        logopedistiId.put(document.get("Email").toString(),document.getId());
+                        logopedisti.add(document.get("Email").toString());
+                        logopedistiId.put(document.get("Email").toString(), document.getId());
                     }
 
                 }
@@ -188,6 +182,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
 
+
                 String ora;
                 if(oraPrenotazione.getCheckedRadioButtonId()!=-1) {
                     RadioButton selectedRadioButton = view.findViewById(oraPrenotazione.getCheckedRadioButtonId());
@@ -197,12 +192,16 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                     ora="";
                 }
 
+                // TODO: Aggiungere controllo per vedere se la prenotazione esiste già nel DB
+                // TODO: Mettere campo email al posto dell'UID
+
                 // Ottieni il testo del RadioButton selezionato
                 String note = notePrenotazione.getText().toString().trim();
                 if (logopedista == null || data.isEmpty() || ora.isEmpty() ) {
                     Toasty.error(getContext(), "Inserisci tutti i dati", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
 
                 BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(getActivity())
                         .setAnimation(R.raw.lottie_first_confirm)
@@ -212,7 +211,6 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                         .setPositiveButton("Conferma", R.drawable.confirm_svgrepo_com, new BottomSheetMaterialDialog.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
-                                // dialog di conferma
 
                                 // Salvataggio prenotazione nel database
                                 String genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -231,11 +229,10 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                                 if(task.isSuccessful())
                                                 {
-                                                    prenotazioni.add(new Prenotazione(task.getResult().getId(),data,ora,logopedista,genitoreUid,note));
+                                                    prenotazioni.add(new Prenotazione(task.getResult().getId(), data, ora, logopedista, genitoreUid, note));
                                                     Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
                                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                                     navController.navigate(R.id.navigation_prenotazioni);
-
                                                 }
                                             }
                                         });
@@ -257,6 +254,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onDestroyView() {
