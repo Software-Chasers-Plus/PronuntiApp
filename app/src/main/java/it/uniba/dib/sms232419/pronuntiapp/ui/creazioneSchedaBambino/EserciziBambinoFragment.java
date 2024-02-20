@@ -342,24 +342,27 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
         Log.d(TAG, "Esercizi ricevuti: " + checkedPositions);
         for (int i = 0; i < checkedPositions.size(); i++) {
+            final int finalI = i; // Make a final copy of i for use inside the lambda expression
             //Recupero l'id dell'esercizio selezionato
             db.collection("esercizi")
-                    .whereEqualTo("nome", eserciziList.get(checkedPositions.get(i)).getNome().toString())
+                    .whereEqualTo("nome", eserciziList.get(checkedPositions.get(finalI)).getNome().toString())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, "Esercizio ID: " + document.getId());
                                 eserciziSelezionati.add(document.getId());
-                                Log.d(TAG, "Esercizi selezionati diocane: " + eserciziSelezionati);
+                                Log.d(TAG, "Esercizi selezionati: " + eserciziSelezionati);
+                                // Check if this is the last iteration, then call caricaSchedaFirebase
+                                if (finalI == checkedPositions.size() - 1) {
+                                    caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
+                                }
                             }
                         } else {
                             Log.e(TAG, "Errore durante la query per gli esercizi", task.getException());
                         }
                     });
         }
-
-        //Salvo la scheda nel database
-        caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
     }
- }
+
+}
