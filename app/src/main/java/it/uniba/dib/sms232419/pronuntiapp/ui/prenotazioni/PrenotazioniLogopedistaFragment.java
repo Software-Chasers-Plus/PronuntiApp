@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
 import it.uniba.dib.sms232419.pronuntiapp.R;
@@ -139,31 +140,23 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
     @Override
     public void onConfermaClick(int position) {
         Log.d("PrenotazioniLogopedistaFragment","Cliccato bottone conferma prenotazione");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Conferma prenotazione\n");
-        builder.setMessage("Sei sicuro di voler confermare questa prenotazione?");
-        builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
 
-        // Personalizzazione dello stile dell'AlertDialog
-        builder.setIcon(R.drawable.alert_svgrepo_com); // Icona critica
+        BottomSheetMaterialDialog mDialog = new BottomSheetMaterialDialog.Builder(getActivity())
+                .setTitle("Conferma prenotazione")
+                .setMessage("Sei sicuro di voler confermare questa prenotazione?")
+                .setCancelable(false)
+                .setPositiveButton("Si", (dialogInterface, which) -> {
+                    // Cancellazione prenotazione
+                    db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).update("conferma",true);
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("No", (dialogInterface, which) -> {
+                    dialogInterface.dismiss();
+                })
+                .build();
 
-        // Aggiunta dei pulsanti
-        builder.setPositiveButton("Si", (dialog, which) -> {
-            // Cancellazione prenotazione
-            db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).update("conferma",true);
-
-            recyclerView.getAdapter().notifyDataSetChanged();
-
-        });
-
-        builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.dismiss();
-        });
-
-
-        // Mostra il dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        mDialog.show();
     }
 
 }
