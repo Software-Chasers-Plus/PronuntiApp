@@ -52,16 +52,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/data_inputPrenotazione"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/textInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_edittext"
-            android:layout_marginTop="20dp"
-            android:padding="8dp"
-            android:hint="Data prenotazione"
-            android:textColor="@color/black"/>
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:hint="Data di prenotazione">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/data_inputPrenotazione"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageView
             android:id="@+id/imageViewCalendarPrenotazione"
