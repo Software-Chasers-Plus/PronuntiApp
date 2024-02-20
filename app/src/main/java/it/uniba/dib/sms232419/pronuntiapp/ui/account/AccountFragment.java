@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentAccountBinding;
@@ -138,30 +139,24 @@ public class AccountFragment extends Fragment {
             public void onClick(View v) {
                 // Credo dialog per confermare il logout
                 // Creo dialog di conferma
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Stai per effettuare il logout.\n");
-                builder.setMessage("Sei sicuro di voler uscire?");
-                builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
+                BottomSheetMaterialDialog mDialog = new BottomSheetMaterialDialog.Builder(getActivity())
+                        .setTitle("Stai per effettuare il logout.")
+                        .setAnimation(R.raw.logout_anim)
+                        .setMessage("Sei sicuro di voler uscire?")
+                        .setCancelable(false)
+                        .setPositiveButton("Si", (dialogInterface, which) -> {
+                            // Logout
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(getActivity(), AccessoActivity.class));
+                            getActivity().finish();
+                        })
+                        .setNegativeButton("No", (dialogInterface, which) -> {
+                            dialogInterface.dismiss();
+                        })
+                        .setAnimation("logout_anim.json")
+                        .build();
 
-                // Personalizzazione dello stile dell'AlertDialog
-                builder.setIcon(R.drawable.alert_svgrepo_com); // Icona critica
-
-                // Aggiunta dei pulsanti
-                builder.setPositiveButton("Si", (dialog, which) -> {
-                    // Logout
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(getActivity(), AccessoActivity.class));
-                    getActivity().finish();
-                });
-
-                builder.setNegativeButton("No", (dialog, which) -> {
-                    dialog.dismiss();
-                });
-
-
-                // Mostra il dialog
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                mDialog.show();
             }
         });
 

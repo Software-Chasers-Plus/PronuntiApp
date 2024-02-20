@@ -173,6 +173,11 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                 // Definisci il formato per la data inserita dall'utente
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 try {
+                    if(data.isEmpty())
+                    {
+                        Toasty.error(getContext(), "Inserisci la data", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Date dataInserita = dateFormat.parse(dataPrenotazione.getText().toString());
                     if(dataInserita.compareTo(dataCorrente) < 0)
                     {
