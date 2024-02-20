@@ -256,7 +256,8 @@ public class LoginFragment extends Fragment {
                                         userId,
                                         childData.get("dataNascita").toString(),
                                         Integer.parseInt(childData.get("idAvatar").toString()),
-                                        childData.get("token").toString()
+                                        childData.get("token").toString(),
+                                        (long) childData.get("punteggioGioco")
                                 ));
                             } else {
                                 childrenList.add(new Figlio(
@@ -267,7 +268,8 @@ public class LoginFragment extends Fragment {
                                         userId,
                                         childData.get("dataNascita").toString(),
                                         Integer.parseInt(childData.get("idAvatar").toString()),
-                                        childData.get("token").toString()
+                                        childData.get("token").toString(),
+                                        (long) childData.get("punteggioGioco")
                                 ));
                             }
 
@@ -296,7 +298,8 @@ public class LoginFragment extends Fragment {
                                     patientData.get("genitore").toString(),
                                     patientData.get("dataNascita").toString(),
                                     Integer.parseInt(patientData.get("idAvatar").toString()),
-                                    patientData.get("token").toString()
+                                    patientData.get("token").toString(),
+                                    (long)patientData.get("punteggioGioco")
                             ));
                         }
                         startMainActivityLogopedista(patientsList, MainActivityLogopedista.class);

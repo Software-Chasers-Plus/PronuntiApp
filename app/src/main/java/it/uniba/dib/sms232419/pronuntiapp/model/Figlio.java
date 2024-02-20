@@ -17,7 +17,9 @@ public class Figlio implements Parcelable {
     private int idAvatar;
     private String token;
 
-    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita, int idAvatar, String token) {
+    private long punteggioGioco;
+
+    public Figlio(String nome, String cognome, String codiceFiscale, String Logopedista, String emailGenitore, String dataNascita, int idAvatar, String token, long punteggioGioco) {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = codiceFiscale;
@@ -26,6 +28,7 @@ public class Figlio implements Parcelable {
         this.dataNascita = dataNascita;
         this.idAvatar = idAvatar;
         this.token = token;
+        this.punteggioGioco = punteggioGioco;
     }
 
     protected Figlio(Parcel in) {
@@ -81,6 +84,8 @@ public class Figlio implements Parcelable {
 
     public String getToken() {return token;}
 
+    public long getPunteggioGioco() {return punteggioGioco;}
+
     @Override
     public int describeContents() {
         return 0;
@@ -96,5 +101,6 @@ public class Figlio implements Parcelable {
         parcel.writeString(dataNascita);
         parcel.writeInt(idAvatar);
         parcel.writeString(token);
+        parcel.writeLong(punteggioGioco);
     }
 }
