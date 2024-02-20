@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,6 +72,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+
+        // Setto l'animazione
+        LottieAnimationView lottieAnimationView = findViewById(R.id.animation_splash);
+        lottieAnimationView.setAnimation(R.raw.animation_splash);
+        lottieAnimationView.playAnimation();
 
         // The TypeWriterView is a simple extension of the TextView class that provides a typing animation.
         TypeWriterView typeWriterView = findViewById(R.id.text_pronuntiapp);
