@@ -146,7 +146,7 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
                 .setMessage("Sei sicuro di voler confermare questa prenotazione?")
                 .setCancelable(false)
                 .setPositiveButton("Si", (dialogInterface, which) -> {
-                    // Cancellazione prenotazione
+                    // Conferma prenotazione
                     db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).update("conferma",true);
                     recyclerView.getAdapter().notifyDataSetChanged();
                     dialogInterface.dismiss();
@@ -159,4 +159,32 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
         mDialog.show();
     }
 
+    @Override
+    public void onEliminaClick(int position) {
+        BottomSheetMaterialDialog mDialog = new BottomSheetMaterialDialog.Builder(getActivity())
+                .setTitle("Eliminazione prenotazione")
+                .setMessage("Sei sicuro di voler eliminare questa prenotazione?")
+                .setCancelable(false)
+                .setAnimation(R.raw.delete_anim)
+                .setPositiveButton("Si", (dialogInterface, which) -> {
+                    // Cancellazione prenotazione
+                    db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).delete();
+                    prenotazioni.remove(prenotazioni.get(position));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("No", (dialogInterface, which) -> {
+                    dialogInterface.dismiss();
+                })
+                .setAnimation("delete_anim.json")
+                .build();
+
+
+        // Show Dialog
+        mDialog.show();
+
+    }
+
 }
+
+

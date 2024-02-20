@@ -70,6 +70,8 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
 
     private RecyclerView recyclerView;
 
+    private RecyclerView recyclerViewLogopedisti;
+
 
     private Genitore genitore;
 
@@ -139,6 +141,7 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.prenotazioni_recycler_view);
+        recyclerViewLogopedisti = view.findViewById(R.id.prenotazioni_logopedista_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivityGenitore.getApplicationContext()));
 
         // Ottieni gli ID degli avatar dai figli
