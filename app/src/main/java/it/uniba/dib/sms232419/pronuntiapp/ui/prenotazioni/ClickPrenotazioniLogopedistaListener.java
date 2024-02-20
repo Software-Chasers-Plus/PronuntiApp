@@ -6,4 +6,6 @@ public interface ClickPrenotazioniLogopedistaListener {
 
     void onConfermaClick(int position);
 
+    void onEliminaClick(int position);
+
 }

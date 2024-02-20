@@ -13,7 +13,7 @@ public class PrenotazioniLogopedistaHolderView extends RecyclerView.ViewHolder i
     TextView textViewLogopedistaFiglio, textViewDataPrenotazione, textViewOraPrenotazione,textViewNotePrenotazione;
     ImageView imageViewNonConfermato,imageViewConfermato;
 
-    Button confermaButton;
+    Button confermaButton,eliminaButton;
     private ClickPrenotazioniLogopedistaListener clickPrenotazioniLogopedistaListener;
 
     // Costruttore che riceve un'istanza di ClickListener
@@ -31,10 +31,16 @@ public class PrenotazioniLogopedistaHolderView extends RecyclerView.ViewHolder i
         imageViewConfermato = itemView.findViewById(R.id.myImageViewConfermato);
         imageViewNonConfermato = itemView.findViewById(R.id.myImageView);
         confermaButton = itemView.findViewById(R.id.conferma_prenotazione_button);
+        eliminaButton = itemView.findViewById(R.id.elimina_prenotazione_logopedista_button);
         confermaButton.setOnClickListener(v -> {
             if(clickPrenotazioniLogopedistaListener != null)
                 clickPrenotazioniLogopedistaListener.onConfermaClick(getAdapterPosition());
 
+        });
+
+        eliminaButton.setOnClickListener(v -> {
+            if(clickPrenotazioniLogopedistaListener != null)
+                clickPrenotazioniLogopedistaListener.onEliminaClick(getAdapterPosition());
         });
 
     }

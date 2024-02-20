@@ -128,6 +128,19 @@
             android:text="Conferma"
             app:cornerRadius="8dp" />
 
+        <Button
+            android:id="@+id/elimina_prenotazione_logopedista_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignBaseline="@id/informazioni_prenotazione_label"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="22dp"
+            android:backgroundTint="@color/red"
+            android:text="@string/elimina"
+            app:cornerRadius="8dp" />
+
 
         <ImageView
             android:id="@+id/myImageView"
