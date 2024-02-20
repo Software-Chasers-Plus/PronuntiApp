@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -68,6 +69,11 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_esercizio_gioco_tipologia1, container, false);
 
         layout = view.findViewById(R.id.esercizio_tipologia1);
+        TextView esercizioGiocoTipologia1 = view.findViewById(R.id.esercizioGiocoTipologia1);
+        CardView cardView = view.findViewById(R.id.cardViewEsercizioTipologia1);
+        TextView titoloEsercizioTipologia1 = view.findViewById(R.id.titoloEsercizioTipologia1);
+        TextView aiutiUtilizzati = view.findViewById(R.id.aiutiUtilizzati);
+        TextView risposta_lable = view.findViewById(R.id.risposta_lable);
 
         storage = FirebaseStorage.getInstance();
 
@@ -77,12 +83,27 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         switch (giocoActivity.sfondoSelezionato) {
             case 0:
                 layout.setBackgroundResource(R.drawable.deserto);
+                esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.primaryDeserto));
+                cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
+                titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdDeserto));
+                aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdDeserto));
+                risposta_lable.setTextColor(getResources().getColor(R.color.thirdDeserto));
                 break;
             case 1:
                 layout.setBackgroundResource(R.drawable.antartide);
+                esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
+                titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                risposta_lable.setTextColor(getResources().getColor(R.color.thirdAntartide));
                 break;
             case 2:
                 layout.setBackgroundResource(R.drawable.giungla);
+                esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.secondaryGiungla));
+                cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
+                titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdGiungla));
+                aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdGiungla));
+                risposta_lable.setTextColor(getResources().getColor(R.color.thirdGiungla));
                 break;
         }
         return view;
@@ -124,6 +145,15 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                         }
                     }
                 });
+
+        // Registrazione risposta
+        FloatingActionButton rispostaButton = view.findViewById(R.id.risposta);
+        rispostaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia la registrazione della risposta
+            }
+        });
 
 
     }
@@ -215,5 +245,4 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
             }
         }
     }
-
 }

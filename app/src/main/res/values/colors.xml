@@ -41,7 +41,7 @@
 
     <color name="primaryDeserto">#FFE0B2</color> <!-- Sabbia -->
     <color name="secondaryDeserto">#FFB74D</color> <!-- Arancione terra -->
-    <color name="thirdDeserto">#8D6E63</color> <!-- Marrone chiaro -->
+    <color name="thirdDeserto">#C1846B</color> <!-- Marrone chiaro -->
 
 
     <color name="primaryAntartide">#64B5F6</color>
@@ -51,7 +51,7 @@
 
     <color name="primaryGiungla">#689F38</color> <!-- Verde -->
     <color name="secondaryGiungla">#33691E</color> <!-- Verde più scuro -->
-    <color name="thirdGiungla">#FFD740</color> <!-- Giallo -->
+    <color name="thirdGiungla">#1E716D</color>
 
 
 </resources>
