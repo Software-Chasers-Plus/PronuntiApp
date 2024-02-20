@@ -199,6 +199,7 @@ public class SplashActivity extends AppCompatActivity {
                                 boolean isAbilitato = document.getBoolean("Abilitazione");
                                 if (isAbilitato) {
                                     retrievePazientiForLogopedista(auth);
+                                    retrieveAppuntamentiForLogopedista(auth);
                                 } else {
                                     fecthCompletato = true;
                                 }
@@ -273,6 +274,48 @@ public class SplashActivity extends AppCompatActivity {
                                             prenotazione.get("ora").toString(),
                                            "",
                                             currentUser.getUid(),
+                                            prenotazione.get("note").toString()
+                                    ));
+                                }
+
+                            }
+                            loggato = true;
+                            fecthCompletato = true;
+                            mHandler.sendEmptyMessage(FECTH_TERMINATO);
+                        }
+                    }
+                });
+    }
+
+    private void retrieveAppuntamentiForLogopedista(final FirebaseAuth auth)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("prenotazioni")
+                .whereEqualTo("logopedista", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> prenotazione = document.getData();
+
+                                if(prenotazione.get("genitore") != null){
+                                    prenotazioni.add(new Prenotazione(
+                                            document.getId(),
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            currentUser.getUid(),
+                                            prenotazione.get("logopedista").toString(),
+                                            prenotazione.get("note").toString()
+                                    ));
+                                }else{
+                                    prenotazioni.add(new Prenotazione(
+                                            document.getId(),
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            currentUser.getUid(),
+                                            "",
                                             prenotazione.get("note").toString()
                                     ));
                                 }

@@ -77,4 +77,10 @@
         android:label="Ritorno all'elenco degli esercizi"
         tools:layout="@layout/fragment_esercizi" />
 
+    <fragment
+        android:id="@+id/navigation_prenotazioni_logopedista"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PrenotazioniLogopedistaFragment"
+        android:label="Prenotazioni"
+        tools:layout="@layout/fragment_prenotazioni_logopedista"/>
+
 </navigation>

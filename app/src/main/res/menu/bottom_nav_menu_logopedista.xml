@@ -12,8 +12,15 @@
         android:title="@string/title_esercizi" />
 
     <item
+        android:id="@+id/navigation_prenotazioni_logopedista"
+        android:icon="@drawable/baseline_access_time_24"
+        android:title="Prenotazioni"/>
+
+    <item
         android:id="@+id/navigation_notifications_logopedista"
         android:icon="@drawable/baseline_account_circle_24"
         android:title="@string/title_account" />
+
+
 
 </menu>

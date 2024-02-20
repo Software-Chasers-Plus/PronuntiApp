@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,40 +14,37 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
-import es.dmoral.toasty.Toasty;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
-public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolderView> {
+public class PrenotazioniLogopedistaAdapter extends RecyclerView.Adapter<PrenotazioniLogopedistaHolderView>{
     private Context context;
     private List<Prenotazione> items;
-    ClickPrenotazioniListener clickPrenotazioniListener;
+    ClickPrenotazioniLogopedistaListener clickPrenotazioniLogopedistaListener;
 
     private FirebaseFirestore db;
 
 
-    public PrenotazioniAdapter(Context context, List<Prenotazione> items, FirebaseFirestore db, ClickPrenotazioniListener listener) {
+    public PrenotazioniLogopedistaAdapter(Context context, List<Prenotazione> items, FirebaseFirestore db, ClickPrenotazioniLogopedistaListener listener) {
         this.context = context;
         this.items = items;
-        this.clickPrenotazioniListener = listener;
+        this.clickPrenotazioniLogopedistaListener = listener;
         this.db = db;
     }
 
     @NonNull
     @Override
-    public PrenotazioniHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PrenotazioniHolderView(LayoutInflater.from(context).inflate(R.layout.item_prenotazioni_view, parent, false), clickPrenotazioniListener);
+    public PrenotazioniLogopedistaHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new PrenotazioniLogopedistaHolderView(LayoutInflater.from(context).inflate(R.layout.item_prenotazioni_logopedista_view, parent, false), clickPrenotazioniLogopedistaListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PrenotazioniHolderView holder, int position) {
+    public void onBindViewHolder(@NonNull PrenotazioniLogopedistaHolderView holder, int position) {
         Prenotazione prenotazione = items.get(position);
         holder.textViewDataPrenotazione.setText(prenotazione.getData());
         holder.textViewOraPrenotazione.setText(prenotazione.getOra());
         holder.textViewNotePrenotazione.setText(prenotazione.getNote());
-
 
         db.collection("prenotazioni")
                 .document(prenotazione.getPrenotazioneId())
@@ -59,6 +55,8 @@ public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolder
                         if (documentSnapshot.exists()) {
                             boolean conferma = documentSnapshot.getBoolean("conferma");
                             if (conferma) {
+                                holder.confermaButton.setText("Confermato");
+                                holder.confermaButton.setEnabled(false);
                                 holder.imageViewNonConfermato.setVisibility(View.GONE);
                                 holder.imageViewConfermato.setVisibility(View.VISIBLE);
                             } else {
@@ -67,6 +65,7 @@ public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolder
                         }
                     }
                 });
+
 
         db.collection("logopedisti")
                 .document(prenotazione.getLogopedista())
@@ -88,28 +87,14 @@ public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolder
                     }
                 });
 
-        holder.imageViewConfermato.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toasty.success(context, "La tua prenotazione è stata confermata!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.imageViewNonConfermato.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toasty.info(context, "Prenotazione in attesa di conferma.",Toast.LENGTH_SHORT).show();
-            }
-        });
-
         // Imposta il click listener sull'elemento della RecyclerView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
-                if (clickPrenotazioniListener != null && adapterPosition != RecyclerView.NO_POSITION) {
+                if (clickPrenotazioniLogopedistaListener != null && adapterPosition != RecyclerView.NO_POSITION) {
                     // Passa l'indice dell'elemento cliccato al listener
-                    clickPrenotazioniListener.onItemClick(adapterPosition);
+                    clickPrenotazioniLogopedistaListener.onItemClick(adapterPosition);
                 }
             }
         });
@@ -120,4 +105,3 @@ public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolder
         return items.size();
     }
 }
-

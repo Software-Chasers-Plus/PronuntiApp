@@ -224,8 +224,8 @@ public class LoginFragment extends Fragment {
                             // Verifica che il campo "abilitazione" sia impostato a true
                             boolean isAbilitato = Boolean.TRUE.equals(document.getBoolean(getString(R.string.abilitazione)));
                             if (isAbilitato) {
+                                retrieveAppuntamentiForLogopedista(userId);
                                 retrievePatients(userId);
-                                retrieveAppuntamentiForGenitore(userId);
                             } else {
                                 Toasty.error(mActivity, R.string.non_ancora_abilitato_come_logopedista, Toast.LENGTH_SHORT).show();
                             }
@@ -347,6 +347,49 @@ public class LoginFragment extends Fragment {
                 });
     }
 
+    private void retrieveAppuntamentiForLogopedista(String userId) {
+
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("prenotazioni")
+                .whereEqualTo("logopedista", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> prenotazione = document.getData();
+
+
+                                if (prenotazione.get("genitore") != null) {
+                                    prenotazioni.add(new Prenotazione(
+                                            document.getId(),
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            userId,
+                                            prenotazione.get("genitore").toString(),
+                                            prenotazione.get("note").toString()
+                                    ));
+                                } else {
+                                    prenotazioni.add(new Prenotazione(
+                                            document.getId(),
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            userId,
+                                            "",
+                                            prenotazione.get("note").toString()
+                                    ));
+                                }
+                            }
+                            bundle.putParcelableArrayList("prenotazioni", (ArrayList<? extends Parcelable>) prenotazioni);
+                        }
+                    }
+                });
+    }
+
 
 
 
@@ -356,7 +399,7 @@ public class LoginFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), activityClass);
         intent.putExtras(bundle);
-
+        Log.d("LoginFragment","Activity STARTATA");
         startActivity(intent);
         mActivity.finish();
     }

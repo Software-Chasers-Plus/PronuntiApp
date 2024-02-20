@@ -19,6 +19,7 @@ import java.util.List;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainLogopedistaBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
+import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 import it.uniba.dib.sms232419.pronuntiapp.ui.home.ClickFigliListener;
 
 public class MainActivityLogopedista extends AppCompatActivity{
@@ -28,6 +29,7 @@ public class MainActivityLogopedista extends AppCompatActivity{
     private ActivityMainLogopedistaBinding binding;
 
     public List<Figlio> figli ;
+    public List<Prenotazione> prenotazioni;
     public List<Genitore> genitori;
 
     @Override
@@ -41,6 +43,7 @@ public class MainActivityLogopedista extends AppCompatActivity{
             if(src.getExtras() != null){
                 Bundle bundle = src.getExtras();
                 figli = bundle.getParcelableArrayList("figli");
+                prenotazioni= bundle.getParcelableArrayList("prenotazioni");
                 Log.d("MainActivityLogopedista", "onCreate: " + figli.size());
             }else{
                 Log.d("MainActivityLogopedista", "src.getExtras() è null");
