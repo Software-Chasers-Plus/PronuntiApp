@@ -71,7 +71,9 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
     String path_audio2;
     String path_audio3;
 
-    String audioName;
+    String audioName1;
+    String audioName2;
+    String audioName3;
 
     String descrizione_immagine;
 
@@ -93,10 +95,6 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Record to the external cache directory for visibility
-        audioName = getActivity().getExternalCacheDir().getAbsolutePath();
-        audioName += "/audiorecord.mp3";
-
         ImageView imageView = view.findViewById(R.id.image_view);
         ImageButton upload_audio1_button = view.findViewById(R.id.upload_audio1_button);
         ImageButton upload_audio2_button = view.findViewById(R.id.upload_audio2_button);
@@ -107,12 +105,21 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
         ImageButton record_audio1_button = view.findViewById(R.id.record_audio1_button);
         ImageButton play_audio1_button = view.findViewById(R.id.play_audio1_button);
+        // Record to the external cache directory for visibility
+        audioName1 = getActivity().getExternalCacheDir().getAbsolutePath();
+        audioName1 += "/audiorecord1.mp3";
 
         ImageButton record_audio2_button = view.findViewById(R.id.record_audio2_button);
         ImageButton play_audio2_button = view.findViewById(R.id.play_audio2_button);
+        // Record to the external cache directory for visibility
+        audioName2 = getActivity().getExternalCacheDir().getAbsolutePath();
+        audioName2 += "/audiorecord2.mp3";
 
         ImageButton record_audio3_button = view.findViewById(R.id.record_audio3_button);
         ImageButton play_audio3_button = view.findViewById(R.id.play_audio3_button);
+        // Record to the external cache directory for visibility
+        audioName3 = getActivity().getExternalCacheDir().getAbsolutePath();
+        audioName3 += "/audiorecord3.mp3";
 
 
         /*
@@ -174,7 +181,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
                 @Override
                 public void onPermissionsGranted() {
-                    audioUri1 = recordAudio(record_audio1_button);
+                    audioUri1 = recordAudio(record_audio1_button, audioName1);
                     // Ottieni il riferimento all'EditText per il testo dell'audio 1
                     TextView testo_audio1 = requireView().findViewById(R.id.audio1_testo);
                     // Esegui la logica per caricare l'audio e l'immagine
@@ -197,7 +204,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         });
 
         play_audio1_button.setOnClickListener(v -> {
-            RecordAudio.onPlay(mStartPlaying , audioName);
+            RecordAudio.onPlay(mStartPlaying , audioName1);
             if (mStartPlaying) {
                 play_audio1_button.setImageResource(R.drawable.pause_icon_white_24);
             } else {
@@ -218,7 +225,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
                 @Override
                 public void onPermissionsGranted() {
-                    audioUri2 = recordAudio(record_audio2_button);
+                    audioUri2 = recordAudio(record_audio2_button, audioName2);
                     // Ottieni il riferimento all'EditText per il testo dell'audio 1
                     TextView testo_audio2 = requireView().findViewById(R.id.audio2_testo);
                     // Esegui la logica per caricare l'audio e l'immagine
@@ -241,7 +248,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         });
 
         play_audio2_button.setOnClickListener(v -> {
-            RecordAudio.onPlay(mStartPlaying , audioName);
+            RecordAudio.onPlay(mStartPlaying , audioName2);
             if (mStartPlaying) {
                 play_audio2_button.setImageResource(R.drawable.pause_icon_white_24);
             } else {
@@ -262,7 +269,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             PermissionManager.requestPermissions(EsercizioDenominazioneImmagine.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, new PermissionManager.PermissionListener() {
                 @Override
                 public void onPermissionsGranted() {
-                    audioUri3 = recordAudio(record_audio3_button);
+                    audioUri3 = recordAudio(record_audio3_button, audioName3);
                     // Ottieni il riferimento all'EditText per il testo dell'audio 1
                     TextView testo_audio3 = requireView().findViewById(R.id.audio3_testo);
                     // Esegui la logica per caricare l'audio e l'immagine
@@ -285,7 +292,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         });
 
         play_audio3_button.setOnClickListener(v -> {
-            RecordAudio.onPlay(mStartPlaying , audioName);
+            RecordAudio.onPlay(mStartPlaying , audioName3);
             if (mStartPlaying) {
                 play_audio3_button.setImageResource(R.drawable.pause_icon_white_24);
             } else {
@@ -598,7 +605,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         void onUploadComplete(boolean success, String id_immagine);
     }
 
-    private Uri recordAudio(ImageButton record_audio_button) {
+    private Uri recordAudio(ImageButton record_audio_button, String audioName) {
         Uri audioUri = null;
 
         RecordAudio.onRecord(mStartRecording, audioName);
