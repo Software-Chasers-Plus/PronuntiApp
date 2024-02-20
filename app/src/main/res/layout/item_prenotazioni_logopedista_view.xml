@@ -115,6 +115,7 @@
         <!-- CardView per l'avatar del figlio con ombra -->
 
         <!-- ImageView per l'avatar del figlio -->
+
         <Button
             android:id="@+id/conferma_prenotazione_button"
             android:layout_width="wrap_content"
@@ -122,16 +123,17 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="26dp"
+            android:layout_marginRight="22dp"
             android:backgroundTint="@color/blu_principale"
             android:text="Conferma"
             app:cornerRadius="8dp" />
+
 
         <ImageView
             android:id="@+id/myImageView"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:src="@drawable/baseline_access_time_24"
+            android:src="@drawable/wait_hourglass_svgrepo_com"
             android:layout_marginRight="15dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
@@ -141,7 +143,7 @@
             android:id="@+id/myImageViewConfermato"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:src="@drawable/img_checkmark_blue_a200"
+            android:src="@drawable/ballot_box_with_check_svgrepo_com"
             android:layout_marginRight="15dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
