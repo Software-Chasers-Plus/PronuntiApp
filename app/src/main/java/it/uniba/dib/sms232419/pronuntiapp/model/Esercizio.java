@@ -18,6 +18,9 @@ public class Esercizio implements Parcelable {
         this.tipologia = tipologia;
     }
 
+    public Esercizio() {
+    }
+
     protected Esercizio(Parcel in) {
         esercizioId = in.readString();
         nome = in.readString();

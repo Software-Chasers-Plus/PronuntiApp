@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
@@ -45,7 +46,7 @@ public class FirebaseHelper {
         });
     }
 
-    private static void startAudioPlayback(StorageReference storageRef, FloatingActionButton button) {
+    public static void startAudioPlayback(StorageReference storageRef, FloatingActionButton button) {
         // Download the audio file
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -66,8 +67,35 @@ public class FirebaseHelper {
                         public void onPrepared(MediaPlayer mp) {
                             // Start playing the audio
                             mp.start();
-                            button.setImageResource(R.drawable.pause_icon_white_24);                        }
+                            button.setImageResource(R.drawable.pause_icon_white_24);
+
+                            // Set up click listener for the button
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (mp.isPlaying()) {
+                                        // If audio is playing, pause it
+                                        mp.pause();
+                                        button.setImageResource(R.drawable.baseline_play_arrow_24);
+                                    } else {
+                                        // If audio is paused, resume playing
+                                        mp.start();
+                                        button.setImageResource(R.drawable.pause_icon_white_24);
+                                    }
+                                }
+                            });
+                        }
                     });
+
+                    // Set up a listener for when the MediaPlayer completes playback
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // Reset the icon to play when audio completes
+                            button.setImageResource(R.drawable.baseline_play_arrow_24);
+                        }
+                    });
+
                 } catch (IOException e) {
                     // Handle any errors
                     e.printStackTrace();
@@ -75,6 +103,8 @@ public class FirebaseHelper {
             }
         });
     }
+
+
 
     public static void downloadImmagine(ImageView immagine, String pathImmagine) {
         // Create a storage reference from our app
@@ -116,6 +146,7 @@ public class FirebaseHelper {
 
         return scheda;
     }
+
 
     public static Optional<String> audioToText(String url){
         AssemblyAI client = AssemblyAI.builder()
