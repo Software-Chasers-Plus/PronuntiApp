@@ -14,10 +14,12 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.model.Esercizio;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia1;
 
 public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
-    private String esercizio;
+    private EsercizioTipologia1 esercizio;
     private int sfondoSelezionato = 0;
     private ConstraintLayout layout;
     private GiocoActivity giocoActivity;
@@ -27,8 +29,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Recupera l'esercizio selezionato dall'utente
-        if (getArguments() != null && getArguments().getString("esercizio") != null) {
-            esercizio = getArguments().getString("esercizio");
+        if (getArguments() != null && getArguments().getParcelable("esercizio") != null) {
+            esercizio = getArguments().getParcelable("esercizio");
             Log.d("EsercizioGiocoFragmentTipologia1", "Scheda: " + esercizio + " caricata");
         }
     }

@@ -229,7 +229,7 @@ public class GameView extends View {
                     }
                 } else if (touchX >= xBottone && touchX <= xBottone + 170
                         && touchY >= yBottone && touchY <= yBottone + 170) {
-                        giocoActivity.avviaEsercizio(scheda.getEsercizi().get(checkPointAttuale));
+                        giocoActivity.avviaEsercizio(checkPointAttuale);
                 }
             }
         }

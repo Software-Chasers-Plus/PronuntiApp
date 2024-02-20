@@ -12,10 +12,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
 
 public class EsercizioGiocoFragmentTipologia2 extends Fragment {
 
-    private String esercizio;
+    private EsercizioTipologia2 esercizio;
     private GiocoActivity giocoActivity;
     private ConstraintLayout layout;
     @Override
@@ -23,8 +24,8 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Recupera la scheda selezionata dall'utente
-        if(getArguments() != null && getArguments().getString("esercizio") != null) {
-            esercizio = getArguments().getString("esercizio");
+        if(getArguments() != null && getArguments().getParcelable("esercizio") != null) {
+            esercizio = getArguments().getParcelable("esercizio");
             Log.d("EsercizioGiocoFragmentTipologia2", "Scheda: " +esercizio+ " caricata");
         }
     }

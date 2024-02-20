@@ -123,10 +123,10 @@ android:layout_height="match_parent"
             android:id="@+id/risposta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginLeft="10dp"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/upload_audio"
             android:backgroundTint="@color/default_impostazioni"
-            app:srcCompat="@drawable/baseline_play_arrow_24"/>
+            app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
         <ImageView
             android:id="@+id/elimina_risopsta"
             android:layout_width="wrap_content"

@@ -1,11 +1,13 @@
 package it.uniba.dib.sms232419.pronuntiapp.model;
 
 import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
-public class EsercizioTipologia1 extends Esercizio {
+public class EsercizioTipologia1 extends Esercizio implements Parcelable {
     private String immagine;
     private String descrizione_immagine;
     private String audio1;

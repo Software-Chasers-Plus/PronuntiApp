@@ -175,54 +175,40 @@ public class GiocoActivity extends AppCompatActivity {
         }
     }
 
-    public void avviaEsercizio(ArrayList<String> esercizio){
-        db = FirebaseFirestore.getInstance();
+    public void avviaEsercizio(int position){
 
-       // Cerchiamo negli esercizi di quale tipologia è l'esercizio selezionato
-        db.collection("esercizi")
-                .document(esercizio.get(0))
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d("GiocoActivity", "Esercizio Trovato");
-                                Map<String, Object> nuovoEsercizio = document.getData();
-                                if(nuovoEsercizio.get("tipologia").toString().equals("1")){
-                                    // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia1 e lo aggiunge al back stack
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("esercizio", esercizio.get(0));
-                                    getSupportFragmentManager().beginTransaction()
-                                            .setReorderingAllowed(true)
-                                            .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia1.class, bundle)
-                                            .commit();
-                                }else if(nuovoEsercizio.get("tipologia").toString().equals("2")){
-                                    // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia2 e lo aggiunge al back stack
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("esercizio", esercizio.get(0));
-                                    getSupportFragmentManager().beginTransaction()
-                                            .setReorderingAllowed(true)
-                                            .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia2.class, bundle)
-                                            .commit();
-                                }else if(nuovoEsercizio.get("tipologia").toString().equals("3")){
-                                    // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia3 e lo aggiunge al back stack
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("esercizio", esercizio.get(0));
-                                    getSupportFragmentManager().beginTransaction()
-                                            .setReorderingAllowed(true)
-                                            .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia3.class, bundle)
-                                            .commit();
-                                }
-                            } else {
-                                // Stampa nel log un messaggio di errore
-                                Log.d("GiocoActivity", "No esercizio con id:" + esercizio.get(0));
-                            }
-                        } else {
-                            Log.d("GiocoActivity", "Task fallito");
-                        }
-                    }
-                });
+        switch (Integer.valueOf(esercizi.get(position).getTipologia())){
+            case 1:
+                EsercizioTipologia1 esercizio1 = (EsercizioTipologia1)esercizi.get(position);
+                // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia1 e lo aggiunge al back stack
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("esercizio", esercizio1);
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia1.class, bundle)
+                        .commit();
+                break;
+            case 2:
+                EsercizioTipologia2 esercizio2 = (EsercizioTipologia2)esercizi.get(position);
+                // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia2 e lo aggiunge al back stack
+                Bundle bundle2 = new Bundle();
+                bundle2.putParcelable("esercizio", esercizio2);
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia2.class, bundle2)
+                        .commit();
+                break;
+            case 3:
+                EsercizioTipologia3 esercizio3 = (EsercizioTipologia3)esercizi.get(position);
+                // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia3 e lo aggiunge al back stack
+                Bundle bundle3 = new Bundle();
+                bundle3.putParcelable("esercizio", esercizio3);
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia3.class, bundle3)
+                        .commit();
+                break;
+        }
+
     }
 }

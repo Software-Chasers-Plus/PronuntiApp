@@ -6,9 +6,8 @@ import android.os.Parcelable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.apache.commons.text.similarity.LevenshteinDistance;
 
-public class EsercizioTipologia3 extends Esercizio {
+public class EsercizioTipologia3 extends Esercizio implements Parcelable{
     private String audio;
     private String immagine1;
     private String immagine2;
