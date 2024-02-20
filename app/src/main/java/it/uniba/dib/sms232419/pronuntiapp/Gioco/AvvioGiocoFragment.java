@@ -81,5 +81,18 @@ public class AvvioGiocoFragment extends Fragment {
                         .commit();
             }
         });
+
+        ImageView classificaButton = view.findViewById(R.id.classifica_button);
+        classificaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia la transizione al fragment ClassificaGiocoFragment e lo aggiunge al back stack
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.avvio_gioco_fragment, ClassificaGiocoFragment.class, null)
+                        .addToBackStack(null) // Aggiunge al back stack
+                        .commit();
+            }
+        });
     }
 }
