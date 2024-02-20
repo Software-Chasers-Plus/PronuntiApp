@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:textColor="@color/black" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -136,16 +137,14 @@
         android:textColor="@color/red"
         android:visibility="gone" />
 
-    <EditText
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/note_inputPrenotazione"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/note_inputPrenotazione"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="20dp"
-        android:padding="8dp"
+        android:inputType="text"
         android:hint="@string/note_prenotazione"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

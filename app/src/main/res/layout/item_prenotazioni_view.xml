@@ -112,20 +112,21 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="6dp"/>
 
+        <!-- CardView per l'avatar del figlio con ombra -->
+
+        <!-- ImageView per l'avatar del figlio -->
         <Button
             android:id="@+id/elimina_prenotazione_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="@string/elimina"
             android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="26dp"
             android:backgroundTint="@color/red"
-            app:cornerRadius="8dp"
-            android:layout_gravity="center_vertical|end"/>
+            android:text="@string/elimina"
+            app:cornerRadius="8dp" />
 
-        <!-- CardView per l'avatar del figlio con ombra -->
-
-        <!-- ImageView per l'avatar del figlio -->
         <ImageView
             android:id="@+id/myImageView"
             android:layout_width="75dp"

@@ -26,6 +26,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
+import dev.shreyaspatil.MaterialDialog.MaterialDialog;
+import dev.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import es.dmoral.toasty.Toasty;
 
 
@@ -40,8 +44,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,13 +128,13 @@ public class AggiungiPrenotazioneFragment extends Fragment {
         });
 
         FirebaseFirestore db= FirebaseFirestore.getInstance();
-        logopedisti=new ArrayList<>();
-        HashMap<String,String> logopedistiId=new HashMap<>();
+        logopedisti = new ArrayList<>();
+        HashMap<String,String> logopedistiId = new HashMap<>();
         db.collection("logopedisti").get().addOnCompleteListener(querySnapshot -> {
             if(querySnapshot.isSuccessful())
             {
                 for(QueryDocumentSnapshot document: querySnapshot.getResult()) {
-                    if(document.getId()!=null && document.get("Email")!= null)
+                    if(document.getId() != null && document.get("Email")!= null)
                     {
                         logopedisti.add( document.get("Email").toString());
                         logopedistiId.put(document.get("Email").toString(),document.getId());
@@ -156,8 +164,25 @@ public class AggiungiPrenotazioneFragment extends Fragment {
         confermaAggiungiPrenotazione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String logopedista = logopedistiId.get(selectedLogopedist);
                 String data = dataPrenotazione.getText().toString().trim();
+
+                // Ottieni la data corrente
+                Date dataCorrente = new Date();
+                // Definisci il formato per la data inserita dall'utente
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date dataInserita = dateFormat.parse(dataPrenotazione.getText().toString());
+                    if(dataInserita.compareTo(dataCorrente) < 0)
+                    {
+                        Toasty.error(getContext(), "La data inserita è precedente a quella odierna", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
                 String ora;
                 if(oraPrenotazione.getCheckedRadioButtonId()!=-1) {
                     RadioButton selectedRadioButton = view.findViewById(oraPrenotazione.getCheckedRadioButtonId());
@@ -169,35 +194,61 @@ public class AggiungiPrenotazioneFragment extends Fragment {
 
                 // Ottieni il testo del RadioButton selezionato
                 String note = notePrenotazione.getText().toString().trim();
-                if (logopedista==null || data.isEmpty() || ora.isEmpty() || note.isEmpty()) {
-                    Toasty.error(getContext(), "Inserisci tutti i dati!", Toast.LENGTH_SHORT).show();
+                if (logopedista == null || data.isEmpty() || ora.isEmpty() ) {
+                    Toasty.error(getContext(), "Inserisci tutti i dati", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //Salvataggio prenotazione nel database
-                String genitoreUid=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseFirestore db= FirebaseFirestore.getInstance();
-                Map<String,Object> prenotazione=new HashMap<>();
-                prenotazione.put("genitore",genitoreUid);
-                prenotazione.put("logopedista",logopedista);
-                prenotazione.put("data",data);
-                prenotazione.put("ora",ora);
-                prenotazione.put("note",note);
-                prenotazione.put("conferma",false);
-                db.collection("prenotazioni")
-                        .add(prenotazione)
-                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if(task.isSuccessful())
-                                {
-                                    prenotazioni.add(new Prenotazione(task.getResult().getId(),data,ora,logopedista,genitoreUid,note));
-                                    Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-                                    navController.navigate(R.id.navigation_prenotazioni);
 
-                                }
+                BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(getActivity())
+                        .setAnimation(R.raw.lottie_first_confirm)
+                        .setTitle("Sei sicuro di voler procedere?")
+                        .setMessage("Il logopedista dovrà CONFERMARE la prenotazionde dell'appuntamento.")
+                        .setCancelable(false)
+                        .setPositiveButton("Conferma", R.drawable.confirm_svgrepo_com, new BottomSheetMaterialDialog.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                // dialog di conferma
+
+                                // Salvataggio prenotazione nel database
+                                String genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                FirebaseFirestore db= FirebaseFirestore.getInstance();
+                                Map<String, Object> prenotazione = new HashMap<>();
+                                prenotazione.put("genitore", genitoreUid);
+                                prenotazione.put("logopedista", logopedista);
+                                prenotazione.put("data", data);
+                                prenotazione.put("ora", ora);
+                                prenotazione.put("note", note);
+                                prenotazione.put("conferma", false);
+                                db.collection("prenotazioni")
+                                        .add(prenotazione)
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    prenotazioni.add(new Prenotazione(task.getResult().getId(),data,ora,logopedista,genitoreUid,note));
+                                                    Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
+                                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                                                    navController.navigate(R.id.navigation_prenotazioni);
+
+                                                }
+                                            }
+                                        });
+                                dialogInterface.dismiss();
                             }
-                        });
+                        })
+                        .setNegativeButton("Annulla operazione", R.drawable.delete_icon, new BottomSheetMaterialDialog.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setAnimation("lottie_first_confirm.json")
+                        .build();
+
+                // Show Dialog
+                mBottomSheetDialog.show();
+
             }
         });
     }

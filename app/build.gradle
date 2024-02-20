@@ -56,4 +56,14 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.5.2'
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'com.assemblyai:assemblyai-java:1.0.0'
+
+    // Material Dialog Library
+    implementation 'dev.shreyaspatil.MaterialDialog:MaterialDialog:2.2.3'
+
+    // Material Design Library
+    implementation 'com.google.android.material:material:1.0.0'
+
+    // Lottie Animation Library
+    implementation 'com.airbnb.android:lottie:3.3.6'
+
 }
