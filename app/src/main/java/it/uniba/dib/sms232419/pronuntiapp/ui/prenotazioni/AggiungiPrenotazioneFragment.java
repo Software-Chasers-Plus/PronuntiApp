@@ -63,6 +63,9 @@ public class AggiungiPrenotazioneFragment extends Fragment {
 
     private String selectedLogopedist="";
     private MainActivityGenitore mActivity;
+    private String uidLog = "";
+    boolean prenotazioneTrovataAsync;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,6 +164,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
 
                 String logopedista = logopedistiId.get(selectedLogopedist);
                 String data = dataPrenotazione.getText().toString().trim();
+                String note = notePrenotazione.getText().toString();
 
                 // Ottieni la data corrente
                 Date dataCorrente = new Date();
@@ -192,66 +196,117 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                     ora="";
                 }
 
-                // TODO: Aggiungere controllo per vedere se la prenotazione esiste già nel DB
-                // TODO: Mettere campo email al posto dell'UID
+
 
                 // Ottieni il testo del RadioButton selezionato
-                String note = notePrenotazione.getText().toString().trim();
-                if (logopedista == null || data.isEmpty() || ora.isEmpty() ) {
+                if (logopedista == null || ora.isEmpty() ) {
                     Toasty.error(getContext(), "Inserisci tutti i dati", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                // controllo che la data inserita non sia empty
+                // fare retrieve uid del logopedista data la mail
+                db.collection("logopedisti")
+                        .whereEqualTo("Email", selectedLogopedist)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if(task.isSuccessful())
+                            {
+                                for(QueryDocumentSnapshot document: task.getResult()) {
+                                    // stampa in log
+                                    uidLog = document.getId();
+                                    Log.d("AggiungiPrenotazioneFragment", "UID LOGOPEDISTA1: "+uidLog);
+                                }
 
-                BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(getActivity())
-                        .setAnimation(R.raw.lottie_first_confirm)
-                        .setTitle("Sei sicuro di voler procedere?")
-                        .setMessage("Il logopedista dovrà CONFERMARE la prenotazionde dell'appuntamento.")
-                        .setCancelable(false)
-                        .setPositiveButton("Conferma", R.drawable.confirm_svgrepo_com, new BottomSheetMaterialDialog.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
-
-                                // Salvataggio prenotazione nel database
-                                String genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                FirebaseFirestore db= FirebaseFirestore.getInstance();
-                                Map<String, Object> prenotazione = new HashMap<>();
-                                prenotazione.put("genitore", genitoreUid);
-                                prenotazione.put("logopedista", logopedista);
-                                prenotazione.put("data", data);
-                                prenotazione.put("ora", ora);
-                                prenotazione.put("note", note);
-                                prenotazione.put("conferma", false);
                                 db.collection("prenotazioni")
-                                        .add(prenotazione)
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                if(task.isSuccessful())
-                                                {
-                                                    prenotazioni.add(new Prenotazione(task.getResult().getId(), data, ora, logopedista, genitoreUid, note));
-                                                    Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
-                                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-                                                    navController.navigate(R.id.navigation_prenotazioni);
+                                        .whereEqualTo("logopedista", uidLog)
+                                        .whereEqualTo("data", data.toString())
+                                        .whereEqualTo("ora", ora.toString())
+                                        .whereEqualTo("conferma", true)
+                                        .get()
+                                        .addOnCompleteListener(task2 -> {
+                                            if(task2.isSuccessful()){
+                                                prenotazioneTrovataAsync = !task2.getResult().isEmpty();
+                                                if (prenotazioneTrovataAsync) {
+                                                    Toasty.error(getContext(), "Prenotazione già esistente", Toast.LENGTH_SHORT).show();
                                                 }
+                                                else{
+                                                    // controllo che non sia stata inserita già una richiesta di prenotazione con quell'orario dallo stesso genitore
+                                                    db.collection("prenotazioni")
+                                                            .whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                            .whereEqualTo("logopedista", uidLog)
+                                                            .whereEqualTo("data", data.toString())
+                                                            .whereEqualTo("ora", ora.toString())
+                                                            .whereEqualTo("conferma", false)
+                                                            .get()
+                                                            .addOnCompleteListener(task3 -> {
+                                                                if(task3.isSuccessful()){
+                                                                    prenotazioneTrovataAsync = !task3.getResult().isEmpty();
+                                                                    if (prenotazioneTrovataAsync) {
+                                                                        Toasty.warning(getContext(), "Richiesta di prenotazione già esistente, attendi che venga confermata", Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                    else{
+                                                                        BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(getActivity())
+                                                                                .setAnimation(R.raw.lottie_first_confirm)
+                                                                                .setTitle("Sei sicuro di voler procedere?")
+                                                                                .setMessage("Il logopedista dovrà CONFERMARE la prenotazionde dell'appuntamento.")
+                                                                                .setCancelable(false)
+                                                                                .setPositiveButton("Conferma", R.drawable.confirm_svgrepo_com, new BottomSheetMaterialDialog.OnClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(DialogInterface dialogInterface, int which) {
+
+                                                                                        // Salvataggio prenotazione nel database
+                                                                                        String genitoreUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                                                                        FirebaseFirestore db= FirebaseFirestore.getInstance();
+                                                                                        Map<String, Object> prenotazione = new HashMap<>();
+                                                                                        prenotazione.put("genitore", genitoreUid);
+                                                                                        prenotazione.put("logopedista", logopedista);
+                                                                                        prenotazione.put("data", data);
+                                                                                        prenotazione.put("ora", ora);
+                                                                                        prenotazione.put("note", note);
+                                                                                        prenotazione.put("conferma", false);
+                                                                                        db.collection("prenotazioni")
+                                                                                                .add(prenotazione)
+                                                                                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                        if(task.isSuccessful())
+                                                                                                        {
+                                                                                                            prenotazioni.add(new Prenotazione(task.getResult().getId(), data, ora, logopedista, genitoreUid, note));
+                                                                                                            Toasty.success(mActivity, "Prenotazione aggiunta con successo!", Toast.LENGTH_SHORT).show();
+                                                                                                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                                                                                                            navController.navigate(R.id.navigation_prenotazioni);
+                                                                                                        }
+                                                                                                    }
+                                                                                                });
+                                                                                        dialogInterface.dismiss();
+                                                                                    }
+                                                                                })
+                                                                                .setNegativeButton("Annulla operazione", R.drawable.delete_icon, new BottomSheetMaterialDialog.OnClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(DialogInterface dialogInterface, int which) {
+                                                                                        dialogInterface.dismiss();
+                                                                                    }
+                                                                                })
+                                                                                .setAnimation("lottie_first_confirm.json")
+                                                                                .build();
+
+                                                                        // Show Dialog
+                                                                        mBottomSheetDialog.show();
+                                                                    }
+                                                                }
+                                                            });
+
+
+                                                } // end if asincrono
                                             }
                                         });
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("Annulla operazione", R.drawable.delete_icon, new BottomSheetMaterialDialog.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setAnimation("lottie_first_confirm.json")
-                        .build();
+                            } // end if
+                        });
 
-                // Show Dialog
-                mBottomSheetDialog.show();
 
-            }
+
+            } // end onClick() principale
         });
     }
 

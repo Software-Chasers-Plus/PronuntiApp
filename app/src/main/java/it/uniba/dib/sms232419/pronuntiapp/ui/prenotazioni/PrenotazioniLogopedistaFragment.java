@@ -145,6 +145,7 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
                 .setTitle("Conferma prenotazione")
                 .setMessage("Sei sicuro di voler confermare questa prenotazione?")
                 .setCancelable(false)
+                .setAnimation(R.raw.confirm_prenotation_logoped)
                 .setPositiveButton("Si", (dialogInterface, which) -> {
                     // Conferma prenotazione
                     db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).update("conferma",true);
@@ -154,6 +155,7 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
                 .setNegativeButton("No", (dialogInterface, which) -> {
                     dialogInterface.dismiss();
                 })
+                .setAnimation("confirm_prenotation_logoped.json")
                 .build();
 
         mDialog.show();
