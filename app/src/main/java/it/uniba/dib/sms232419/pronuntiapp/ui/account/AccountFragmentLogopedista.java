@@ -55,8 +55,8 @@ public class AccountFragmentLogopedista extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            nomeLogopedista.setText(getString(R.string.ciao) + task.getResult().getString(String.valueOf(R.string.name)) + "!");
-                            nomeFull.setText(task.getResult().getString(String.valueOf(R.string.name)) + " " + task.getResult().getString(String.valueOf(R.string.surname)));
+                            nomeLogopedista.setText("Ciao, " + task.getResult().getString("Nome") + "!");
+                            nomeFull.setText(task.getResult().getString("Nome") + " " + task.getResult().getString("Cognome"));
                         }
         });
 
