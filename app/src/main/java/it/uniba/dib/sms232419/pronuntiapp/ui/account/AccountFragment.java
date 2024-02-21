@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
@@ -27,18 +29,16 @@ import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentAccountBinding;
 public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AccountViewModel accountViewModel =
-                new ViewModelProvider(this).get(AccountViewModel.class);
+        new ViewModelProvider(this).get(AccountViewModel.class);
 
         binding = FragmentAccountBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AccountFragment extends Fragment {
 
         // Retrieve nome e cognome genitore
         db.collection("genitori")
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -95,11 +95,9 @@ public class AccountFragment extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-
                         // Set DataRegistrazione
                         TextView account_tipo_utente = view.findViewById(R.id.dettaglio_account_tipo_utente);
-                        account_tipo_utente.setText("Genitore");
+                        account_tipo_utente.setText(R.string.genitore);
                     }
                 });
 
@@ -107,56 +105,26 @@ public class AccountFragment extends Fragment {
         EditText account_email = view.findViewById(R.id.dettaglio_account_email_genitore);
         account_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
-
-        /*
-        // retrieve codice fiscale
-        db.collection("genitori")
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // DocumentSnapshot contiene i dati del documento
-                        if (task.getResult().exists()) {
-                            String codiceFiscale = task.getResult().getString("CodiceFiscale");
-                            // Ora puoi fare qualcosa con il codice fiscale, ad esempio stamparlo
-                            TextView account_codice_fiscale = view.findViewById(R.id.codice_fiscale);
-                            account_codice_fiscale.setText(codiceFiscale);
-                        }
-                    } else {
-                        // Gestisci eventuali errori nel recupero dei dati
-                        Exception exception = task.getException();
-                        if (exception != null) {
-                            exception.printStackTrace();
-                        }
-                    }
-                });
-         */
-
         LinearLayout logout = view.findViewById(R.id.logout_textView);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Credo dialog per confermare il logout
-                // Creo dialog di conferma
-                BottomSheetMaterialDialog mDialog = new BottomSheetMaterialDialog.Builder(getActivity())
-                        .setTitle("Stai per effettuare il logout.")
-                        .setAnimation(R.raw.logout_anim)
-                        .setMessage("Sei sicuro di voler uscire?")
-                        .setCancelable(false)
-                        .setPositiveButton("Si", (dialogInterface, which) -> {
-                            // Logout
-                            FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(getActivity(), AccessoActivity.class));
-                            getActivity().finish();
-                        })
-                        .setNegativeButton("No", (dialogInterface, which) -> {
-                            dialogInterface.dismiss();
-                        })
-                        .setAnimation("logout_anim.json")
-                        .build();
+        logout.setOnClickListener(v -> {
+            // Credo dialog per confermare il logout
+            // Creo dialog di conferma
+            BottomSheetMaterialDialog mDialog = new BottomSheetMaterialDialog.Builder(requireActivity())
+                    .setTitle("Stai per effettuare il logout.")
+                    .setAnimation(R.raw.logout_anim)
+                    .setMessage("Sei sicuro di voler uscire?")
+                    .setCancelable(false)
+                    .setPositiveButton("Si", (dialogInterface, which) -> {
+                        // Logout
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getActivity(), AccessoActivity.class));
+                        requireActivity().finish();
+                    })
+                    .setNegativeButton("No", (dialogInterface, which) -> dialogInterface.dismiss())
+                    .setAnimation("logout_anim.json")
+                    .build();
 
-                mDialog.show();
-            }
+            mDialog.show();
         });
 
     }
