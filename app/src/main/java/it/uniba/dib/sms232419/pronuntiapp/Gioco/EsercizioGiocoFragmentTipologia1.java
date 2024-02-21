@@ -1,7 +1,8 @@
 package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -31,9 +32,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -49,6 +53,7 @@ import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.FirebaseHelper;
+import it.uniba.dib.sms232419.pronuntiapp.LoginFragment;
 import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.RecordAudio;
@@ -74,6 +79,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     boolean mStartRecording = true;
     boolean mStartPlaying = true;
     private static final int STOP_AUDIO_AIUTO = 0;
+    AlertDialog dialogPopupRisultatoEsercizio;
 
     private String audioDownloadUrl;
 
@@ -296,8 +302,54 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                                 String risposta = String.valueOf(FirebaseHelper.audioToText(audioDownloadUrl));
                                 Log.d("EsercizioGiocoFragmentTipologia1", "Risposta: " + risposta);
 
-                                // Calcola il punteggio dell'esercizio
-                                giocoActivity.figlio.setPunteggioGioco(calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto));
+                                if(esercizioTipologia1.getDescrizione_immagine().equals(risposta)){
+                                    // Calcola il punteggio dell'esercizio
+                                    giocoActivity.figlio.setPunteggioGioco(calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto));
+
+                                    // Aggiorna il punteggio del figlio nel database
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("figli")
+                                            .whereEqualTo("token", giocoActivity.figlio.getToken())
+                                            .get()
+                                            .addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        // Ottieni l'ID del documento
+                                                        String docId = document.getId();
+
+                                                        // Aggiorna il campo punteggioGioco
+                                                        db.collection("figli").document(docId)
+                                                                .update("punteggioGioco", giocoActivity.figlio.getPunteggioGioco())
+                                                                .addOnSuccessListener(aVoid -> {
+                                                                    Log.d("EsercizioGiocoFragmentTipologia1", "Punteggio aggiornato con successo: " + giocoActivity.figlio.getPunteggioGioco());
+
+                                                                    getActivity().runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            // Il tuo codice che interagisce con la UI qui
+                                                                            mostraPopupEsercizioCorretto();
+                                                                        }
+                                                                    });
+
+                                                                })
+                                                                .addOnFailureListener(e -> {
+                                                                    Log.e("EsercizioGiocoFragmentTipologia1", "Errore nell'aggiornare il punteggio: " + e.getMessage());
+
+                                                                });
+                                                    }
+                                                } else {
+                                                    Log.e("EsercizioGiocoFragmentTipologia1", "Errore nell'ottenere i documenti: ", task.getException());
+                                                }
+                                            });
+                                }else{
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Il tuo codice che interagisce con la UI qui
+                                            mostraPopupEsercizioSbagliato();
+                                        }
+                                    });
+                                }
                             }
                         }).start();
 
@@ -434,5 +486,136 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
          */
 
         return punteggio;
+    }
+
+    private void mostraPopupEsercizioCorretto(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+
+        LayoutInflater inflater = giocoActivity.getLayoutInflater();
+        View view = inflater.inflate(R.layout.popup_esercizio_completato, null);
+        int coloreSfondo = 0;
+        switch (giocoActivity.sfondoSelezionato) {
+            case 0:
+                coloreSfondo = R.color.secondaryDeserto;
+                break;
+            case 1:
+                coloreSfondo = R.color.secondaryAntartide;
+                break;
+            case 2:
+                coloreSfondo = R.color.secondaryGiungla;
+                break;
+        }
+        view.findViewById(R.id.card_view_esercizio_completato).setBackgroundColor(getResources().getColor(coloreSfondo));
+
+        int coloreTesto = 0;
+        switch (giocoActivity.personaggioSelezionato) {
+            case 0:
+                coloreTesto = R.color.primaryDeserto;
+                break;
+            case 1:
+                coloreTesto = R.color.primaryAntartide;
+                break;
+            case 2:
+                coloreTesto = R.color.primaryGiungla;
+                break;
+        }
+        TextView testo = view.findViewById(R.id.txt_popup__esercizio_completato);
+        testo.setTextColor(getResources().getColor(coloreTesto));
+
+        TextView txtPunteggio = view.findViewById(R.id.txt_punteggio_esercizio_completato);
+        txtPunteggio.setTextColor(getResources().getColor(coloreTesto));
+        txtPunteggio.setText(String.valueOf(giocoActivity.figlio.getPunteggioGioco()));
+
+        Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_completato);
+        btnContinua.setBackgroundColor(getResources().getColor(coloreTesto));
+        btnContinua.setOnClickListener(v -> {
+            dialogPopupRisultatoEsercizio.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", giocoActivity.scheda);
+            giocoActivity.getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                    .commit();
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("scheda", giocoActivity.scheda);
+                giocoActivity.getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                        .commit();
+            }
+        });
+
+
+        dialogPopupRisultatoEsercizio = builder.create();
+        dialogPopupRisultatoEsercizio.setView(view);
+        dialogPopupRisultatoEsercizio.show();
+    }
+
+    private void mostraPopupEsercizioSbagliato(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+
+        LayoutInflater inflater = giocoActivity.getLayoutInflater();
+        View view = inflater.inflate(R.layout.popup_esercizio_sbagliato, null);
+        int coloreSfondo = 0;
+        switch (giocoActivity.sfondoSelezionato) {
+            case 0:
+                coloreSfondo = R.color.secondaryDeserto;
+                break;
+            case 1:
+                coloreSfondo = R.color.secondaryAntartide;
+                break;
+            case 2:
+                coloreSfondo = R.color.secondaryGiungla;
+                break;
+        }
+        view.findViewById(R.id.card_view_esercizio_sbagliato).setBackgroundColor(getResources().getColor(coloreSfondo));
+
+        int coloreTesto = 0;
+        switch (giocoActivity.personaggioSelezionato) {
+            case 0:
+                coloreTesto = R.color.primaryDeserto;
+                break;
+            case 1:
+                coloreTesto = R.color.primaryAntartide;
+                break;
+            case 2:
+                coloreTesto = R.color.primaryGiungla;
+                break;
+        }
+        TextView testo = view.findViewById(R.id.txt_popup__esercizio_sbagliato);
+        testo.setTextColor(getResources().getColor(coloreTesto));
+
+        Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_sbagliato);
+        btnContinua.setBackgroundColor(getResources().getColor(coloreTesto));
+        btnContinua.setOnClickListener(v -> {
+            dialogPopupRisultatoEsercizio.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", giocoActivity.scheda);
+            giocoActivity.getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                    .commit();
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("scheda", giocoActivity.scheda);
+                giocoActivity.getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                        .commit();
+            }
+        });
+
+        dialogPopupRisultatoEsercizio = builder.create();
+        dialogPopupRisultatoEsercizio.setView(view);
+        dialogPopupRisultatoEsercizio.show();
     }
 }
