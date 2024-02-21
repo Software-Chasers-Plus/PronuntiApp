@@ -25,13 +25,22 @@
             android:textColor="@color/primaryGiungla"
             android:textSize="24sp"/>
 
+        <ImageView
+            android:id="@+id/bambinoImageView"
+            android:layout_marginStart="20dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/bambino">
+
+        </ImageView>
+
         <TextView
             android:id="@+id/nomeTextView"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="John Doe"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:textColor="@android:color/black"
             android:textSize="18sp"/>

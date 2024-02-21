@@ -1,4 +1,4 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino;
+package it.uniba.dib.sms232419.pronuntiapp.ui.schedeBambino;
 
 import android.os.Bundle;
 import android.os.Parcelable;

@@ -67,7 +67,7 @@
 
     <fragment
         android:id="@+id/navigation_creazione_scheda"
-        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino.EserciziBambinoFragment"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.schedeBambino.EserciziBambinoFragment"
         android:label="@string/creazione_scheda"
         tools:layout="@layout/creazioneschedabambino" />
 

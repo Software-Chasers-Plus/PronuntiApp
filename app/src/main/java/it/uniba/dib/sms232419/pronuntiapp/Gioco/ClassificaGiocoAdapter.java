@@ -33,9 +33,36 @@ public class ClassificaGiocoAdapter extends RecyclerView.Adapter<ClasssificaGioc
 
     @Override
     public void onBindViewHolder(@NonNull ClasssificaGiocoHolderView holder, int position) {
-        holder.posizioneTextView.setText(String.valueOf(position + 1));
+        holder.posizioneTextView.setText(String.valueOf(position + 3));
         holder.nomeTextView.setText(bambiniList.get(position).getNome());
         holder.punteggioTextView.setText(String.valueOf(bambiniList.get(position).getPunteggioGioco()));
+
+        // Setta l'immagine del bambino
+        int immagineBambino = bambiniList.get(position).getIdAvatar();
+        switch (immagineBambino){
+            case 1:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino_1);
+                break;
+            case 2:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino_2);
+                break;
+            case 3:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino_3);
+                break;
+            case 4:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino_4);
+                break;
+            case 5:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino_5);
+                break;
+            case 6:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino_6);
+                break;
+
+            default:
+                holder.immagineBambinoImageView.setImageResource(R.drawable.bambino);
+                break;
+        }
     }
 
     @Override
