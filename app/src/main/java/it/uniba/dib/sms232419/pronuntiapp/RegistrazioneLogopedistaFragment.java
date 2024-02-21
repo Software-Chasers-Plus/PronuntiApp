@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.jsoup.nodes.Document;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
@@ -270,11 +280,59 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
             this.matricola.requestFocus();
             check = false;
         }
-        //TODO: controllare se la matricola è valida
+
         return check;
     }
 
-    //metodo per la registrazione del logopedista
+ /*
+    // Questo metodo verifica che la matricola sia presente all'interno dell'albo dei logopedisti https://fli.it/professionisti/?tipo=albo
+    private boolean verificaMatricolaAlbo(String matricolaInput) {
+        final boolean[] trovata = new boolean[1];
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<String> matricole = new ArrayList<>();
+                try {
+                    for (int pageCount = 1; pageCount <= 7; pageCount++) {
+                        String url = "https://fli.it/professionisti/?tipo=albo&page=" + pageCount;
+                        Document document = Jsoup.connect(url).get();
+                        Elements matricolaElements = document.select("span.nummatricola");
+
+                        if (matricolaElements.isEmpty()) {
+                            break;
+                        }
+
+                        for (Element matricolaElement : matricolaElements) {
+                            String matricola = matricolaElement.text();
+                            String[] parts = matricola.split(":");
+                            matricole.add(parts[1].trim());
+                        }
+                    }
+
+                    // Dopo il caricamento completo delle matricole, esegui la verifica
+                    trovata[0] = verificaMatricola(matricole, matricolaInput);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+        return trovata[0];
+    }
+
+    private boolean verificaMatricola(List<String> matricole, String matricolaInput) {
+        Log.d("MatricolaInput:", matricolaInput);
+        Log.d("MATRICOLA", String.valueOf(matricole.contains(matricolaInput)));
+        return matricole.contains(matricolaInput);
+
+    }
+
+
+  */
+
+    // metodo per la registrazione del logopedista
     private void signUp(String nome, String cognome, String email, String password, String matricola){
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -289,12 +347,12 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                     // prendo la data di oggi
                     Calendar calendar = Calendar.getInstance();
                     String dataRegistrazione = calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR);
-
-                    //memorizzazione del genitore nel database
+                    // memorizzazione del logopedista nel database
                     Map<String, Object> utente = new HashMap<>();
                     utente.put("Nome", nome);
                     utente.put("Cognome", cognome);
                     utente.put("Email", email);
+                   // utente.put("Albo", verificaMatricolaAlbo(matricola)); // questo serve se vogliamo aggiungere la verifica all'albo
                     utente.put("Matricola", matricola);
                     utente.put("Abilitazione", signUpAbilitazione);
                     utente.put("DataRegistrazione", dataRegistrazione);
@@ -303,7 +361,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        // Creare un nuovo pop up per comincare al logopedista che
+                                        // Creare un nuovo pop up per comunicare al logopedista che
                                         // la sua richiesta è stata presa in carico
                                         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(mActivity);
 
@@ -313,7 +371,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                                         AlertDialog dialog = builder.create();
 
                                         // Impostare un listener per il bottone "Accedi" del pop up
-                                        //quando verrà cliccato il logopedista verrà portato alla schermata di accesso
+                                        // quando verrà cliccato il logopedista verrà portato alla schermata di accesso
                                         view.findViewById(R.id.bottone_accedi_popup_registrazione_logopedista).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -348,6 +406,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
             }
         });
     }
+
     private Boolean verificaConnessioneInternet() {
         ConnectivityManager connMgr = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
