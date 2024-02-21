@@ -199,4 +199,8 @@
     <string name="classifica">Classifica</string>
     <string name="ciao">"Ciao "</string>
     <string name="i_migliori">I migliori</string>
+    <string name="stiamo_preparando_il_tuo_esercizio">Stiamo preparando il tuo esercizio</string>
+    <string name="risposta_inviata_con_successo">Risposta inviata con successo</string>
+    <string name="registra_la_risposta_prima_di_inviarla">Registra la risposta prima di inviarla</string>
+    <string name="registra_la_risposta_prima_di_riprodurla">Registra la risposta prima di riprodurla</string>
 </resources>
