@@ -1,10 +1,8 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;

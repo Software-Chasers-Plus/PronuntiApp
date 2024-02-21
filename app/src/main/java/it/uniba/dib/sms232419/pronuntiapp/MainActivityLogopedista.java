@@ -1,16 +1,14 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
-import static androidx.fragment.app.FragmentManager.TAG;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,7 +18,6 @@ import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainLogopedistaBin
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.ClickFigliListener;
 
 public class MainActivityLogopedista extends AppCompatActivity{
 

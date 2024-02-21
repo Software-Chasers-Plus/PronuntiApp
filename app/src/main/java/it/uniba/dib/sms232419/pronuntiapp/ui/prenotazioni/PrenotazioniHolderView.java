@@ -1,14 +1,11 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.button.MaterialButton;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
