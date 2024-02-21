@@ -16,8 +16,8 @@ public class ClassificaGiocoAdapter extends RecyclerView.Adapter<ClasssificaGioc
     private static final String TAG = "ClassificaGiocoAdapter";
 
     Context context;
-    private ArrayList<Figlio> bambiniList;
-    private ClickClassificaGiocoListener clickClassificaGiocoListener;
+    private final ArrayList<Figlio> bambiniList;
+    private final ClickClassificaGiocoListener clickClassificaGiocoListener;
 
     public ClassificaGiocoAdapter(Context context, ArrayList<Figlio> bambiniList, ClickClassificaGiocoListener listener) {
         this.bambiniList = bambiniList;

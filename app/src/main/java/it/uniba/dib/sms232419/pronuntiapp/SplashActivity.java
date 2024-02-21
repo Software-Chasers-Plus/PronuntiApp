@@ -34,8 +34,8 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 public class SplashActivity extends AppCompatActivity {
     private boolean loggato = false;
     private boolean fecthCompletato = false;
-    private List<Figlio> figli = new ArrayList<>();
-    private List<Prenotazione> prenotazioni=new ArrayList<>();
+    private final List<Figlio> figli = new ArrayList<>();
+    private final List<Prenotazione> prenotazioni=new ArrayList<>();
 
     private static final long MIN_WAIT_INTERVAL = 1500L;
     private static final long MAX_WAIT_INTERVAL = 6000L;
@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean logopedista = false;
     private FirebaseUser currentUser;
 
-    private Handler mHandler = new Handler() {
+    private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

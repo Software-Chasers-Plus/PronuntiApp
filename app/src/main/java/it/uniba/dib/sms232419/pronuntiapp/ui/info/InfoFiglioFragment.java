@@ -94,7 +94,7 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
             codiceFiscaleFiglio.setText(figlio.getCodiceFiscale());
 
             TextView dataNascitaFiglio = view.findViewById(R.id.data_nascita_figlio_dettaglio);
-            dataNascitaFiglio.setText(figlio.getDataNascita().toString());
+            dataNascitaFiglio.setText(figlio.getDataNascita());
 
             TextView tokenFiglio = view.findViewById(R.id.token_figlio_dettaglio);
             tokenFiglio.setText(figlio.getToken());

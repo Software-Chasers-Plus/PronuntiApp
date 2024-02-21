@@ -14,7 +14,7 @@ public class PrenotazioniLogopedistaHolderView extends RecyclerView.ViewHolder i
     ImageView imageViewNonConfermato,imageViewConfermato;
 
     Button confermaButton,eliminaButton;
-    private ClickPrenotazioniLogopedistaListener clickPrenotazioniLogopedistaListener;
+    private final ClickPrenotazioniLogopedistaListener clickPrenotazioniLogopedistaListener;
 
     // Costruttore che riceve un'istanza di ClickListener
     public PrenotazioniLogopedistaHolderView(View itemView, ClickPrenotazioniLogopedistaListener listener) {

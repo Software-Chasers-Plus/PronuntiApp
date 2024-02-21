@@ -128,7 +128,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
         Log.d("EserciziFragment", "Esercizio passato: " + eserciziList.get(position).getNome());
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
 
-        switch (eserciziList.get(position).getTipologia().toString()){
+        switch (eserciziList.get(position).getTipologia()){
             case "1":
                 navController.navigate(R.id.navigation_dettaglio_esercizio1, bundle);
                 break;
@@ -171,7 +171,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
         switch (esercizioData.get("tipologia").toString()){
             case "1":
                 return new EsercizioTipologia1(
-                        document.getId().toString(),
+                        document.getId(),
                         esercizioData.get("nome").toString(),
                         esercizioData.get("logopedista").toString(),
                         esercizioData.get("tipologia").toString(),
@@ -182,7 +182,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
                         esercizioData.get("audio3").toString());
             case "2":
                 return new EsercizioTipologia2(
-                        document.getId().toString(),
+                        document.getId(),
                         esercizioData.get("nome").toString(),
                         esercizioData.get("logopedista").toString(),
                         esercizioData.get("tipologia").toString(),
@@ -191,7 +191,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
 
             case "3":
                 return new EsercizioTipologia3(
-                        document.getId().toString(),
+                        document.getId(),
                         esercizioData.get("nome").toString(),
                         esercizioData.get("logopedista").toString(),
                         esercizioData.get("tipologia").toString(),

@@ -8,10 +8,10 @@ import com.google.firebase.storage.StorageReference;
 
 
 public class EsercizioTipologia3 extends Esercizio implements Parcelable{
-    private String audio;
-    private String immagine1;
-    private String immagine2;
-    private long immagineCorretta;
+    private final String audio;
+    private final String immagine1;
+    private final String immagine2;
+    private final long immagineCorretta;
 
     public EsercizioTipologia3(String esercizioId, String nome, String logopedista, String tipologia, String audio, String immagine1, String immagine2, long immagineCorretta) {
         super(esercizioId, nome, logopedista, tipologia);

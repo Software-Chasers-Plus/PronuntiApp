@@ -38,7 +38,7 @@ public class RegistrazioneGenitoreFragment extends Fragment{
 
     private FirebaseAuth auth;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Boolean passwordVisible;
 
     private Button signUpButton;
@@ -322,7 +322,6 @@ public class RegistrazioneGenitoreFragment extends Fragment{
             builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    return;
                 }
             });
             builder.show();

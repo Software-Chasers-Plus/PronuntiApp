@@ -23,7 +23,7 @@ public class SchedeBambinoAdapter extends RecyclerView.Adapter<SchedeBambinoHold
 
     List<Scheda> items;
 
-    private ClickSchedeBambinoListener clickSchedeBambinoListener;
+    private final ClickSchedeBambinoListener clickSchedeBambinoListener;
 
     // Costruttore che riceve la lista di dati e un'istanza di ClickListener
     public SchedeBambinoAdapter(Context context, List<Scheda> items, ClickSchedeBambinoListener listener) {
@@ -41,9 +41,9 @@ public class SchedeBambinoAdapter extends RecyclerView.Adapter<SchedeBambinoHold
     @Override
     public void onBindViewHolder(@NonNull SchedeBambinoHolderView holder, int position) {
         holder.textViewNomeScheda.setText(items.get(position).getNome());
-        holder.textViewNumeroEsercizi.setText(context.getResources().getString(R.string.esercizi)+ String.valueOf(items.get(position).getNumeroEsercizi()));
+        holder.textViewNumeroEsercizi.setText(context.getResources().getString(R.string.esercizi)+ items.get(position).getNumeroEsercizi());
         holder.textViewStatoScheda.setText(items.get(position).getStato());
-        holder.textViewEserciziCompletati.setText(context.getResources().getString(R.string.esercizi_completati_scheda) + ": "+ String.valueOf(items.get(position).getEserciziCompletati()));
+        holder.textViewEserciziCompletati.setText(context.getResources().getString(R.string.esercizi_completati_scheda) + ": "+ items.get(position).getEserciziCompletati());
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

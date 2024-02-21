@@ -13,7 +13,7 @@ public class EserciziHolderView extends RecyclerView.ViewHolder implements View.
     TextView textViewNomeEsercizio, textViewTipologiaEserciio;
     MaterialButton deleteButtonEsercizio;
 
-    private ClickEserciziListener clickEserciziListener;
+    private final ClickEserciziListener clickEserciziListener;
 
     // Costruttore che riceve un'istanza di ClickListener
     public EserciziHolderView(View itemView, ClickEserciziListener listener) {

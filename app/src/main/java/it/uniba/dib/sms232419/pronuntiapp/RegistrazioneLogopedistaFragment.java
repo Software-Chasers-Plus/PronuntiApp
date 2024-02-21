@@ -39,7 +39,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
 
     private FirebaseAuth auth;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // signUpAbilitazione serve per impostare il campo a false, una volta che il logopedista invia la
     // richiesta tramite email, se il team conferma i suo certicati, allora tale campo viene impostato
@@ -266,7 +266,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
             this.matricola.requestFocus();
             check = false;
         }else if(matricola.length() < 5){
-            this.matricola.setError("La matricola deve avere 5 caratteri" + "");
+            this.matricola.setError("La matricola deve avere 5 caratteri");
             this.matricola.requestFocus();
             check = false;
         }
@@ -384,7 +384,6 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
             builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    return;
                 }
             });
             builder.show();

@@ -88,7 +88,7 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
         codiceFiscalepaziente.setText(paziente.getCodiceFiscale());
 
         TextView dataNascitapaziente = view.findViewById(R.id.data_nascita_paziente);
-        dataNascitapaziente.setText(paziente.getDataNascita().toString());
+        dataNascitapaziente.setText(paziente.getDataNascita());
 
         TextView emailGenitorepaziente = view.findViewById(R.id.genitore);
         emailGenitorepaziente.setText(paziente.getEmailGenitore());

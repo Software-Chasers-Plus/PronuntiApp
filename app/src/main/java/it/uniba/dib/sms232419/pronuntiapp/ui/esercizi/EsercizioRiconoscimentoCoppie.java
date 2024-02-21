@@ -314,15 +314,11 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                 // Ottieni l'URI del file audio selezionato
                 audioUri = data.getData();
                 if (audioUri != null) {
-                    switch (requestCode) {
-                        case REQUEST_CODE_PICK_AUDIO_BUTTON:
-                            // Ottieni il riferimento all'EditText per il testo dell'audio 1
-                            TextView testo_audio = requireView().findViewById(R.id.audio_esercizio3_testo);
-                            String testo_corrente = testo_audio.getText().toString();
-                            // Esegui la logica per caricare l'audio e l'immagine
-                            testo_audio.setText(testo_corrente + " " + getAudioFileNameFromUri(getActivity(), audioUri));
-                            break;
-
+                    if (requestCode == REQUEST_CODE_PICK_AUDIO_BUTTON) {// Ottieni il riferimento all'EditText per il testo dell'audio 1
+                        TextView testo_audio = requireView().findViewById(R.id.audio_esercizio3_testo);
+                        String testo_corrente = testo_audio.getText().toString();
+                        // Esegui la logica per caricare l'audio e l'immagine
+                        testo_audio.setText(testo_corrente + " " + getAudioFileNameFromUri(getActivity(), audioUri));
                     }
                 }
 

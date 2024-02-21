@@ -114,5 +114,5 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
                 nuovoFiglio.get("token").toString(),
                 (long)nuovoFiglio.get("punteggioGioco")
         ));
-    };
+    }
 }

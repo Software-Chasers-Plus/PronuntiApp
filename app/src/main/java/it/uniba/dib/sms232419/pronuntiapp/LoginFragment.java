@@ -48,9 +48,9 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
 
-    private Bundle bundle = new Bundle();
+    private final Bundle bundle = new Bundle();
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private ImageView imageClockPassword;
 
@@ -453,7 +453,6 @@ public class LoginFragment extends Fragment {
             builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    return;
                 }
             });
             builder.show();

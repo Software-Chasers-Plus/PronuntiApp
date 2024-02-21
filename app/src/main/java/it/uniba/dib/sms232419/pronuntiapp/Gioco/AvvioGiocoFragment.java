@@ -19,7 +19,7 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 public class AvvioGiocoFragment extends Fragment {
 
-    private boolean isMediaPlayerPaused = false;
+    private final boolean isMediaPlayerPaused = false;
     private Scheda scheda;
 
     @Override

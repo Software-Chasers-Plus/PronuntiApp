@@ -71,19 +71,17 @@ public class AggiungiPazienteFragment extends Fragment {
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_STORAGE_PERMISSION = 2;
 
-    private Handler mHandler = new Handler() {
+    private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case PAZIENTE_TROVATO:
-                    progressBar.setVisibility(View.GONE);
-                    cardView.setVisibility(View.VISIBLE);
-                    break;
+            if (msg.what == PAZIENTE_TROVATO) {
+                progressBar.setVisibility(View.GONE);
+                cardView.setVisibility(View.VISIBLE);
             }
         }
     };
 
-    private ActivityResultLauncher<ScanOptions> qrCodeLaucher = registerForActivityResult(new ScanContract(), result ->{
+    private final ActivityResultLauncher<ScanOptions> qrCodeLaucher = registerForActivityResult(new ScanContract(), result ->{
         if(result != null){
             tokenPaziente.setText(result.getContents());
         }else{

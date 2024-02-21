@@ -20,7 +20,7 @@ public class EserciziBambinoHolderView extends RecyclerView.ViewHolder implement
     EditText dataEsercizio;
     ImageView iconaCalendario;
 
-    private ClickEserciziBambinoListener clickEserciziBambinoListener;
+    private final ClickEserciziBambinoListener clickEserciziBambinoListener;
 
     // Costruttore che riceve un'istanza di ClickListener
     public EserciziBambinoHolderView(View itemView, ClickEserciziBambinoListener listener) {

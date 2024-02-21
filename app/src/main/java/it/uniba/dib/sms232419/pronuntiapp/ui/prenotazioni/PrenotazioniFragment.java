@@ -77,7 +77,7 @@ public class PrenotazioniFragment extends Fragment implements ClickPrenotazioniL
                                 genitore = new Genitore(nuovoGenitore.get("Nome").toString(),
                                         nuovoGenitore.get("Cognome").toString(),
                                         nuovoGenitore.get("Email").toString(),
-                                        FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                        FirebaseAuth.getInstance().getCurrentUser().getUid());
                             } else {
                                 // Stampa nel log un messaggio di errore
                                 Log.d("HomeFragment", "No genitore con id:" + FirebaseAuth.getInstance().getCurrentUser().getUid());

@@ -41,10 +41,10 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
     private String uidEsercizio;
     private EsercizioTipologia1 esercizioTipologia1;
-    private int sfondoSelezionato = 0;
+    private final int sfondoSelezionato = 0;
     private ConstraintLayout layout;
     private GiocoActivity giocoActivity;
-    private ArrayList<String> pathAiuti = new ArrayList<>();
+    private final ArrayList<String> pathAiuti = new ArrayList<>();
     private int countAiuto = 0;
     private MediaPlayer mediaPlayer;
     private FirebaseStorage storage;
@@ -198,7 +198,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                             audioRef = storage.getReference().child(pathAiuti.get(0));
                             FirebaseHelper.startAudioPlayback(audioRef, playButton1);
                             countAiuto++;
-                            aiutiUtilizzati.setText("" + (countAiuto));
+                            aiutiUtilizzati.setText(String.valueOf(countAiuto));
                         }
                 });
             }
@@ -219,7 +219,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                         audioRef = storage.getReference().child(pathAiuti.get(1));
                         FirebaseHelper.startAudioPlayback(audioRef, playButton2);
                         countAiuto++;
-                        aiutiUtilizzati.setText("" + (countAiuto));
+                        aiutiUtilizzati.setText(String.valueOf(countAiuto));
                     }
                 });
             }
@@ -239,7 +239,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                             audioRef = storage.getReference().child(pathAiuti.get(2));
                             FirebaseHelper.startAudioPlayback(audioRef, playButton3);
                             countAiuto++;
-                            aiutiUtilizzati.setText("" + (countAiuto));
+                            aiutiUtilizzati.setText(String.valueOf(countAiuto));
                     }
                 });
             }

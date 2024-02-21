@@ -73,7 +73,7 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
                                         nuovoLogopedista.get("Email").toString(),
                                         nuovoLogopedista.get("Matricola").toString(),
                                         (boolean) nuovoLogopedista.get("Abilitazione"),
-                                        FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                        FirebaseAuth.getInstance().getCurrentUser().getUid());
                             } else {
                                 // Stampa nel log un messaggio di errore
                                 Log.d("HomeFragment", "No genitore con id:" + FirebaseAuth.getInstance().getCurrentUser().getUid());

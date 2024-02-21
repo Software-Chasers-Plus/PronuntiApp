@@ -17,7 +17,7 @@ public class PrenotazioniHolderView extends RecyclerView.ViewHolder implements V
 
 
     Button eliminaButton;
-    private ClickPrenotazioniListener clickPrenotazioniListener;
+    private final ClickPrenotazioniListener clickPrenotazioniListener;
 
     // Costruttore che riceve un'istanza di ClickListener
     public PrenotazioniHolderView(View itemView, ClickPrenotazioniListener listener) {

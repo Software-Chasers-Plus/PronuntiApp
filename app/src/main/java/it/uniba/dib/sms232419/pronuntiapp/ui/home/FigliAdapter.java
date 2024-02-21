@@ -20,11 +20,11 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 
 public class FigliAdapter extends RecyclerView.Adapter<FigliHolderView> {
-    private Context context;
-    private List<Figlio> items;
-    private List<Integer> avatarIds;
-    private ClickFigliListener clickFigliListener;
-    private FirebaseFirestore db;
+    private final Context context;
+    private final List<Figlio> items;
+    private final List<Integer> avatarIds;
+    private final ClickFigliListener clickFigliListener;
+    private final FirebaseFirestore db;
 
 
     public FigliAdapter(Context context, List<Figlio> items, List<Integer> avatarIds, FirebaseFirestore db, ClickFigliListener listener) {

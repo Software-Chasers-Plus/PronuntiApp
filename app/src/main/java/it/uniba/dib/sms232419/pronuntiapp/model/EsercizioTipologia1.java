@@ -8,11 +8,11 @@ import com.google.firebase.storage.StorageReference;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 public class EsercizioTipologia1 extends Esercizio implements Parcelable {
-    private String immagine;
-    private String descrizione_immagine;
-    private String audio1;
-    private String audio2;
-    private String audio3;
+    private final String immagine;
+    private final String descrizione_immagine;
+    private final String audio1;
+    private final String audio2;
+    private final String audio3;
 
     public EsercizioTipologia1(String esercizioId, String nome, String logopedista, String tipologia, String immagine, String descrizione_immagine, String audio1, String audio2, String audio3) {
         super(esercizioId, nome, logopedista, tipologia);

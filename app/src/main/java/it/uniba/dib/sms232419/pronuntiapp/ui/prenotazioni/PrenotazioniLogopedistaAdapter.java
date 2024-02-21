@@ -19,11 +19,11 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
 public class PrenotazioniLogopedistaAdapter extends RecyclerView.Adapter<PrenotazioniLogopedistaHolderView>{
-    private Context context;
-    private List<Prenotazione> items;
+    private final Context context;
+    private final List<Prenotazione> items;
     ClickPrenotazioniLogopedistaListener clickPrenotazioniLogopedistaListener;
 
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
 
 
     public PrenotazioniLogopedistaAdapter(Context context, List<Prenotazione> items, FirebaseFirestore db, ClickPrenotazioniLogopedistaListener listener) {

@@ -50,7 +50,7 @@ public class DettaglioEsercizioRipetizioneParole extends Fragment {
         nome_esercizio.setText(esercizio.getNome());
 
         //recupero l'audio da firebase storage
-        String pathAudio = esercizio.getAudio().toString();
+        String pathAudio = esercizio.getAudio();
         FloatingActionButton playButton = view.findViewById(R.id.play_audio1_button); // Replace with your Button ID
         FirebaseHelper.playAudioFromFirebaseStorage(pathAudio, playButton);
 

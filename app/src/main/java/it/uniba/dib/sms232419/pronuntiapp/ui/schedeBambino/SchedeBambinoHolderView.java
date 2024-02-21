@@ -15,7 +15,7 @@ public class SchedeBambinoHolderView extends RecyclerView.ViewHolder implements 
     MaterialButton eliminaButton, avviaGiocoButton;
     MaterialCardView cardView;
 
-    private ClickSchedeBambinoListener clickSchedeBambinoListener;
+    private final ClickSchedeBambinoListener clickSchedeBambinoListener;
 
     // Costruttore che riceve un'istanza di ClickListener
     public SchedeBambinoHolderView(View itemView, ClickSchedeBambinoListener listener) {

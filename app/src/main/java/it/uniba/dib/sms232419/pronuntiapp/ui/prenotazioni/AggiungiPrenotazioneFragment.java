@@ -215,8 +215,8 @@ public class AggiungiPrenotazioneFragment extends Fragment {
 
                                 db.collection("prenotazioni")
                                         .whereEqualTo("logopedista", uidLog)
-                                        .whereEqualTo("data", data.toString())
-                                        .whereEqualTo("ora", ora.toString())
+                                        .whereEqualTo("data", data)
+                                        .whereEqualTo("ora", ora)
                                         .whereEqualTo("conferma", true)
                                         .get()
                                         .addOnCompleteListener(task2 -> {
@@ -230,8 +230,8 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                                                     db.collection("prenotazioni")
                                                             .whereEqualTo("genitore", FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                             .whereEqualTo("logopedista", uidLog)
-                                                            .whereEqualTo("data", data.toString())
-                                                            .whereEqualTo("ora", ora.toString())
+                                                            .whereEqualTo("data", data)
+                                                            .whereEqualTo("ora", ora)
                                                             .whereEqualTo("conferma", false)
                                                             .get()
                                                             .addOnCompleteListener(task3 -> {

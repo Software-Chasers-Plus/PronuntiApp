@@ -6,13 +6,13 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class Scheda implements Parcelable {
-    private String nome;
-    private String logopedista;
-    private String bambino;
-    private int numeroEsercizi;
-    private String stato;
-    private int eserciziCompletati;
-    private ArrayList<ArrayList<String>> esercizi;
+    private final String nome;
+    private final String logopedista;
+    private final String bambino;
+    private final int numeroEsercizi;
+    private final String stato;
+    private final int eserciziCompletati;
+    private final ArrayList<ArrayList<String>> esercizi;
 
     public Scheda(String nome, String logopedista, String bambino, ArrayList<ArrayList<String>> esercizi) {
         this.nome = nome;

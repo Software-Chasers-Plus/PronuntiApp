@@ -34,7 +34,7 @@ public class MostraPazientiFragment extends Fragment implements ClickFigliListen
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private List<Figlio> pazientiDisponibili;
-    private List<Integer> idAvatarList = new ArrayList<>();
+    private final List<Integer> idAvatarList = new ArrayList<>();
 
 
     @Override

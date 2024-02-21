@@ -76,7 +76,7 @@ public class HomeFragmentLogopedista extends Fragment implements ClickFigliListe
                                         nuovoLogopedista.get("Email").toString(),
                                         nuovoLogopedista.get("Matricola").toString(),
                                         true,
-                                        FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                        FirebaseAuth.getInstance().getCurrentUser().getUid());
                             } else {
                                 //stampa nel log un messaggio di errore
                                 Log.d("HomeFragmentLogopedista", "No logopedista con id:"+FirebaseAuth.getInstance().getCurrentUser().getUid());

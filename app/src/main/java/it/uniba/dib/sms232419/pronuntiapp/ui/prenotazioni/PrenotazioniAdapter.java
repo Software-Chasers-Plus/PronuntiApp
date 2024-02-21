@@ -21,11 +21,11 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
 public class PrenotazioniAdapter extends RecyclerView.Adapter<PrenotazioniHolderView> {
-    private Context context;
-    private List<Prenotazione> items;
+    private final Context context;
+    private final List<Prenotazione> items;
     ClickPrenotazioniListener clickPrenotazioniListener;
 
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
 
 
     public PrenotazioniAdapter(Context context, List<Prenotazione> items, FirebaseFirestore db, ClickPrenotazioniListener listener) {

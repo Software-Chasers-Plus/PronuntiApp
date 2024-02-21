@@ -4,15 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Figlio implements Parcelable {
-    private String nome;
-    private String cognome;
-    private String codiceFiscale;
-    private String dataNascita;
-    private String logopedista;
-    private String emailGenitore;
-    private int idAvatar;
-    private String token;
-    private long punteggioGioco;
+    private final String nome;
+    private final String cognome;
+    private final String codiceFiscale;
+    private final String dataNascita;
+    private final String logopedista;
+    private final String emailGenitore;
+    private final int idAvatar;
+    private final String token;
+    private final long punteggioGioco;
 
     public Figlio(String nome, String cognome, String codiceFiscale, String dataNascita, String logopedista, String emailGenitore, int idAvatar, String token, long punteggioGioco) {
         this.nome = nome;

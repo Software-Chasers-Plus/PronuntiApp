@@ -24,13 +24,13 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 public class GameView extends View {
 
     private Bitmap backgroundImage;
-    private Bitmap checkpointImage;
+    private final Bitmap checkpointImage;
     private int[] checkpointXPositions;
     private int[] checkpointYPositions;
-    private int checkpointWidth;
-    private int checkpointHeight;
-    private Paint roadPaint;
-    private GiocoActivity giocoActivity;
+    private final int checkpointWidth;
+    private final int checkpointHeight;
+    private final Paint roadPaint;
+    private final GiocoActivity giocoActivity;
     private int xPersonaggio,yPersonaggio;
     private Bitmap personaggioImage;
     private int checkPointAttuale;
@@ -39,21 +39,19 @@ public class GameView extends View {
     private long mInizioAnimazione = 0L;
     private static final int DISEGNA_BOTTONE = 1;
     private static final long DURATA_ANIMAZIONE = 1000L;
-    private Handler mHandler = new Handler() {
+    private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case DISEGNA_BOTTONE:
-                    long elapsedTime = SystemClock.uptimeMillis() - mInizioAnimazione;
-                    if (elapsedTime >= DURATA_ANIMAZIONE) {
-                        personaggioInMovimento = false;
-                        invalidate();
-                    }
-                    break;
+            if (msg.what == DISEGNA_BOTTONE) {
+                long elapsedTime = SystemClock.uptimeMillis() - mInizioAnimazione;
+                if (elapsedTime >= DURATA_ANIMAZIONE) {
+                    personaggioInMovimento = false;
+                    invalidate();
+                }
             }
         }
     };
-    private Scheda scheda;
+    private final Scheda scheda;
     public GameView(Context context, AttributeSet attrs, Scheda scheda) {
         super(context, attrs);
         giocoActivity = (GiocoActivity) context;
@@ -180,7 +178,7 @@ public class GameView extends View {
             // Disegna un cerchio rosso attorno al checkpoint
             canvas.drawCircle(centerX, centerY, checkpointWidth / 2 + 5, redPaint); // Aggiungi 5 per compensare lo spessore del contorno
 
-            if(personaggioInMovimento == false && i == checkPointAttuale){
+            if(!personaggioInMovimento && i == checkPointAttuale){
                 // Disegna l'immagine solo se il checkpoint è stato raggiunto
                 int imageWidth = 100; // Larghezza dell'immagine
                 int imageHeight = 100; // Altezza dell'immagine

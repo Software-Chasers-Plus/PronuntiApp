@@ -61,7 +61,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
     MainActivityLogopedista mainActivityLogopedista;
 
     // List to store the positions of checked CardViews
-    private List<Integer> checkedPositions = new ArrayList<>();
+    private final List<Integer> checkedPositions = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -212,7 +212,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
         Log.d(TAG, "Esercizio passato: " + eserciziList.get(position).getNome());
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
 
-        switch (eserciziList.get(position).getTipologia().toString()){
+        switch (eserciziList.get(position).getTipologia()){
             case "1":
                 navController.navigate(R.id.navigation_dettaglio_esercizio1, bundle);
                 break;
@@ -253,7 +253,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
         switch (esercizioData.get("tipologia").toString()){
             case "1":
                 return new EsercizioTipologia1(
-                        document.getId().toString(),
+                        document.getId(),
                         esercizioData.get("nome").toString(),
                         esercizioData.get("logopedista").toString(),
                         esercizioData.get("tipologia").toString(),
@@ -264,7 +264,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                         esercizioData.get("audio3").toString());
             case "2":
                 return new EsercizioTipologia2(
-                        document.getId().toString(),
+                        document.getId(),
                         esercizioData.get("nome").toString(),
                         esercizioData.get("logopedista").toString(),
                         esercizioData.get("tipologia").toString(),
@@ -273,7 +273,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
             case "3":
                 return new EsercizioTipologia3(
-                        document.getId().toString(),
+                        document.getId(),
                         esercizioData.get("nome").toString(),
                         esercizioData.get("logopedista").toString(),
                         esercizioData.get("tipologia").toString(),
@@ -345,7 +345,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
             final int finalI = i; // Make a final copy of i for use inside the lambda expression
             //Recupero l'id dell'esercizio selezionato
             db.collection("esercizi")
-                    .whereEqualTo("nome", eserciziList.get(checkedPositions.get(finalI)).getNome().toString())
+                    .whereEqualTo("nome", eserciziList.get(checkedPositions.get(finalI)).getNome())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {

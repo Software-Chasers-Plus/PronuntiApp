@@ -10,7 +10,7 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 public class ClasssificaGiocoHolderView extends RecyclerView.ViewHolder {
     TextView posizioneTextView, nomeTextView, punteggioTextView;
 
-    private ClickClassificaGiocoListener clickClassificaGiocoListener;
+    private final ClickClassificaGiocoListener clickClassificaGiocoListener;
 
     public ClasssificaGiocoHolderView(View itemView, ClickClassificaGiocoListener listener) {
         super(itemView);

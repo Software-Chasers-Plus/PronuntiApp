@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
 
     private List<Figlio> figli = new ArrayList<>();
 
-    private int[] avatarIds = {
+    private final int[] avatarIds = {
             R.drawable.bambino_1,
             R.drawable.bambino_2,
             R.drawable.bambino_3,
@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment implements ClickFigliListener{
                                 genitore = new Genitore(nuovoGenitore.get("Nome").toString(),
                                         nuovoGenitore.get("Cognome").toString(),
                                         nuovoGenitore.get("Email").toString(),
-                                        FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                        FirebaseAuth.getInstance().getCurrentUser().getUid());
                             } else {
                                 // Stampa nel log un messaggio di errore
                                 Log.d("HomeFragment", "No genitore con id:" + FirebaseAuth.getInstance().getCurrentUser().getUid());

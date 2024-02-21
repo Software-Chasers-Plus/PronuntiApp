@@ -17,7 +17,7 @@ public class EserciziAdapter extends RecyclerView.Adapter<EserciziHolderView> {
 
     List<Esercizio> items;
 
-    private ClickEserciziListener clickEserciziListener;
+    private final ClickEserciziListener clickEserciziListener;
 
     // Costruttore che riceve la lista di dati e un'istanza di ClickListener
     public EserciziAdapter(Context context, List<Esercizio> items, ClickEserciziListener listener) {

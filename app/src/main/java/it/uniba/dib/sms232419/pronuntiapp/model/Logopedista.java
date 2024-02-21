@@ -13,11 +13,11 @@ public class Logopedista implements Parcelable {
 
     private String email;
 
-    private String matricola;
+    private final String matricola;
 
-    private Boolean abilitazione;
+    private final Boolean abilitazione;
 
-    private String UID;
+    private final String UID;
 
     public Logopedista(String nome, String cognome, String email, String matricola, Boolean abilitazione, String UID) {
         this.nome = nome;

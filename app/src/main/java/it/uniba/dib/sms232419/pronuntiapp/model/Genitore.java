@@ -7,7 +7,7 @@ public class Genitore {
 
     private String email;
 
-    private String UID;
+    private final String UID;
 
     public Genitore(String nome, String cognome, String email, String UID) {
         this.nome = nome;
