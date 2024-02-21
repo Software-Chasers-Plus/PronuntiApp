@@ -1,6 +1,5 @@
 package it.uniba.dib.sms232419.pronuntiapp;
 
-import android.Manifest;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;

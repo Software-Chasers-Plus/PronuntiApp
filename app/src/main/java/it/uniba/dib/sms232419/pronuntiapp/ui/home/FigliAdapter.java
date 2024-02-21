@@ -1,7 +1,5 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.home;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

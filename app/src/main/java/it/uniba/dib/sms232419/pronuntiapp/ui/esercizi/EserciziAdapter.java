@@ -11,7 +11,6 @@ import java.util.List;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Esercizio;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.FigliHolderView;
 
 public class EserciziAdapter extends RecyclerView.Adapter<EserciziHolderView> {
     Context context;

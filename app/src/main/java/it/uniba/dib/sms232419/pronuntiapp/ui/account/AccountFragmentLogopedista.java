@@ -3,13 +3,6 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.account;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +10,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
 import dev.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentAccountBinding;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentAccountLogopedistaBinding;
 
 public class AccountFragmentLogopedista extends Fragment {

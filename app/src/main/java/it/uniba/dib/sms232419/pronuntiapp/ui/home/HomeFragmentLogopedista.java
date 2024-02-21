@@ -2,6 +2,11 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,13 +16,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Parcelable;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,10 +30,8 @@ import java.util.Map;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
 import it.uniba.dib.sms232419.pronuntiapp.R;
-import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeBinding;
 import it.uniba.dib.sms232419.pronuntiapp.databinding.FragmentHomeLogopedistaBinding;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
-import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 import it.uniba.dib.sms232419.pronuntiapp.model.Logopedista;
 
 

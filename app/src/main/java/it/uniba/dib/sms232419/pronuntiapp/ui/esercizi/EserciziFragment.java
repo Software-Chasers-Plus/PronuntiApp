@@ -17,9 +17,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import it.uniba.dib.sms232419.pronuntiapp.ConfirmationDialog;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
@@ -29,22 +34,6 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Esercizio;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia1;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia3;
-import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
-import it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.MostraPazientiFragment;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.FigliAdapter;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.HomeFragment;
-import it.uniba.dib.sms232419.pronuntiapp.ui.home.HomeFragmentLogopedista;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 public class EserciziFragment extends Fragment implements ClickEserciziListener{

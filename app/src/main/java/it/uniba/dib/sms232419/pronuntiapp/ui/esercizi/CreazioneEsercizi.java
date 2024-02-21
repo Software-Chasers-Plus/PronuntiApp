@@ -3,20 +3,12 @@ package it.uniba.dib.sms232419.pronuntiapp.ui.esercizi;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
-import android.widget.Toolbar;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
