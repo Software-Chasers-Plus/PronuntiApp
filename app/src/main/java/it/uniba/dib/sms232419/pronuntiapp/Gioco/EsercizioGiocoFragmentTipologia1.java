@@ -40,7 +40,11 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
@@ -70,6 +74,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     boolean mStartRecording = true;
     boolean mStartPlaying = true;
     private static final int STOP_AUDIO_AIUTO = 0;
+
+    private String audioDownloadUrl;
 
     private final Handler handlerAudio = new Handler() {
         @Override
@@ -285,7 +291,17 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 // Invia l'audio registrato al server
                 uploadFileToFirebaseStorage(audioUriRisposta, audioRispostaPathFirebase, (success) -> {
                     if (success) {
-                    //TODO: CORREGGERE ESERCIZIO
+                        new Thread(new Runnable() {
+                            public void run() {
+                                String risposta = String.valueOf(FirebaseHelper.audioToText(audioDownloadUrl));
+                                Log.d("EsercizioGiocoFragmentTipologia1", "Risposta: " + risposta);
+
+                                // Calcola il punteggio dell'esercizio
+                                giocoActivity.figlio.setPunteggioGioco(calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto));
+                            }
+                        }).start();
+
+
                     }
                 });
                 Toasty.success(getContext(), R.string.risposta_inviata_con_successo, Toast.LENGTH_SHORT, true).show();
@@ -344,8 +360,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                     fileRef.getDownloadUrl()
                             .addOnSuccessListener(uri -> {
                                 // Ottieni l'URI del file caricato
-                                String downloadUri = uri.toString();
-                                Log.d("EsercizioDenominazioneImmagine", "File caricato con successo: " + downloadUri);
+                                audioDownloadUrl = uri.toString();
+                                Log.d("EsercizioDenominazioneImmagine", "File caricato con successo: " + audioDownloadUrl);
                                 progressDialog.dismiss();
                                 callback.onUploadComplete(true); // Notifica il chiamante che il caricamento è completato con successo
                             })
@@ -388,5 +404,35 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         mStartRecording = !mStartRecording;
 
         return audioUri;
+    }
+
+    public static int calcolaPunteggio(boolean corretto, int aiutiUsati) {
+        int punteggio = 10; // Initial score
+
+        /*
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date exerciseDateObj = formatter.parse(dataEsercizio);
+            Date oggi = Calendar.getInstance().getTime();
+            oggi = formatter.parse(formatter.format(oggi));
+
+            if (corretto) {
+                // Deduct points based on the number of hints used
+                punteggio -= aiutiUsati;
+
+                // If the exercise date is in the past, deduct additional points
+                if (exerciseDateObj.before(oggi)) {
+                    punteggio -= 2;
+                }
+            }
+            else {
+                punteggio = 1;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+         */
+
+        return punteggio;
     }
 }

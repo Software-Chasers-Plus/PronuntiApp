@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -153,7 +154,15 @@ public class FirebaseHelper {
                 .apiKey("286ee5eb6e504845b16116ed09264ed9" )
                 .build();
 
-        Transcript transcript = client.transcripts().transcribe(url);
+        TranscriptOptionalParams params = TranscriptOptionalParams.builder()
+                .languageCode(TranscriptLanguageCode.IT)
+                .build();
+
+        Transcript transcript = client.transcripts().transcribe(url, params);
+
+        if (transcript.getStatus().equals("error")) {
+            Log.d("TRANSCRIPT", "Error: " + transcript.getError());
+        }
 
         return transcript.getText();
     }

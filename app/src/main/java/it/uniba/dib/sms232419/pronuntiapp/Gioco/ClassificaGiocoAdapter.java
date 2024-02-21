@@ -3,8 +3,10 @@ package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,11 +20,13 @@ public class ClassificaGiocoAdapter extends RecyclerView.Adapter<ClasssificaGioc
     Context context;
     private final ArrayList<Figlio> bambiniList;
     private final ClickClassificaGiocoListener clickClassificaGiocoListener;
+    private GiocoActivity giocoActivity;
 
-    public ClassificaGiocoAdapter(Context context, ArrayList<Figlio> bambiniList, ClickClassificaGiocoListener listener) {
+    public ClassificaGiocoAdapter(Context context, ArrayList<Figlio> bambiniList, ClickClassificaGiocoListener listener, GiocoActivity giocoActivity) {
         this.bambiniList = bambiniList;
         this.clickClassificaGiocoListener = listener;
         this.context = context;
+        this.giocoActivity = giocoActivity;
     }
 
     @NonNull
@@ -61,6 +65,21 @@ public class ClassificaGiocoAdapter extends RecyclerView.Adapter<ClasssificaGioc
 
             default:
                 holder.immagineBambinoImageView.setImageResource(R.drawable.bambino);
+                break;
+        }
+
+        switch (giocoActivity.sfondoSelezionato) {
+            case 0:
+                holder.posizioneTextView.setTextColor(ContextCompat.getColor(context, R.color.secondaryDeserto));
+                holder.punteggioTextView.setTextColor(ContextCompat.getColor(context, R.color.secondaryDeserto));
+                break;
+            case 1:
+                holder.posizioneTextView.setTextColor(ContextCompat.getColor(context, R.color.primaryAntartide));
+                holder.punteggioTextView.setTextColor(ContextCompat.getColor(context, R.color.primaryAntartide));
+                break;
+            case 2:
+                holder.posizioneTextView.setTextColor(ContextCompat.getColor(context, R.color.primaryGiungla));
+                holder.punteggioTextView.setTextColor(ContextCompat.getColor(context, R.color.primaryGiungla));
                 break;
         }
     }

@@ -163,8 +163,14 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
                                 bambiniList.remove(0);
                             }
 
-                            recyclerView.setAdapter(new ClassificaGiocoAdapter(requireContext(), bambiniList, ClassificaGiocoFragment.this));
+                            //Setta la recyclerView con i bambini rimanenti
+                            recyclerView.setAdapter(new ClassificaGiocoAdapter(requireContext(), bambiniList, ClassificaGiocoFragment.this, giocoActivity));
                             recyclerView.getAdapter().notifyDataSetChanged();
+
+                            //Modifca del colore negli elementi della recyclerView
+                            for (int i = 0; i < bambiniList.size(); i++) {
+
+                            }
                         }
                     } else {
                         Log.d(TAG, "Errore durante la query per i bambini disponibili", task.getException());
