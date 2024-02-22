@@ -143,7 +143,7 @@ public class GiocoActivity extends AppCompatActivity {
                                     Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
                                     Log.d("PopUp_Fragmnet", "Popup: " + dialogPopupCaricamentoEsercizio);
                                     // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia2 e lo aggiunge al back stack
-                                    EsercizioTipologia2 esercizioTipologia2 = new EsercizioTipologia2(nuovoEsercizio.get("tipologia").toString(),
+                                    EsercizioTipologia2 esercizioTipologia2 = new EsercizioTipologia2(document.getId(),
                                             nuovoEsercizio.get("nome").toString(),
                                             nuovoEsercizio.get("logopedista").toString(),
                                             nuovoEsercizio.get("tipologia").toString(),

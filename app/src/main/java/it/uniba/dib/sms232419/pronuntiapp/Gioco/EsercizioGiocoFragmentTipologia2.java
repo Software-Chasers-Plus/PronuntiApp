@@ -1,7 +1,9 @@
 package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
-import android.app.AlertDialog;
+
+import androidx.appcompat.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -24,7 +26,10 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -39,6 +44,7 @@ import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
 
 public class EsercizioGiocoFragmentTipologia2 extends Fragment {
 
+    int punteggioEsercizio;
     private EsercizioTipologia2 esercizioTipologia2;
     private GiocoActivity giocoActivity;
     private ConstraintLayout layout;
@@ -53,18 +59,8 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
     boolean mStartRecording = true;
     boolean mStartPlaying = true;
     private String audioDownloadUrl;
-
-    private final Handler handlerAudio = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case STOP_AUDIO_AIUTO:
-                    //rendi possibile la riproduzione di un nuovo audio
-                    audioInRiproduzione = false;
-                    break;
-            }
-        }
-    };
+    private AlertDialog dialogPopupRisultatoEsercizio;
+    private int coloreSfondoPopup, coloreTestoPopup;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,12 +95,18 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
         switch (giocoActivity.sfondoSelezionato) {
             case 0:
                 layout.setBackgroundResource(R.drawable.deserto);
+                coloreSfondoPopup = R.color.secondaryDeserto;
+                coloreTestoPopup = R.color.primaryDeserto;
                 break;
             case 1:
                 layout.setBackgroundResource(R.drawable.antartide);
+                coloreSfondoPopup = R.color.secondaryAntartide;
+                coloreTestoPopup = R.color.primaryAntartide;
                 break;
             case 2:
                 layout.setBackgroundResource(R.drawable.giungla);
+                coloreSfondoPopup = R.color.secondaryGiungla;
+                coloreTestoPopup = R.color.primaryGiungla;
                 break;
         }
         return view;
@@ -187,7 +189,55 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                                 Log.d("EsercizioGiocoFragmentTipologia2", "Corretto: " + esercizioTipologia2.correzioneEsercizio(risposta));
 
                                 // Calcola il punteggio dell'esercizio
-                                giocoActivity.figlio.setPunteggioGioco(calcolaPunteggio(esercizioTipologia2.correzioneEsercizio(risposta)));
+                                if(esercizioTipologia2.correzioneEsercizio(risposta)){
+                                    // Calcola il punteggio dell'esercizio
+                                    punteggioEsercizio = calcolaPunteggio(esercizioTipologia2.correzioneEsercizio(risposta));
+                                    giocoActivity.figlio.setPunteggioGioco(punteggioEsercizio);
+
+                                    // Aggiorna il punteggio del figlio nel database
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("figli")
+                                            .whereEqualTo("token", giocoActivity.figlio.getToken())
+                                            .get()
+                                            .addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        // Ottieni l'ID del documento
+                                                        String docId = document.getId();
+
+                                                        // Aggiorna il campo punteggioGioco
+                                                        db.collection("figli").document(docId)
+                                                                .update("punteggioGioco", giocoActivity.figlio.getPunteggioGioco())
+                                                                .addOnSuccessListener(aVoid -> {
+                                                                    Log.d("EsercizioGiocoFragmentTipologia2", "Punteggio aggiornato con successo: " + giocoActivity.figlio.getPunteggioGioco());
+
+                                                                    getActivity().runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            // Il tuo codice che interagisce con la UI qui
+                                                                            aggiornaScheda(true);
+                                                                        }
+                                                                    });
+
+                                                                })
+                                                                .addOnFailureListener(e -> {
+                                                                    Log.e("EsercizioGiocoFragmentTipologia1", "Errore nell'aggiornare il punteggio: " + e.getMessage());
+
+                                                                });
+                                                    }
+                                                } else {
+                                                    Log.e("EsercizioGiocoFragmentTipologia1", "Errore nell'ottenere i documenti: ", task.getException());
+                                                }
+                                            });
+                                }else{
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Il tuo codice che interagisce con la UI qui
+                                            aggiornaScheda(false);
+                                        }
+                                    });
+                                }
                             }
                         }).start();
 
@@ -304,6 +354,123 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
         }
 
         return punteggio;
+    }
+
+    private void mostraPopupEsercizioCorretto(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+
+        LayoutInflater inflater = giocoActivity.getLayoutInflater();
+        View view = inflater.inflate(R.layout.popup_esercizio_completato, null);
+
+        view.findViewById(R.id.card_view_esercizio_completato).setBackgroundColor(getResources().getColor(coloreSfondoPopup));
+
+        TextView testo = view.findViewById(R.id.txt_popup__esercizio_completato);
+        testo.setTextColor(getResources().getColor(coloreTestoPopup));
+
+        TextView txtPunteggio = view.findViewById(R.id.txt_punteggio_esercizio_completato);
+        txtPunteggio.setTextColor(getResources().getColor(coloreTestoPopup));
+        txtPunteggio.setText(String.valueOf(punteggioEsercizio));
+
+        Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_completato);
+        btnContinua.setBackgroundColor(getResources().getColor(coloreTestoPopup));
+        btnContinua.setOnClickListener(v -> {
+            dialogPopupRisultatoEsercizio.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", giocoActivity.scheda);
+            giocoActivity.getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                    .commit();
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("scheda", giocoActivity.scheda);
+                giocoActivity.getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                        .commit();
+            }
+        });
+
+
+        dialogPopupRisultatoEsercizio = builder.create();
+        dialogPopupRisultatoEsercizio.setView(view);
+        dialogPopupRisultatoEsercizio.show();
+    }
+
+    private void mostraPopupEsercizioSbagliato(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+
+        LayoutInflater inflater = giocoActivity.getLayoutInflater();
+        View view = inflater.inflate(R.layout.popup_esercizio_sbagliato, null);
+
+        view.findViewById(R.id.card_view_esercizio_sbagliato).setBackgroundColor(getResources().getColor(coloreSfondoPopup));
+
+        TextView testo = view.findViewById(R.id.txt_popup__esercizio_sbagliato);
+        testo.setTextColor(getResources().getColor(coloreTestoPopup));
+
+        Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_sbagliato);
+        btnContinua.setBackgroundColor(getResources().getColor(coloreTestoPopup));
+        btnContinua.setOnClickListener(v -> {
+            dialogPopupRisultatoEsercizio.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", giocoActivity.scheda);
+            giocoActivity.getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                    .commit();
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("scheda", giocoActivity.scheda);
+                giocoActivity.getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .add(R.id.avvio_gioco_fragment, GiocoFragment.class, bundle)
+                        .commit();
+            }
+        });
+
+        dialogPopupRisultatoEsercizio = builder.create();
+        dialogPopupRisultatoEsercizio.setView(view);
+        dialogPopupRisultatoEsercizio.show();
+    }
+
+    private void aggiornaScheda(Boolean completato){
+        int posizioneEsercizio = -1;
+        for(int i = 0; i < giocoActivity.scheda.getEsercizi().size(); i++){
+            if(giocoActivity.scheda.getEsercizi().get(i).get(0).equals(esercizioTipologia2.getEsercizioId())){
+                giocoActivity.scheda.getEsercizi().get(i).set(1, "completato");
+                posizioneEsercizio = i;
+            }
+        }
+
+        if(posizioneEsercizio != -1){
+            String nomeCampoEsercizio = "esercizio" + posizioneEsercizio;
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("schede")
+                    .document(giocoActivity.scheda.getUid())
+                    .update(nomeCampoEsercizio, giocoActivity.scheda.getEsercizi().get(posizioneEsercizio))
+                    .addOnSuccessListener(aVoid -> {
+                        if(completato){
+                            mostraPopupEsercizioCorretto();
+                        }else{
+                            mostraPopupEsercizioSbagliato();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        if(completato){
+                            mostraPopupEsercizioCorretto();
+                        }else{
+                            mostraPopupEsercizioSbagliato();
+                        }
+                    });
+        }
     }
 
 }
