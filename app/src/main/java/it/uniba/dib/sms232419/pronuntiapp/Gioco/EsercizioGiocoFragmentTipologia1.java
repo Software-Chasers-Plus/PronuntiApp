@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +74,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     private Uri audioUriRisposta;
     private static MediaPlayer mediaPlayerEsercizio;
     private final int sfondoSelezionato = 0;
-    private ConstraintLayout layout;
+    private LinearLayout layout,layoutCorrezione;
     private GiocoActivity giocoActivity;
     private final ArrayList<String> pathAiuti = new ArrayList<>();
     private int countAiuto = 0;
@@ -86,8 +87,10 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     private static final int STOP_AUDIO_AIUTO = 0;
     AlertDialog dialogPopupRisultatoEsercizio;
     private int coloreSfondoPopup, coloreTestoPopup;
-
     private String audioDownloadUrl;
+    private CircularProgressIndicator progressBar;
+    private TextView textCorrezione;
+    private ConstraintLayout layoutEsercizio;
 
 
     @Override
@@ -122,11 +125,16 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_esercizio_gioco_tipologia1, container, false);
 
         layout = view.findViewById(R.id.esercizio_tipologia1);
+        layoutCorrezione = view.findViewById(R.id.linear_layout_correzione_esercizio_tipologia1);
+        layoutEsercizio = view.findViewById(R.id.esercizio_tipologia1_constraint_layout);
         TextView esercizioGiocoTipologia1 = view.findViewById(R.id.esercizioGiocoTipologia1);
         CardView cardView = view.findViewById(R.id.cardViewEsercizioTipologia1);
         TextView titoloEsercizioTipologia1 = view.findViewById(R.id.titoloEsercizioTipologia1);
         TextView aiutiUtilizzati = view.findViewById(R.id.aiutiUtilizzati);
         TextView risposta_lable = view.findViewById(R.id.risposta_lable);
+        textCorrezione = view.findViewById(R.id.txt_correzione_esercizio_tipologia1);
+
+        progressBar = view.findViewById(R.id.progressIndicator_esercizio_tipologia1);
 
         storage = FirebaseStorage.getInstance();
 
@@ -134,6 +142,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         switch (giocoActivity.sfondoSelezionato) {
             case 0:
                 layout.setBackgroundResource(R.drawable.deserto);
+                progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryDeserto));
+                textCorrezione.setTextColor(getResources().getColor(R.color.thirdDeserto));
                 esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.primaryDeserto));
                 cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdDeserto));
@@ -144,6 +154,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 break;
             case 1:
                 layout.setBackgroundResource(R.drawable.antartide);
+                progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryAntartide));
+                textCorrezione.setTextColor(getResources().getColor(R.color.thirdAntartide));
                 esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.secondaryAntartide));
                 cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdAntartide));
@@ -154,6 +166,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 break;
             case 2:
                 layout.setBackgroundResource(R.drawable.giungla);
+                progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryGiungla));
+                textCorrezione.setTextColor(getResources().getColor(R.color.thirdGiungla));
                 esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.secondaryGiungla));
                 cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryGiungla));
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdGiungla));
@@ -161,6 +175,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 risposta_lable.setTextColor(getResources().getColor(R.color.thirdGiungla));
                 break;
         }
+        layoutCorrezione.setVisibility(View.GONE);
+        layoutEsercizio.setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -326,6 +342,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                                                                         @Override
                                                                         public void run() {
                                                                             // Il tuo codice che interagisce con la UI qui
+                                                                            layoutCorrezione.setVisibility(View.GONE);
                                                                             aggiornaScheda(true);
                                                                         }
                                                                     });
@@ -345,6 +362,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                                         @Override
                                         public void run() {
                                             // Il tuo codice che interagisce con la UI qui
+                                            layoutCorrezione.setVisibility(View.GONE);
                                             aggiornaScheda(false);
                                         }
                                     });
@@ -356,6 +374,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                     }
                 });
                 Toasty.success(getContext(), R.string.risposta_inviata_con_successo, Toast.LENGTH_SHORT, true).show();
+                layoutEsercizio.setVisibility(View.GONE);
+                layoutCorrezione.setVisibility(View.VISIBLE);
             } else {
                 Toasty.error(getContext(), R.string.registra_la_risposta_prima_di_inviarla, Toast.LENGTH_SHORT, true).show();
             }
