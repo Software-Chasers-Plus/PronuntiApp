@@ -12,7 +12,7 @@ public class Figlio implements Parcelable {
     private final String emailGenitore;
     private final int idAvatar;
     private final String token;
-    private final long punteggioGioco;
+    private long punteggioGioco;
 
     public Figlio(String nome, String cognome, String codiceFiscale, String dataNascita, String logopedista, String emailGenitore, int idAvatar, String token, long punteggioGioco) {
         this.nome = nome;
@@ -84,6 +84,10 @@ public class Figlio implements Parcelable {
 
     public long getPunteggioGioco() {
         return punteggioGioco;
+    }
+
+    public void setPunteggioGioco(long punteggioGioco) {
+        this.punteggioGioco += punteggioGioco;
     }
 
     @Override

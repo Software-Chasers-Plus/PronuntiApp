@@ -104,7 +104,10 @@ public class EsercizioTipologia1 extends Esercizio implements Parcelable {
     }
 
     public boolean correzioneEsercizio(String risposta) {
-        int distance = LevenshteinDistance.getDefaultInstance().apply(descrizione_immagine, risposta);
+        risposta = risposta.replaceAll("[^a-zA-Z\\s]", "");
+        risposta = risposta.toLowerCase();
+
+        int distance = LevenshteinDistance.getDefaultInstance().apply(descrizione_immagine.toLowerCase(), risposta);
         double similarity = 1 - ((double) distance / Math.max(descrizione_immagine.length(), risposta.length()));
 
         return similarity > 0.8;

@@ -1,4 +1,4 @@
-package it.uniba.dib.sms232419.pronuntiapp.ui.creazioneSchedaBambino;
+package it.uniba.dib.sms232419.pronuntiapp.ui.schedeBambino;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,8 +31,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -227,10 +232,19 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
     @Override
     public void onCalendarioClick(int position, EditText dataEsercizio) {
+        // Get tomorrow's date
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.add(Calendar.DAY_OF_MONTH, 1); // Add 1 day to get tomorrow's date
 
-        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
-        builder.setTitleText("Seleziona una data");
-        MaterialDatePicker<Long> materialDatePicker = builder.build();
+        CalendarConstraints.Builder calendarConstraints = new CalendarConstraints.Builder().setStart(tomorrow.getTimeInMillis());
+
+        MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Seleziona una data")
+                .setCalendarConstraints(calendarConstraints.build())
+                .build();
+
+        materialDatePicker.show(getChildFragmentManager(), "DATE_PICKER");
+
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             // Converte la data selezionata in un oggetto Calendar
             Calendar calendarioSelezionato = Calendar.getInstance();
@@ -242,9 +256,27 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
             // La data selezionata dall'utente
             String dataSelezionata = giorno + "/" + (mese + 1) + "/" + anno;
+
+            // Ottieni la data corrente
+            Date dataCorrente = new Date();
+            // Definisci il formato per la data inserita dall'utente
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+            Date dataInserita;
+            try {
+                dataInserita = dateFormat.parse(dataSelezionata);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            if(dataInserita.compareTo(dataCorrente) < 0)
+            {
+                Toasty.error(getContext(), "La data inserita deve essere successiva a quella odierna", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             dataEsercizio.setText(dataSelezionata);
         });
-        materialDatePicker.show(requireFragmentManager(), "DATE_PICKER");
+
     }
 
     public Esercizio creazioneEsercizio(QueryDocumentSnapshot document) {
