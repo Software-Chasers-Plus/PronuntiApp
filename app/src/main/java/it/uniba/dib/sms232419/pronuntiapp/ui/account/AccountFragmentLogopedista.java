@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -96,6 +97,24 @@ public class AccountFragmentLogopedista extends Fragment {
                         // Set matricola
                         EditText account_matricola = view.findViewById(R.id.dettaglio_account_logopedista_matricola);
                         account_matricola.setText(documentSnapshot.getString("Matricola"));
+
+                        if(documentSnapshot.getBoolean("Albo")){
+                            LinearLayout alboLayout = view.findViewById(R.id.layoutInAlbo);
+                            alboLayout.setVisibility(View.VISIBLE);
+                            TextView labelAlbo = view.findViewById(R.id.inAlboMessaggio);
+                            labelAlbo.setText(R.string.la_matricola_contenuta_nell_albo_dei_logopedisti);
+                            ImageView albo = view.findViewById(R.id.inAlboIcona);
+                            albo.setImageResource(R.drawable.confirm_svgrepo_com);
+                        }
+                        else{
+                            LinearLayout alboLayout = view.findViewById(R.id.layoutInAlbo);
+                            alboLayout.setVisibility(View.VISIBLE);
+                            TextView labelAlbo = view.findViewById(R.id.inAlboMessaggio);
+                            labelAlbo.setText(R.string.la_tua_matricola_non_contenuta_nell_albo_dei_logopedisti);
+                            ImageView albo = view.findViewById(R.id.inAlboIcona);
+                            albo.setVisibility(View.GONE);
+                        }
+
                     }
                 });
 

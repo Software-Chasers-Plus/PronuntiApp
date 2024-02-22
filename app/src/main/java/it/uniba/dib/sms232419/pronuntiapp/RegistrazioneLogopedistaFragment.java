@@ -308,8 +308,8 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
             this.matricola.setError(getString(R.string.inserisci_la_tua_matricola));
             this.matricola.requestFocus();
             check = false;
-        }else if(matricola.length() < 5){
-            this.matricola.setError("La matricola deve avere 5 caratteri");
+        }else if(matricola.length() < 1){
+            this.matricola.setError("La matricola deve avere almeno un carattere");
             this.matricola.requestFocus();
             check = false;
         }

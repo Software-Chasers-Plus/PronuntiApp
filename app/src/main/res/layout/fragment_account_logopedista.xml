@@ -6,30 +6,29 @@
     android:layout_height="match_parent">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="-36dp">
+        android:layout_marginBottom="15dp"
+     >
 
         <!-- Foto profilo (da vedere se metterne una default) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="143dp"
                 android:layout_height="121dp"
+                android:layout_gravity="center"
                 android:src="@drawable/logopedista_immagine_profilo"
                 tools:ignore="MissingConstraints"
-                android:layout_gravity="center"
                 tools:layout_editor_absoluteX="121dp"
                 tools:layout_editor_absoluteY="45dp" />
 
@@ -48,10 +47,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="30dp">
+            android:layout_marginBottom="15dp">
 
 
             <!-- N° Figli -->
@@ -158,15 +157,12 @@
         </LinearLayout>
 
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="232dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                >
 
                 <LinearLayout
@@ -195,6 +191,30 @@
                             android:text="@string/matricola"
                         />
 
+                        <LinearLayout
+                            android:id="@+id/layoutInAlbo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:id="@+id/inAlboMessaggio"
+                                android:layout_width="match_parent"
+                                android:singleLine="false"
+                                android:maxLines="2"
+                                android:layout_height="wrap_content"
+                                android:text="@string/la_matricola_contenuta_nell_albo_dei_logopedisti"/>
+
+                            <ImageView
+                                android:id="@+id/inAlboIcona"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/confirm_svgrepo_com"/>
+                        </LinearLayout>
+
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,6 +236,7 @@
                             android:enabled="false"
                             android:inputType="text"
                             android:text="@string/name" />
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -238,39 +259,36 @@
                             android:text="@string/email" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-        </androidx.core.widget.NestedScrollView>
 
         <!-- Button logout -->
         <LinearLayout
             android:id="@+id/logout_textView"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal"
             >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/logout"
-                android:layout_gravity="center"
                 android:layout_marginRight="10dp"
+                android:layout_gravity="center"
                 android:fontFamily="@font/varelaround_regular"
-                >
-            </TextView>
+                android:text="@string/logout"></TextView>
 
             <ImageView
                 android:layout_width="50dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/logout_sketch_svgrepo_com">
-            </ImageView>
+                android:src="@drawable/logout_sketch_svgrepo_com"></ImageView>
 
+            <!-- Fine logout button -->
         </LinearLayout>
-        <!-- Fine logout button -->
-
 
     </LinearLayout>
 

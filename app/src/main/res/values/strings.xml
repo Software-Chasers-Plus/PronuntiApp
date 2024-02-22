@@ -206,4 +206,6 @@
     <string name="complimenti_esercizio_completato">Complimenti!\nEsercizio completato!</string>
     <string name="esercizio_gioco_tipologia_2">esercizio gioco tipologia 2</string>
     <string name="riproduci_audio">riproduci audio</string>
+    <string name="la_matricola_contenuta_nell_albo_dei_logopedisti">La matricola è contenuta nell\'albo dei logopedisti!</string>
+    <string name="la_tua_matricola_non_contenuta_nell_albo_dei_logopedisti">La tua matricola non è contenuta nell\'albo dei logopedisti.</string>
 </resources>

@@ -239,7 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/inserisci_la_tua_matricola"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:drawableLeft="@drawable/baseline_serial_number_24"
                 android:drawablePadding="8dp"
                 android:padding="12dp"
