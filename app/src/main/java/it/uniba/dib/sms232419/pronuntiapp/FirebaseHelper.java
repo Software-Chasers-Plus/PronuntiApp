@@ -143,7 +143,8 @@ public class FirebaseHelper {
         Scheda scheda = new Scheda(document.getString("nomeScheda"),
                 document.getString("logopedista"),
                 document.getString("figlio"),
-                FirebaseHelper.creaArrayListEsercizi(document));
+                FirebaseHelper.creaArrayListEsercizi(document),
+                document.getId());
 
         return scheda;
     }
