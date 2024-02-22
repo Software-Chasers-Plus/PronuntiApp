@@ -1,12 +1,10 @@
 package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -14,13 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,13 +24,13 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
-import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia1;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia3;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
-import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 public class GiocoActivity extends AppCompatActivity {
@@ -45,6 +41,8 @@ public class GiocoActivity extends AppCompatActivity {
     public Figlio figlio;
     FirebaseFirestore db;
     AlertDialog dialogPopupCaricamentoEsercizio;
+
+    private static BitmapCache bitmapCache = new BitmapCache();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +135,7 @@ public class GiocoActivity extends AppCompatActivity {
                                             nuovoEsercizio.get("audio2").toString(),
                                             nuovoEsercizio.get("audio3").toString());
                                     bundle.putParcelable("esercizio", esercizioTipologia1);
-                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine").toString(), bundle);
+                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine").toString(), "immagine", bundle, EsercizioGiocoFragmentTipologia1.class);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("2")){
                                     mostraPopupCaricamentoImmagine();
                                     Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
@@ -152,12 +150,22 @@ public class GiocoActivity extends AppCompatActivity {
                                     bundle.putParcelable("esercizio", esercizioTipologia2);
                                     aggiungiFragmentGioco(EsercizioGiocoFragmentTipologia2.class, bundle);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("3")){
-                                    // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia3 e lo aggiunge al back stack
-                                    bundle.putString("esercizio", esercizio.get(0));
-                                    getSupportFragmentManager().beginTransaction()
-                                            .setReorderingAllowed(true)
-                                            .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia3.class, bundle)
-                                            .commit();
+                                    mostraPopupCaricamentoImmagine();
+                                    Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
+                                    Log.d("PopUp_Fragmnet", "Popup: " + dialogPopupCaricamentoEsercizio);
+                                    // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia1 e lo aggiunge al back stack
+                                    EsercizioTipologia3 esercizioTipologia3 = new EsercizioTipologia3(document.getId(),
+                                            nuovoEsercizio.get("nome").toString(),
+                                            nuovoEsercizio.get("logopedista").toString(),
+                                            nuovoEsercizio.get("tipologia").toString(),
+                                            nuovoEsercizio.get("audio").toString(),
+                                            nuovoEsercizio.get("immagine1").toString(),
+                                            nuovoEsercizio.get("immagine2").toString(),
+                                            (long)nuovoEsercizio.get("immagine_corretta"));
+                                    bundle.putParcelable("esercizio3", esercizioTipologia3);
+                                    Log.d("GiocoActivity", "Immagine 1: " + nuovoEsercizio.get("immagine1").toString());
+                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine1").toString(), "immagine1", bundle, EsercizioGiocoFragmentTipologia3.class);
+                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine2").toString(), "immagine2", bundle, EsercizioGiocoFragmentTipologia3.class);
                                 }
                             } else {
                                 // Stampa nel log un messaggio di errore
@@ -177,25 +185,33 @@ public class GiocoActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void eseguiDownloadImmagine(String pathImmagine, Bundle bundle){
-
+    private void eseguiDownloadImmagine(String pathImmagine, String key, Bundle bundle_esercizio, Class fragmentClass) {
         // Create a storage reference from our app
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child(pathImmagine);
 
         // Download directly from StorageReference using Glide
         final long MAX_DOWNLOAD_SIZE = 2048 * 2048; // 1MB max download size
-        storageRef.getBytes(MAX_DOWNLOAD_SIZE).addOnSuccessListener(bytes -> {
-            // Decode the byte array into a Bitmap
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        storageRef.getBytes(MAX_DOWNLOAD_SIZE)
+                .addOnSuccessListener(bytes -> {
+                    // Decode the byte array into a Bitmap
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-            // Set the Bitmap to the ImageView
-            BitmapCache bitmapCache = new BitmapCache();
-            bitmapCache.addBitmapToMemoryCache("immagine", bitmap);
+                    // Add the bitmap to the cache
+                    bitmapCache.addBitmapToMemoryCache(key, bitmap);
 
-            aggiungiFragmentGioco(EsercizioGiocoFragmentTipologia1.class, bundle);
-        });
+                    Log.d("GiocoActivity", key + " scaricata");
+
+                    // Set the Bitmap to the ImageView
+                    aggiungiFragmentGioco(fragmentClass, bundle_esercizio);
+
+                })
+                .addOnFailureListener(exception -> {
+                    // Handle any errors that occur during the download process
+                    Log.e("GiocoActivity", "Errore durante il download dell'immagine: " + exception.getMessage());
+                });
     }
+
 
     private void mostraPopupCaricamentoImmagine(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);

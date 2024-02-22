@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginLeft="90dp"
+            android:layout_marginStart="90dp"
             android:backgroundTint="@color/default_impostazioni"
             app:srcCompat="@drawable/baseline_play_arrow_24"
             android:contentDescription="@string/riproduci_audio"
