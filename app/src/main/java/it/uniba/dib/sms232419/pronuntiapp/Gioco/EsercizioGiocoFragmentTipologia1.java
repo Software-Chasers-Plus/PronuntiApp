@@ -144,7 +144,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 layout.setBackgroundResource(R.drawable.deserto);
                 progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryDeserto));
                 textCorrezione.setTextColor(getResources().getColor(R.color.thirdDeserto));
-                esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.primaryDeserto));
+                esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.secondaryDeserto));
                 cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryDeserto));
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdDeserto));
                 aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdDeserto));

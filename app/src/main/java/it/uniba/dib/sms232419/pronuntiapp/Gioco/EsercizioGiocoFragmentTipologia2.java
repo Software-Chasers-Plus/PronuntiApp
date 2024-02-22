@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,7 +49,7 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
     int punteggioEsercizio;
     private EsercizioTipologia2 esercizioTipologia2;
     private GiocoActivity giocoActivity;
-    private ConstraintLayout layout;
+    private LinearLayout layout,layoutCorrezione;
     private FirebaseStorage storage;
     private static final int STOP_AUDIO_AIUTO = 0;
     private boolean audioInRiproduzione = false;
@@ -61,6 +63,9 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
     private String audioDownloadUrl;
     private AlertDialog dialogPopupRisultatoEsercizio;
     private int coloreSfondoPopup, coloreTestoPopup;
+    private CircularProgressIndicator progressBar;
+    private TextView textCorrezione;
+    private ConstraintLayout layoutEsercizio;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,26 +94,60 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
 
         layout = view.findViewById(R.id.esercizio_tipologia2);
 
+        layoutCorrezione = view.findViewById(R.id.linear_layout_correzione_esercizio_tipologia2);
+        progressBar = view.findViewById(R.id.progressIndicator_esercizio_tipologia2);
+        textCorrezione = view.findViewById(R.id.txt_correzione_esercizio_tipologia2);
+
+        layoutEsercizio = view.findViewById(R.id.esercizio_tipologia2_constraint_layout);
+        TextView titoloEsercizio = view.findViewById(R.id.esercizioGiocoTipologia2);
+        TextView rispostaLabel = view.findViewById(R.id.risposta_lable);
+        TextView riproduciAudioLabel = view.findViewById(R.id.riproduci_audio_lable);
+
         storage = FirebaseStorage.getInstance();
 
         // Inizializza il layout con l'immagine di sfondo selezionata in base a  public Integer sfondoSelezionato di GiocoActivity
         switch (giocoActivity.sfondoSelezionato) {
             case 0:
                 layout.setBackgroundResource(R.drawable.deserto);
+                progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryDeserto));
+                textCorrezione.setTextColor(getResources().getColor(R.color.thirdDeserto));
+
+
+                titoloEsercizio.setTextColor(getResources().getColor(R.color.secondaryDeserto));
+                rispostaLabel.setTextColor(getResources().getColor(R.color.thirdDeserto));
+                riproduciAudioLabel.setTextColor(getResources().getColor(R.color.thirdDeserto));
+
                 coloreSfondoPopup = R.color.secondaryDeserto;
                 coloreTestoPopup = R.color.primaryDeserto;
                 break;
             case 1:
                 layout.setBackgroundResource(R.drawable.antartide);
+                progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryAntartide));
+                textCorrezione.setTextColor(getResources().getColor(R.color.thirdAntartide));
+
+
+                titoloEsercizio.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                rispostaLabel.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                riproduciAudioLabel.setTextColor(getResources().getColor(R.color.thirdAntartide));
+
                 coloreSfondoPopup = R.color.secondaryAntartide;
                 coloreTestoPopup = R.color.primaryAntartide;
                 break;
             case 2:
                 layout.setBackgroundResource(R.drawable.giungla);
+                progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryGiungla));
+                textCorrezione.setTextColor(getResources().getColor(R.color.thirdGiungla));
+
+                titoloEsercizio.setTextColor(getResources().getColor(R.color.secondaryGiungla));
+                rispostaLabel.setTextColor(getResources().getColor(R.color.thirdGiungla));
+                riproduciAudioLabel.setTextColor(getResources().getColor(R.color.thirdGiungla));
+
                 coloreSfondoPopup = R.color.secondaryGiungla;
                 coloreTestoPopup = R.color.primaryGiungla;
                 break;
         }
+        layoutCorrezione.setVisibility(View.GONE);
+        layoutEsercizio.setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -215,6 +254,7 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                                                                         @Override
                                                                         public void run() {
                                                                             // Il tuo codice che interagisce con la UI qui
+                                                                            layoutCorrezione.setVisibility(View.GONE);
                                                                             aggiornaScheda(true);
                                                                         }
                                                                     });
@@ -234,6 +274,7 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                                         @Override
                                         public void run() {
                                             // Il tuo codice che interagisce con la UI qui
+                                            layoutCorrezione.setVisibility(View.GONE);
                                             aggiornaScheda(false);
                                         }
                                     });
@@ -245,6 +286,8 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                     }
                 });
                 Toasty.success(getContext(), R.string.risposta_inviata_con_successo, Toast.LENGTH_SHORT, true).show();
+                layoutEsercizio.setVisibility(View.GONE);
+                layoutCorrezione.setVisibility(View.VISIBLE);
             } else {
                 Toasty.error(getContext(), R.string.registra_la_risposta_prima_di_inviarla, Toast.LENGTH_SHORT, true).show();
             }

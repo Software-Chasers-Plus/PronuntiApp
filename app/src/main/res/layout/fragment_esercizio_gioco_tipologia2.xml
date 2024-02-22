@@ -1,126 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/esercizio_tipologia2"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/esercizio_tipologia2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
-    <TextView
-        android:id="@+id/esercizioGiocoTipologia2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/esercizio_gioco_tipologia_2"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/font_game"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:orientation="vertical"
+    android:gravity="center">
 
     <LinearLayout
-        android:id="@+id/linear_layout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/esercizioGiocoTipologia2"
-        android:layout_marginTop="20dp">
-        <TextView
-            android:id="@+id/titoloEsercizioTipologia2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/riproduci_audio"
-            android:textSize="16dp"
-            android:fontFamily="@font/font_game"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/audio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginStart="90dp"
-            android:backgroundTint="@color/default_impostazioni"
-            app:srcCompat="@drawable/baseline_play_arrow_24"
-            android:contentDescription="@string/riproduci_audio"
-            />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/aiuto2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginLeft="6dp"
-            android:backgroundTint="@color/default_impostazioni"
-            app:srcCompat="@drawable/baseline_play_arrow_24"
-            android:visibility="gone"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/aiuto3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginLeft="6dp"
-            android:backgroundTint="@color/default_impostazioni"
-            app:srcCompat="@drawable/baseline_play_arrow_24"
-            android:visibility="gone"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_layout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout1"
-        android:layout_marginTop="40dp">
-        <TextView
-            android:id="@+id/risposta_lable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/inserisci_risposta"
-            android:textSize="16dp"
-            android:fontFamily="@font/font_game"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/risposta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/upload_audio"
-            android:backgroundTint="@color/default_impostazioni"
-            app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/play_risposta_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:backgroundTint="@color/default_impostazioni"
-            app:srcCompat="@drawable/baseline_play_arrow_24"
-            android:contentDescription="@string/upload_audio"/>
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/conferma_risposta"
+        android:id="@+id/linear_layout_correzione_esercizio_tipologia2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/conferma_risposta"
-        android:fontFamily="@font/font_game"
-        android:textSize="18dp"
-        android:textColor="@color/white"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:backgroundTint="@color/default_impostazioni"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible">
+        <TextView
+            android:id="@+id/txt_correzione_esercizio_tipologia2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/correzione_in_corso"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="20dp"
+            android:fontFamily="@font/font_game"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressIndicator_esercizio_tipologia2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:indeterminate="true" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/esercizio_tipologia2_constraint_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/esercizioGiocoTipologia2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/esercizio_gioco_tipologia_2"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/font_game"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linear_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/esercizioGiocoTipologia2"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:id="@+id/riproduci_audio_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/riproduci_audio"
+                android:textSize="16dp"
+                android:fontFamily="@font/font_game"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/audio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginStart="90dp"
+                android:backgroundTint="@color/default_impostazioni"
+                app:srcCompat="@drawable/baseline_play_arrow_24"
+                android:contentDescription="@string/riproduci_audio"
+                />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/aiuto2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginLeft="6dp"
+                android:backgroundTint="@color/default_impostazioni"
+                app:srcCompat="@drawable/baseline_play_arrow_24"
+                android:visibility="gone"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/aiuto3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginLeft="6dp"
+                android:backgroundTint="@color/default_impostazioni"
+                app:srcCompat="@drawable/baseline_play_arrow_24"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/linear_layout1"
+            android:layout_marginTop="40dp">
+            <TextView
+                android:id="@+id/risposta_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inserisci_risposta"
+                android:textSize="16dp"
+                android:fontFamily="@font/font_game"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/risposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/upload_audio"
+                android:backgroundTint="@color/default_impostazioni"
+                app:srcCompat="@drawable/mic_fill0_wght400_grad0_opsz24"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/play_risposta_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/default_impostazioni"
+                app:srcCompat="@drawable/baseline_play_arrow_24"
+                android:contentDescription="@string/upload_audio"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/conferma_risposta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/conferma_risposta"
+            android:fontFamily="@font/font_game"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:backgroundTint="@color/default_impostazioni"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
