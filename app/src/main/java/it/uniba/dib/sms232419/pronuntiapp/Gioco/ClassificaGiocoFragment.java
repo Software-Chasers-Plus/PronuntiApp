@@ -105,7 +105,7 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
         Log.d(TAG, "Riferimento al database creato");
 
         db.collection("figli")
-                .orderBy("punteggioGioco")
+                .orderBy("punteggioGioco", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

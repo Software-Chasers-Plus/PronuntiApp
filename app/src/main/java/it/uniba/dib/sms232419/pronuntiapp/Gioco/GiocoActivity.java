@@ -32,6 +32,7 @@ import java.util.Map;
 import it.uniba.dib.sms232419.pronuntiapp.AccessoActivity;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia1;
+import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
@@ -138,12 +139,18 @@ public class GiocoActivity extends AppCompatActivity {
                                     bundle.putParcelable("esercizio", esercizioTipologia1);
                                     eseguiDownloadImmagine(nuovoEsercizio.get("immagine").toString(), bundle);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("2")){
+                                    mostraPopupCaricamentoImmagine();
+                                    Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
+                                    Log.d("PopUp_Fragmnet", "Popup: " + dialogPopupCaricamentoEsercizio);
                                     // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia2 e lo aggiunge al back stack
-                                    bundle.putString("esercizio", esercizio.get(0));
-                                    getSupportFragmentManager().beginTransaction()
-                                            .setReorderingAllowed(true)
-                                            .replace(R.id.avvio_gioco_fragment, EsercizioGiocoFragmentTipologia2.class, bundle)
-                                            .commit();
+                                    EsercizioTipologia2 esercizioTipologia2 = new EsercizioTipologia2(nuovoEsercizio.get("tipologia").toString(),
+                                            nuovoEsercizio.get("nome").toString(),
+                                            nuovoEsercizio.get("logopedista").toString(),
+                                            nuovoEsercizio.get("tipologia").toString(),
+                                            nuovoEsercizio.get("audio").toString(),
+                                            nuovoEsercizio.get("trascrizione_audio").toString());
+                                    bundle.putParcelable("esercizio", esercizioTipologia2);
+                                    aggiungiFragmentGioco(EsercizioGiocoFragmentTipologia2.class, bundle);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("3")){
                                     // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia3 e lo aggiunge al back stack
                                     bundle.putString("esercizio", esercizio.get(0));

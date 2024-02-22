@@ -70,7 +70,10 @@ public class EsercizioTipologia2 extends Esercizio implements Parcelable {
     }
 
     public boolean correzioneEsercizio(String risposta) {
-        int distance = LevenshteinDistance.getDefaultInstance().apply(trasctrizione_audio, risposta);
+        risposta = risposta.replaceAll("[^a-zA-Z\\s]", "");
+        risposta = risposta.toLowerCase();
+
+        int distance = LevenshteinDistance.getDefaultInstance().apply(trasctrizione_audio.toLowerCase(), risposta);
         double similarity = 1 - ((double) distance / Math.max(trasctrizione_audio.length(), risposta.length()));
 
         return similarity > 0.8;

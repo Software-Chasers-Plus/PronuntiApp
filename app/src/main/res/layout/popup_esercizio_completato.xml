@@ -24,7 +24,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:textSize="20dp"
-            android:text="@string/complimenti_nesercizio_completato"
+            android:text="@string/complimenti_esercizio_completato"
             android:fontFamily="@font/font_game"/>
 
         <TextView

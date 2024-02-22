@@ -203,5 +203,7 @@
     <string name="risposta_inviata_con_successo">Risposta inviata con successo</string>
     <string name="registra_la_risposta_prima_di_inviarla">Registra la risposta prima di inviarla</string>
     <string name="registra_la_risposta_prima_di_riprodurla">Registra la risposta prima di riprodurla</string>
-    <string name="complimenti_nesercizio_completato">Complimenti!\nEsercizio completato!</string>
+    <string name="complimenti_esercizio_completato">Complimenti!\nEsercizio completato!</string>
+    <string name="esercizio_gioco_tipologia_2">esercizio gioco tipologia 2</string>
+    <string name="riproduci_audio">riproduci audio</string>
 </resources>
