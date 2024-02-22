@@ -47,18 +47,21 @@
         android:text="@string/required_field"
         android:textColor="@color/red"
         android:visibility="gone" />
+
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/textInputLayoutStyle"
+            android:id="@+id/giorno_prenotazione_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
-            android:hint="Data di prenotazione">
+            android:clickable="false"
+            android:hint="@string/scegli_il_giorno_per_la_prenotazione">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/data_inputPrenotazione"
@@ -66,31 +69,21 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:textColor="@color/black" />
-
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <ImageView
             android:id="@+id/imageViewCalendarPrenotazione"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/baseline_calendar_month_24"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="55dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:clickable="true" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/err_dataPrenotazione"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="0dp"
-            android:text="@string/required_field"
-            android:textColor="@color/red"
-            android:visibility="gone"/>
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/baseline_calendar_month_24"
+            android:clickable="true"
+            android:contentDescription="@string/calendario"/>
+
     </RelativeLayout>
+
 
     <RadioGroup
     android:id="@+id/ora_inputPrenotazione"

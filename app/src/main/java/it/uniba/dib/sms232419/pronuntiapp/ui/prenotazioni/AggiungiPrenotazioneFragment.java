@@ -26,6 +26,8 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -94,28 +96,37 @@ public class AggiungiPrenotazioneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
         EditText logopedistaPrenotazione=view.findViewById(R.id.logopedista_inputPrenotazione);
-        EditText dataPrenotazione=view.findViewById(R.id.data_inputPrenotazione);
+
+        TextInputEditText dataPrenotazione=view.findViewById(R.id.data_inputPrenotazione);
+
         RadioGroup oraPrenotazione=view.findViewById(R.id.ora_inputPrenotazione);
         EditText notePrenotazione = view.findViewById(R.id.note_inputPrenotazione);
         ImageView iconaCalendario = view.findViewById(R.id.imageViewCalendarPrenotazione);
 
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false); // Imposta il parsing della data come non flessibile
+
+
         iconaCalendario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar calendarioCorrente = Calendar.getInstance();
-                int anno = calendarioCorrente.get(Calendar.YEAR);
-                int mese = calendarioCorrente.get(Calendar.MONTH);
-                int giorno = calendarioCorrente.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                               // La data selezionata dall'utente
-                                String dataSelezionata = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                dataPrenotazione.setText(dataSelezionata);
-                            }
-                        }, anno, mese, giorno);
-                datePickerDialog.show();
+                MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+                builder.setTitleText("Seleziona una data");
+                MaterialDatePicker<Long> materialDatePicker = builder.build();
+                materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+                    // Converte la data selezionata in un oggetto Calendar
+                    Calendar calendarioSelezionato = Calendar.getInstance();
+                    calendarioSelezionato.setTimeInMillis(selection);
+
+                    int anno = calendarioSelezionato.get(Calendar.YEAR);
+                    int mese = calendarioSelezionato.get(Calendar.MONTH);
+                    int giorno = calendarioSelezionato.get(Calendar.DAY_OF_MONTH);
+
+                    // La data selezionata dall'utente
+                    String dataSelezionata = giorno + "/" + (mese + 1) + "/" + anno;
+                    dataPrenotazione.setText(dataSelezionata);
+                });
+                materialDatePicker.show(requireFragmentManager(), "DATE_PICKER");
             }
         });
 
@@ -178,7 +189,7 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                         return;
                     }
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    Toasty.error(getContext(), "Inserisci una data valida (dd/mm//yyyy)", Toast.LENGTH_SHORT).show();;
                 }
 
 

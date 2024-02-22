@@ -208,4 +208,5 @@
     <string name="riproduci_audio">riproduci audio</string>
     <string name="la_matricola_contenuta_nell_albo_dei_logopedisti">La matricola è contenuta nell\'albo dei logopedisti!</string>
     <string name="la_tua_matricola_non_contenuta_nell_albo_dei_logopedisti">La tua matricola non è contenuta nell\'albo dei logopedisti.</string>
+    <string name="scegli_il_giorno_per_la_prenotazione">Scegli il giorno per la prenotazione</string>
 </resources>
