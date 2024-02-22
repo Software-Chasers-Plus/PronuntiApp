@@ -118,8 +118,6 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         Log.d("PopUp_Fragmnet", "Popup: " + giocoActivity.dialogPopupCaricamentoEsercizio);
 
         mediaPlayerEsercizio = new MediaPlayer();
-
-
     }
 
     @Nullable
@@ -299,10 +297,10 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                     if (success) {
                         new Thread(new Runnable() {
                             public void run() {
-                                String risposta = String.valueOf(FirebaseHelper.audioToText(audioDownloadUrl));
+                                String risposta = FirebaseHelper.audioToText(audioDownloadUrl).orElse("Default");
                                 Log.d("EsercizioGiocoFragmentTipologia1", "Risposta: " + risposta);
 
-                                if(esercizioTipologia1.getDescrizione_immagine().equals(risposta)){
+                                if(esercizioTipologia1.correzioneEsercizio(risposta)){
                                     // Calcola il punteggio dell'esercizio
                                     giocoActivity.figlio.setPunteggioGioco(calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto));
 
