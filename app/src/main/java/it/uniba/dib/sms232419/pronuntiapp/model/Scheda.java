@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class Scheda implements Parcelable {
+    private String Uid;
     private final String nome;
     private final String logopedista;
     private final String bambino;
@@ -14,7 +15,7 @@ public class Scheda implements Parcelable {
     private final int eserciziCompletati;
     private final ArrayList<ArrayList<String>> esercizi;
 
-    public Scheda(String nome, String logopedista, String bambino, ArrayList<ArrayList<String>> esercizi) {
+    public Scheda(String nome, String logopedista, String bambino, ArrayList<ArrayList<String>> esercizi, String Uid) {
         this.nome = nome;
         this.logopedista = logopedista;
         this.bambino = bambino;
@@ -42,6 +43,8 @@ public class Scheda implements Parcelable {
         } else {
             this.stato = "non completata";
         }
+
+        this.Uid = Uid;
     }
 
     protected Scheda(Parcel in) {
@@ -52,7 +55,9 @@ public class Scheda implements Parcelable {
         stato = in.readString();
         eserciziCompletati = in.readInt();
         esercizi = in.readArrayList(null);
+        Uid = in.readString();
     }
+
 
     public static final Creator<Scheda> CREATOR = new Creator<Scheda>() {
         @Override
@@ -75,6 +80,7 @@ public class Scheda implements Parcelable {
         dest.writeString(stato);
         dest.writeInt(eserciziCompletati);
         dest.writeList(esercizi);
+        dest.writeString(Uid);
     }
 
     @Override
@@ -104,5 +110,9 @@ public class Scheda implements Parcelable {
 
     public ArrayList<ArrayList<String>> getEsercizi() {
         return esercizi;
+    }
+
+    public String getUid() {
+        return Uid;
     }
 }

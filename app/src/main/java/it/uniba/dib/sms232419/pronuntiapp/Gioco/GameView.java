@@ -159,10 +159,10 @@ public class GameView extends View {
         }
 
         // Disegna i checkpoint
-        Paint redPaint = new Paint();
-        redPaint.setColor(Color.RED);
-        redPaint.setStyle(Paint.Style.STROKE);
-        redPaint.setStrokeWidth(5); // Imposta lo spessore del contorno
+        Paint paintCircle = new Paint();
+        paintCircle.setColor(Color.RED);
+        paintCircle.setStyle(Paint.Style.STROKE);
+        paintCircle.setStrokeWidth(5); // Imposta lo spessore del contorno
 
         int centerX, centerY;
 
@@ -176,9 +176,14 @@ public class GameView extends View {
             centerY = checkpointYPositions[i] + checkpointHeight / 2;
 
             // Disegna un cerchio rosso attorno al checkpoint
-            canvas.drawCircle(centerX, centerY, checkpointWidth / 2 + 5, redPaint); // Aggiungi 5 per compensare lo spessore del contorno
+            if(scheda.getEsercizi().get(i).get(1).equals("completato"))
+                paintCircle.setColor(Color.GREEN);
+            else
+                paintCircle.setColor(Color.RED);
 
-            if(!personaggioInMovimento && i == checkPointAttuale){
+            canvas.drawCircle(centerX, centerY, checkpointWidth / 2 + 5, paintCircle); // Aggiungi 5 per compensare lo spessore del contorno
+
+            if((!personaggioInMovimento && i == checkPointAttuale) && !scheda.getEsercizi().get(i).get(1).equals("completato")){
                 // Disegna l'immagine solo se il checkpoint è stato raggiunto
                 int imageWidth = 100; // Larghezza dell'immagine
                 int imageHeight = 100; // Altezza dell'immagine
@@ -227,7 +232,9 @@ public class GameView extends View {
                     }
                 } else if (touchX >= xBottone && touchX <= xBottone + 170
                         && touchY >= yBottone && touchY <= yBottone + 170) {
-                    giocoActivity.avviaEsercizio(scheda.getEsercizi().get(checkPointAttuale));
+                    if(!scheda.getEsercizi().get(checkPointAttuale).get(1).equals("completato")){
+                        giocoActivity.avviaEsercizio(scheda.getEsercizi().get(checkPointAttuale));
+                    }
                 }
             }
         }

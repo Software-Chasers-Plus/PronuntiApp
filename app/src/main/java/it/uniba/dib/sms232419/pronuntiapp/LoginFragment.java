@@ -252,9 +252,9 @@ public class LoginFragment extends Fragment {
                                         childData.get("nome").toString(),
                                         childData.get("cognome").toString(),
                                         childData.get("codiceFiscale").toString(),
+                                        childData.get("dataNascita").toString(),
                                         childData.get("logopedista").toString(),
                                         userId,
-                                        childData.get("dataNascita").toString(),
                                         Integer.parseInt(childData.get("idAvatar").toString()),
                                         childData.get("token").toString(),
                                         (long) childData.get("punteggioGioco")
@@ -264,17 +264,17 @@ public class LoginFragment extends Fragment {
                                         childData.get("nome").toString(),
                                         childData.get("cognome").toString(),
                                         childData.get("codiceFiscale").toString(),
+                                        childData.get("dataNascita").toString(),
                                         "",
                                         userId,
-                                        childData.get("dataNascita").toString(),
                                         Integer.parseInt(childData.get("idAvatar").toString()),
                                         childData.get("token").toString(),
                                         (long) childData.get("punteggioGioco")
                                 ));
                             }
-
                         }
                         bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) childrenList);
+                        Log.d("LoginFragment", "Figli recuperati: " + childrenList.size());
                         startMainActivityGenitore(MainActivityGenitore.class);
 
                     }
@@ -294,9 +294,9 @@ public class LoginFragment extends Fragment {
                                     patientData.get("nome").toString(),
                                     patientData.get("cognome").toString(),
                                     patientData.get("codiceFiscale").toString(),
+                                    patientData.get("dataNascita").toString(),
                                     userId,
                                     patientData.get("genitore").toString(),
-                                    patientData.get("dataNascita").toString(),
                                     Integer.parseInt(patientData.get("idAvatar").toString()),
                                     patientData.get("token").toString(),
                                     (long)patientData.get("punteggioGioco")

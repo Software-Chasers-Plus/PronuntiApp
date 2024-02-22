@@ -155,9 +155,9 @@ public class SplashActivity extends AppCompatActivity {
                                             nuovoFiglio.get("nome").toString(),
                                             nuovoFiglio.get("cognome").toString(),
                                             nuovoFiglio.get("codiceFiscale").toString(),
+                                            nuovoFiglio.get("dataNascita").toString(),
                                             nuovoFiglio.get("logopedista").toString(),
                                             currentUser.getUid(),
-                                            nuovoFiglio.get("dataNascita").toString(),
                                             Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
                                             nuovoFiglio.get("token").toString(),
                                             (long)nuovoFiglio.get("punteggioGioco")
@@ -167,9 +167,9 @@ public class SplashActivity extends AppCompatActivity {
                                             nuovoFiglio.get("nome").toString(),
                                             nuovoFiglio.get("cognome").toString(),
                                             nuovoFiglio.get("codiceFiscale").toString(),
+                                            nuovoFiglio.get("dataNascita").toString(),
                                             "",
                                             currentUser.getUid(),
-                                            nuovoFiglio.get("dataNascita").toString(),
                                             Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
                                             nuovoFiglio.get("token").toString(),
                                             (long)nuovoFiglio.get("punteggioGioco")
@@ -231,9 +231,9 @@ public class SplashActivity extends AppCompatActivity {
                                         nuovoFiglio.get("nome").toString(),
                                         nuovoFiglio.get("cognome").toString(),
                                         nuovoFiglio.get("codiceFiscale").toString(),
+                                        nuovoFiglio.get("dataNascita").toString(),
                                         currentUser.getUid(),
                                         nuovoFiglio.get("genitore").toString(),
-                                        nuovoFiglio.get("dataNascita").toString(),
                                         Integer.parseInt(nuovoFiglio.get("idAvatar").toString()), // Conversione da String a int
                                         nuovoFiglio.get("token").toString(),
                                         (long)nuovoFiglio.get("punteggioGioco")

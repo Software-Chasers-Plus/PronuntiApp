@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Figlio implements Parcelable {
+    private String Uid;
     private final String nome;
     private final String cognome;
     private final String codiceFiscale;

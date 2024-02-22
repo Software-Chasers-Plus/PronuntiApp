@@ -47,8 +47,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
@@ -58,10 +60,13 @@ import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.RecordAudio;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia1;
+import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 import it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.EsercizioDenominazioneImmagine;
 
 public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
+
+    private int punteggioEsercizio;
     private EsercizioTipologia1 esercizioTipologia1;
     private Bitmap immagineBitmap;
     private String audioRispostaName, audioRispostaPathFirebase;
@@ -80,20 +85,9 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     boolean mStartPlaying = true;
     private static final int STOP_AUDIO_AIUTO = 0;
     AlertDialog dialogPopupRisultatoEsercizio;
+    private int coloreSfondoPopup, coloreTestoPopup;
 
     private String audioDownloadUrl;
-
-    private final Handler handlerAudio = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case STOP_AUDIO_AIUTO:
-                    //rendi possibile la riproduzione di un nuovo audio
-                    audioInRiproduzione = false;
-                    break;
-            }
-        }
-    };
 
 
     @Override
@@ -118,6 +112,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         Log.d("PopUp_Fragmnet", "Popup: " + giocoActivity.dialogPopupCaricamentoEsercizio);
 
         mediaPlayerEsercizio = new MediaPlayer();
+
+
     }
 
     @Nullable
@@ -134,7 +130,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
         storage = FirebaseStorage.getInstance();
 
-        // Inizializza il layout con l'immagine di sfondo selezionata in base a  public Integer sfondoSelezionato di GiocoActivity
+        // Inizializza il layout con l'immagine di sfondo selezionata in base a public Integer sfondoSelezionato di GiocoActivity
         switch (giocoActivity.sfondoSelezionato) {
             case 0:
                 layout.setBackgroundResource(R.drawable.deserto);
@@ -143,6 +139,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdDeserto));
                 aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdDeserto));
                 risposta_lable.setTextColor(getResources().getColor(R.color.thirdDeserto));
+                coloreSfondoPopup = R.color.secondaryDeserto;
+                coloreTestoPopup = R.color.primaryDeserto;
                 break;
             case 1:
                 layout.setBackgroundResource(R.drawable.antartide);
@@ -151,6 +149,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdAntartide));
                 aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdAntartide));
                 risposta_lable.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                coloreSfondoPopup = R.color.secondaryAntartide;
+                coloreTestoPopup = R.color.primaryAntartide;
                 break;
             case 2:
                 layout.setBackgroundResource(R.drawable.giungla);
@@ -302,7 +302,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
                                 if(esercizioTipologia1.correzioneEsercizio(risposta)){
                                     // Calcola il punteggio dell'esercizio
-                                    giocoActivity.figlio.setPunteggioGioco(calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto));
+                                    punteggioEsercizio = calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto);
+                                    giocoActivity.figlio.setPunteggioGioco(punteggioEsercizio);
 
                                     // Aggiorna il punteggio del figlio nel database
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -325,7 +326,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                                                                         @Override
                                                                         public void run() {
                                                                             // Il tuo codice che interagisce con la UI qui
-                                                                            mostraPopupEsercizioCorretto();
+                                                                            aggiornaScheda(true);
                                                                         }
                                                                     });
 
@@ -344,7 +345,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                                         @Override
                                         public void run() {
                                             // Il tuo codice che interagisce con la UI qui
-                                            mostraPopupEsercizioSbagliato();
+                                            aggiornaScheda(false);
                                         }
                                     });
                                 }
@@ -362,13 +363,19 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Riprendi la riproduzione del MediaPlayer se era in pausa quando l'attività è entrata in pausa
+        giocoActivity.mediaPlayer.pause();
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mediaPlayerEsercizio != null) {
-            mediaPlayerEsercizio.release();
-            mediaPlayerEsercizio = null;
-        }
+        giocoActivity.mediaPlayer.start();
         //distruggo l'audio di risposta
         File fileAudio = new File(audioRispostaName);
         fileAudio.delete();
@@ -491,41 +498,18 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
         LayoutInflater inflater = giocoActivity.getLayoutInflater();
         View view = inflater.inflate(R.layout.popup_esercizio_completato, null);
-        int coloreSfondo = 0;
-        switch (giocoActivity.sfondoSelezionato) {
-            case 0:
-                coloreSfondo = R.color.secondaryDeserto;
-                break;
-            case 1:
-                coloreSfondo = R.color.secondaryAntartide;
-                break;
-            case 2:
-                coloreSfondo = R.color.secondaryGiungla;
-                break;
-        }
-        view.findViewById(R.id.card_view_esercizio_completato).setBackgroundColor(getResources().getColor(coloreSfondo));
 
-        int coloreTesto = 0;
-        switch (giocoActivity.personaggioSelezionato) {
-            case 0:
-                coloreTesto = R.color.primaryDeserto;
-                break;
-            case 1:
-                coloreTesto = R.color.primaryAntartide;
-                break;
-            case 2:
-                coloreTesto = R.color.primaryGiungla;
-                break;
-        }
+        view.findViewById(R.id.card_view_esercizio_completato).setBackgroundColor(getResources().getColor(coloreSfondoPopup));
+
         TextView testo = view.findViewById(R.id.txt_popup__esercizio_completato);
-        testo.setTextColor(getResources().getColor(coloreTesto));
+        testo.setTextColor(getResources().getColor(coloreTestoPopup));
 
         TextView txtPunteggio = view.findViewById(R.id.txt_punteggio_esercizio_completato);
-        txtPunteggio.setTextColor(getResources().getColor(coloreTesto));
-        txtPunteggio.setText(String.valueOf(giocoActivity.figlio.getPunteggioGioco()));
+        txtPunteggio.setTextColor(getResources().getColor(coloreTestoPopup));
+        txtPunteggio.setText(String.valueOf(punteggioEsercizio));
 
         Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_completato);
-        btnContinua.setBackgroundColor(getResources().getColor(coloreTesto));
+        btnContinua.setBackgroundColor(getResources().getColor(coloreTestoPopup));
         btnContinua.setOnClickListener(v -> {
             dialogPopupRisultatoEsercizio.dismiss();
             Bundle bundle = new Bundle();
@@ -559,37 +543,14 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
         LayoutInflater inflater = giocoActivity.getLayoutInflater();
         View view = inflater.inflate(R.layout.popup_esercizio_sbagliato, null);
-        int coloreSfondo = 0;
-        switch (giocoActivity.sfondoSelezionato) {
-            case 0:
-                coloreSfondo = R.color.secondaryDeserto;
-                break;
-            case 1:
-                coloreSfondo = R.color.secondaryAntartide;
-                break;
-            case 2:
-                coloreSfondo = R.color.secondaryGiungla;
-                break;
-        }
-        view.findViewById(R.id.card_view_esercizio_sbagliato).setBackgroundColor(getResources().getColor(coloreSfondo));
 
-        int coloreTesto = 0;
-        switch (giocoActivity.personaggioSelezionato) {
-            case 0:
-                coloreTesto = R.color.primaryDeserto;
-                break;
-            case 1:
-                coloreTesto = R.color.primaryAntartide;
-                break;
-            case 2:
-                coloreTesto = R.color.primaryGiungla;
-                break;
-        }
+        view.findViewById(R.id.card_view_esercizio_sbagliato).setBackgroundColor(getResources().getColor(coloreSfondoPopup));
+
         TextView testo = view.findViewById(R.id.txt_popup__esercizio_sbagliato);
-        testo.setTextColor(getResources().getColor(coloreTesto));
+        testo.setTextColor(getResources().getColor(coloreTestoPopup));
 
         Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_sbagliato);
-        btnContinua.setBackgroundColor(getResources().getColor(coloreTesto));
+        btnContinua.setBackgroundColor(getResources().getColor(coloreTestoPopup));
         btnContinua.setOnClickListener(v -> {
             dialogPopupRisultatoEsercizio.dismiss();
             Bundle bundle = new Bundle();
@@ -615,5 +576,34 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         dialogPopupRisultatoEsercizio = builder.create();
         dialogPopupRisultatoEsercizio.setView(view);
         dialogPopupRisultatoEsercizio.show();
+    }
+
+    private void aggiornaScheda(Boolean completato){
+        int posizioneEsercizio = -1;
+        for(int i = 0; i < giocoActivity.scheda.getEsercizi().size(); i++){
+            if(giocoActivity.scheda.getEsercizi().get(i).get(0).equals(esercizioTipologia1.getEsercizioId())){
+                giocoActivity.scheda.getEsercizi().get(i).set(1, "completato");
+                posizioneEsercizio = i;
+            }
+        }
+        String nomeCampoEsercizio = "esercizio" + posizioneEsercizio;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("schede")
+                .document(giocoActivity.scheda.getUid())
+                .update(nomeCampoEsercizio, giocoActivity.scheda.getEsercizi().get(posizioneEsercizio))
+                .addOnSuccessListener(aVoid -> {
+                    if(completato){
+                        mostraPopupEsercizioCorretto();
+                    }else{
+                        mostraPopupEsercizioSbagliato();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if(completato){
+                        mostraPopupEsercizioCorretto();
+                    }else{
+                        mostraPopupEsercizioSbagliato();
+                    }
+                });
     }
 }
