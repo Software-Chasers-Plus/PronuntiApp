@@ -16,10 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -90,8 +93,7 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
         TextView dataNascitapaziente = view.findViewById(R.id.data_nascita_paziente);
         dataNascitapaziente.setText(paziente.getDataNascita());
 
-        TextView emailGenitorepaziente = view.findViewById(R.id.genitore);
-        emailGenitorepaziente.setText(paziente.getEmailGenitore());
+
 
         TextView schedeNonCreate = view.findViewById(R.id.text_dashboard);
 
@@ -103,6 +105,32 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
 
         Log.d(TAG, "Utente corrente: " + userId);
 
+        TextView emailGenitorepaziente = view.findViewById(R.id.genitore);
+
+        //Recupero email del genitore
+        db.collection("genitori")
+                .document(paziente.getEmailGenitore())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String emailLogopedista = documentSnapshot.getString("Email");
+                            if (emailLogopedista != null && !emailLogopedista.isEmpty()) {
+                                emailGenitorepaziente.setText(emailLogopedista);
+                            }
+                        } else {
+                            Log.d(TAG, "Il documento del logopedista non esiste");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Errore nel recuperare l'email del logopedista: " + e.getMessage());
+                        emailGenitorepaziente.setText("Errore nel recuperare l'email del logopedista");
+                    }
+                });
         //Recupero id del paziente
         db.collection("figli")
                 .whereEqualTo("codiceFiscale", codiceFiscalepaziente.getText().toString())

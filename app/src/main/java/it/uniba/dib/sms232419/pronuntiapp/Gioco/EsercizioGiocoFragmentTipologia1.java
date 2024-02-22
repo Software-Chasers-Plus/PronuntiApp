@@ -130,7 +130,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
         storage = FirebaseStorage.getInstance();
 
-        // Inizializza il layout con l'immagine di sfondo selezionata in base a  public Integer sfondoSelezionato di GiocoActivity
+        // Inizializza il layout con l'immagine di sfondo selezionata in base a public Integer sfondoSelezionato di GiocoActivity
         switch (giocoActivity.sfondoSelezionato) {
             case 0:
                 layout.setBackgroundResource(R.drawable.deserto);

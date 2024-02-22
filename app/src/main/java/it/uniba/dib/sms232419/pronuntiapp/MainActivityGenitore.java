@@ -36,6 +36,7 @@ public class MainActivityGenitore extends AppCompatActivity {
             if(src.getExtras() != null){
                 Bundle bundle = src.getExtras();
                 figli = bundle.getParcelableArrayList("figli");
+                Log.d("MainActivity", "nome: " + figli.get(0).getDataNascita());
                 prenotazioni = bundle.getParcelableArrayList("prenotazioni");
             }else{
                 Log.d("MainActivity", "src.getExtras() è null");

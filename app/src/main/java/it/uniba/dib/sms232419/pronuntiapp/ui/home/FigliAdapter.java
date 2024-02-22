@@ -5,12 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,6 +28,8 @@ public class FigliAdapter extends RecyclerView.Adapter<FigliHolderView> {
     private final List<Integer> avatarIds;
     private final ClickFigliListener clickFigliListener;
     private final FirebaseFirestore db;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser user = mAuth.getCurrentUser();
 
 
     public FigliAdapter(Context context, List<Figlio> items, List<Integer> avatarIds, FirebaseFirestore db, ClickFigliListener listener) {
@@ -43,46 +48,105 @@ public class FigliAdapter extends RecyclerView.Adapter<FigliHolderView> {
 
     @Override
     public void onBindViewHolder(@NonNull FigliHolderView holder, int position) {
-        Figlio figlio = items.get(position);
-        holder.textViewNomeFiglio.setText(figlio.getNome());
-        holder.textViewEtaFiglio.setText(figlio.getDataNascita());
 
-        // Verifica se il campo logopedista è vuoto
-        if (figlio.getLogopedista() != null && !figlio.getLogopedista().isEmpty()) {
-            // Ottieni l'email del logopedista dal database Firebase
-            db.collection("logopedisti")
-                    .document(figlio.getLogopedista())
+        Figlio figlio = items.get(position);
+
+        // Controllo se è un genitore o un logopedista
+        if (user != null) {
+            db.collection("genitori")
+                    .document(user.getUid())
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if (documentSnapshot.exists()) {
-                                String emailLogopedista = documentSnapshot.getString("Email");
-                                if (emailLogopedista != null) {
-                                    holder.emailLogopedistaLabelTextView.setVisibility(View.VISIBLE);
-                                    holder.emailLogopedistaTextView.setText(emailLogopedista);
-                                    holder.emailLogopedistaTextView.setVisibility(View.VISIBLE);
+                                holder.textViewNomeFiglio.setText(figlio.getNome());
+                                holder.textViewEtaFiglio.setText(figlio.getDataNascita());
+                                Log.d("FigliAdapter", "Data di nascita: " + figlio.getDataNascita());
+
+                                // Verifica se il campo logopedista è vuoto
+                                if (figlio.getLogopedista() != null && !figlio.getLogopedista().isEmpty()) {
+                                    // Ottieni l'email del logopedista dal database Firebase
+                                    db.collection("logopedisti")
+                                            .document(figlio.getLogopedista())
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    if (documentSnapshot.exists()) {
+                                                        String emailLogopedista = documentSnapshot.getString("Email");
+                                                        if (emailLogopedista != null) {
+                                                            holder.emailLogopedistaLabelTextView.setVisibility(View.VISIBLE);
+                                                            holder.emailLogopedistaTextView.setText(emailLogopedista);
+                                                            holder.emailLogopedistaTextView.setVisibility(View.VISIBLE);
+                                                        } else {
+                                                            holder.emailLogopedistaLabelTextView.setVisibility(View.GONE);
+                                                            holder.emailLogopedistaTextView.setVisibility(View.GONE);
+                                                        }
+                                                    } else {
+                                                        Log.d("FigliAdapter", "Il documento del logopedista non esiste");
+                                                    }
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d("FigliAdapter", "Errore nel recuperare l'email del logopedista");
+                                                }
+                                            });
                                 } else {
-                                    holder.emailLogopedistaLabelTextView.setVisibility(View.GONE);
-                                    holder.emailLogopedistaTextView.setVisibility(View.GONE);
+                                    // Se il campo logopedista è vuoto, visualizza la scritta "Nessun logopedista"
+                                    holder.emailLogopedistaLabelTextView.setVisibility(View.VISIBLE);
+                                    holder.emailLogopedistaTextView.setText("Nessun logopedista");
+                                    holder.emailLogopedistaTextView.setVisibility(View.VISIBLE);
                                 }
-                            } else {
-                                Log.d("FigliAdapter", "Il documento del logopedista non esiste");
+                            }else{
+                                // È un logopedista
+                                holder.textViewNomeFiglio.setText(figlio.getNome());
+                                holder.textViewEtaFiglio.setText(figlio.getDataNascita());
+
+                                // Ottieni l'email del genitore dal database Firebase
+                                db.collection("genitori")
+                                        .document(figlio.getEmailGenitore())
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                if (documentSnapshot.exists()) {
+                                                    String emailGenitore = documentSnapshot.getString("Email");
+                                                    Log.d("FigliAdapter", "Email genitore: " + emailGenitore);
+                                                    if (emailGenitore != null) {
+                                                        holder.emailLogopedistaTextView.setVisibility(View.VISIBLE);
+                                                        TextView email_logopedista_label_figlio = holder.itemView.findViewById(R.id.email_logopedista_label_figlio);
+                                                        email_logopedista_label_figlio.setText("Genitore");
+                                                        holder.emailLogopedistaTextView.setText(emailGenitore);
+                                                    } else {
+                                                        holder.emailLogopedistaLabelTextView.setVisibility(View.GONE);
+                                                        holder.emailLogopedistaTextView.setVisibility(View.GONE);
+                                                    }
+                                                } else {
+                                                    Log.d("FigliAdapter", "Il documento del logopedista non esiste");
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("FigliAdapter", "Errore nel recuperare l'email del logopedista");
+                                            }
+                                        });
                             }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d("FigliAdapter", "Errore nel recuperare l'email del logopedista");
+                            Log.d("FigliAdapter", "Errore nel recuperare il ruolo dell'utente");
                         }
                     });
-        } else {
-            // Se il campo logopedista è vuoto, visualizza la scritta "Nessun logopedista"
-            holder.emailLogopedistaLabelTextView.setVisibility(View.VISIBLE);
-            holder.emailLogopedistaTextView.setText("Nessun logopedista");
-            holder.emailLogopedistaTextView.setVisibility(View.VISIBLE);
         }
+
+
 
         // Imposta l'avatar del figlio
         int avatarId = figlio.getIdAvatar();
