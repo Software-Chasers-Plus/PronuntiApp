@@ -51,19 +51,21 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    // Library for TyperWriter Effect
     implementation 'com.github.NitishGadangi:TypeWriter-TextView:v1.3'
+    // Library for animation of items
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
+    // Library for Toast Messages
     implementation 'com.github.GrenderG:Toasty:1.5.2'
     implementation 'org.apache.commons:commons-text:1.9'
+    // Firebase Cloud Messaging
     implementation 'com.assemblyai:assemblyai-java:1.0.0'
+    // JSoup Library for Web Scraping
     implementation 'org.jsoup:jsoup:1.14.3'
-
     // Material Dialog Library
     implementation 'dev.shreyaspatil.MaterialDialog:MaterialDialog:2.2.3'
-
     // Material Design Library
     implementation 'com.google.android.material:material:1.0.0'
-
     // Lottie Animation Library
     implementation 'com.airbnb.android:lottie:3.3.6'
 

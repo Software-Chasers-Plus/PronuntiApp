@@ -63,6 +63,8 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
     private ImageView imageClockPassword, imageClockRipetiPassword;
 
     private AccessoActivity mActivity;
+    private List<String> matricole = new ArrayList<>();
+
 
     @Override
     public void onAttach(Context context) {
@@ -83,9 +85,38 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (int pageCount = 1; pageCount <= 7; pageCount++) {
+                            String url = "https://fli.it/professionisti/?tipo=albo&page=" + pageCount;
+                            Document document = Jsoup.connect(url).get();
+                            Elements matricolaElements = document.select("span.nummatricola");
+
+                            if (matricolaElements.isEmpty()) {
+                                break;
+                            }
+
+                            for (Element matricolaElement : matricolaElements) {
+                                String matricola = matricolaElement.text();
+                                String[] parts = matricola.split(":");
+                                matricole.add(parts[1].trim());
+                            }
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+
         nome = view.findViewById(R.id.registrazione_logopedista_nome);
         TextInputLayout nomeLayout = view.findViewById(R.id.textInputLayoutNome);
-        //gestisce il cambiamento della label una volta che l'EditText ha il focus
+        // gestisce il cambiamento della label una volta che l'EditText ha il focus
         nome.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 // L'EditText ha ottenuto il focus
@@ -193,7 +224,9 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                 String matricolaText = matricola.getText().toString().trim();
 
                 if(checkInformazioni(nomeText, cognomeText, emailText, passwordText, ripetiPasswordText, matricolaText) && verificaConnessioneInternet()){
-                    signUp(nomeText, cognomeText, emailText, passwordText, matricolaText);
+                    boolean alboGiornalisti = matricole.contains(matricolaText);
+                    Log.d("InAlboGiornalisti", "->" + alboGiornalisti);
+                    signUp(nomeText, cognomeText, emailText, passwordText, matricolaText, alboGiornalisti);
                 }
             }
         });
@@ -208,7 +241,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
         });
     }
 
-    //metodo per la visibilità della password
+    // metodo per la visibilità della password
     private void togglePasswordVisibility(EditText loginPassword, ImageView imageClockPassword) {
         if (!passwordVisible) {
             // Password non visibile
@@ -233,7 +266,7 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
         }
     }
 
-    //metodo per verificare la validità delle informazioni inserite
+    // metodo per verificare la validità delle informazioni inserite
     private Boolean checkInformazioni(String nome, String cognome, String email, String password, String ripetiPassword, String matricola) {
         Boolean check = true;
         if(nome.isEmpty()){
@@ -284,56 +317,14 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
         return check;
     }
 
- /*
-    // Questo metodo verifica che la matricola sia presente all'interno dell'albo dei logopedisti https://fli.it/professionisti/?tipo=albo
-    private boolean verificaMatricolaAlbo(String matricolaInput) {
-        final boolean[] trovata = new boolean[1];
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<String> matricole = new ArrayList<>();
-                try {
-                    for (int pageCount = 1; pageCount <= 7; pageCount++) {
-                        String url = "https://fli.it/professionisti/?tipo=albo&page=" + pageCount;
-                        Document document = Jsoup.connect(url).get();
-                        Elements matricolaElements = document.select("span.nummatricola");
-
-                        if (matricolaElements.isEmpty()) {
-                            break;
-                        }
-
-                        for (Element matricolaElement : matricolaElements) {
-                            String matricola = matricolaElement.text();
-                            String[] parts = matricola.split(":");
-                            matricole.add(parts[1].trim());
-                        }
-                    }
-
-                    // Dopo il caricamento completo delle matricole, esegui la verifica
-                    trovata[0] = verificaMatricola(matricole, matricolaInput);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
-        return trovata[0];
-    }
-
-    private boolean verificaMatricola(List<String> matricole, String matricolaInput) {
-        Log.d("MatricolaInput:", matricolaInput);
-        Log.d("MATRICOLA", String.valueOf(matricole.contains(matricolaInput)));
+    /*
+    private boolean verificaMatricola(String matricolaInput) {
         return matricole.contains(matricolaInput);
-
     }
-
-
-  */
+    */
 
     // metodo per la registrazione del logopedista
-    private void signUp(String nome, String cognome, String email, String password, String matricola){
+    private void signUp(String nome, String cognome, String email, String password, String matricola, boolean presenteAlboLogopedisti){
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -352,9 +343,9 @@ public class RegistrazioneLogopedistaFragment extends Fragment {
                     utente.put("Nome", nome);
                     utente.put("Cognome", cognome);
                     utente.put("Email", email);
-                   // utente.put("Albo", verificaMatricolaAlbo(matricola)); // questo serve se vogliamo aggiungere la verifica all'albo
+                    utente.put("Albo", presenteAlboLogopedisti); // questo serve se vogliamo aggiungere la verifica all'albo
                     utente.put("Matricola", matricola);
-                    utente.put("Abilitazione", signUpAbilitazione);
+                    utente.put("Abilitazione", false);
                     utente.put("DataRegistrazione", dataRegistrazione);
                     db.collection("logopedisti").document(auth.getCurrentUser().getUid())
                             .set(utente).addOnCompleteListener(new OnCompleteListener<Void>() {
