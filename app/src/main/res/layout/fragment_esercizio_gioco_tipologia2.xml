@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@id/esercizioGiocoTipologia2"
             android:layout_marginTop="20dp">
             <TextView
-                android:id="@+id/riproduci_audio_lable"
+                android:id="@+id/riproduci_audio_lable_tipologia2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/riproduci_audio"
@@ -114,7 +114,7 @@
             app:layout_constraintTop_toBottomOf="@id/linear_layout1"
             android:layout_marginTop="40dp">
             <TextView
-                android:id="@+id/risposta_lable"
+                android:id="@+id/risposta_lable_tipologia2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/inserisci_risposta"

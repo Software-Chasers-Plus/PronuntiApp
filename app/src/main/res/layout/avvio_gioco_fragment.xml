@@ -7,13 +7,45 @@
     android:background="@drawable/sfondo_start_gioco"
     android:orientation="vertical"
     android:gravity="center">
-
-    <ImageButton
-        android:id="@+id/classifica_button"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/trophy_icon"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:text="Le tue monete"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/font_game"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="5dp">
+        <ImageButton
+            android:id="@+id/classifica_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/trophy_icon"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+        <TextView
+            android:id="@+id/txt_monete_avvio_gioco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:layout_marginLeft="15dp"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:fontFamily="@font/font_game"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/coin_icon_24"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

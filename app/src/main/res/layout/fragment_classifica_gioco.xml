@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_classifica_gioco">
+    android:id="@+id/layout_classifica_gioco"
+    android:orientation="vertical">
 
 
 
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/classificaBambino"
@@ -75,14 +76,25 @@
                             android:textColor="@color/black"
                             android:textSize="24sp" />
 
-                        <TextView
-                            android:id="@+id/punteggio2TextView"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:orientation="horizontal"
                             android:layout_gravity="center_horizontal"
-                            android:text="1"
-                            android:textColor="@color/white_A700"
-                            android:textSize="24sp" />
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/punteggio2TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:layout_marginRight="5dp"
+                                android:textColor="@color/white_A700"
+                                android:textSize="24sp" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/coin_icon_24"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -117,15 +129,25 @@
                             android:text="1"
                             android:textColor="@color/black"
                             android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/punteggio1TextView"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:orientation="horizontal"
                             android:layout_gravity="center_horizontal"
-                            android:text="1"
-                            android:textColor="@color/white_A700"
-                            android:textSize="24sp" />
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/punteggio1TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:layout_marginRight="5dp"
+                                android:textColor="@color/white_A700"
+                                android:textSize="24sp" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/coin_icon_24"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -160,14 +182,25 @@
                             android:textColor="@color/black"
                             android:textSize="24sp" />
 
-                        <TextView
-                            android:id="@+id/punteggio3TextView"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:orientation="horizontal"
                             android:layout_gravity="center_horizontal"
-                            android:text="1"
-                            android:textColor="@color/white_A700"
-                            android:textSize="24sp" />
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/punteggio3TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:layout_marginRight="5dp"
+                                android:textColor="@color/white_A700"
+                                android:textSize="24sp" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/coin_icon_24"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -177,6 +210,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="25dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/font_game"
                 android:text="@string/i_migliori"
@@ -189,12 +223,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/classificaGiocoRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="873dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardViewClassifica" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

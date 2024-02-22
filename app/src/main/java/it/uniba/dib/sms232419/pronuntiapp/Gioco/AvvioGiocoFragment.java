@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import it.uniba.dib.sms232419.pronuntiapp.LoginFragment;
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 
@@ -21,6 +23,7 @@ public class AvvioGiocoFragment extends Fragment {
 
     private final boolean isMediaPlayerPaused = false;
     private Scheda scheda;
+    private Figlio figlio;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,8 @@ public class AvvioGiocoFragment extends Fragment {
         if(getArguments() != null && getArguments().getParcelable("scheda") != null) {
             scheda = getArguments().getParcelable("scheda");
             Log.d("AvvioGiocoFragment", "Scheda: " + scheda.getNome() + " caricata");
+
+            figlio = getArguments().getParcelable("figlio");
         }
     }
 
@@ -45,6 +50,9 @@ public class AvvioGiocoFragment extends Fragment {
 
         // Debug per verificare quando il MediaPlayer viene avviato
         Log.d("AvvioGiocoFragment", "MediaPlayer avviato");
+
+        TextView monete = view.findViewById(R.id.txt_monete_avvio_gioco);
+        monete.setText(String.valueOf(figlio.getPunteggioGioco()));
 
         ImageView backButton = view.findViewById(R.id.exit_button_start_game);
         backButton.setOnClickListener(new View.OnClickListener() {

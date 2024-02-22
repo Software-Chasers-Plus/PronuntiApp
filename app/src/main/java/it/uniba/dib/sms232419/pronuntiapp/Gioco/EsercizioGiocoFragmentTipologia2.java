@@ -100,8 +100,8 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
 
         layoutEsercizio = view.findViewById(R.id.esercizio_tipologia2_constraint_layout);
         TextView titoloEsercizio = view.findViewById(R.id.esercizioGiocoTipologia2);
-        TextView rispostaLabel = view.findViewById(R.id.risposta_lable);
-        TextView riproduciAudioLabel = view.findViewById(R.id.riproduci_audio_lable);
+        TextView rispostaLabel = view.findViewById(R.id.risposta_lable_tipologia2);
+        TextView riproduciAudioLabel = view.findViewById(R.id.riproduci_audio_lable_tipologia2);
 
         storage = FirebaseStorage.getInstance();
 
@@ -123,12 +123,12 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
             case 1:
                 layout.setBackgroundResource(R.drawable.antartide);
                 progressBar.setIndicatorColor(getResources().getColor(R.color.secondaryAntartide));
-                textCorrezione.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                textCorrezione.setTextColor(getResources().getColor(R.color.secondaryAntartide));
 
 
                 titoloEsercizio.setTextColor(getResources().getColor(R.color.secondaryAntartide));
-                rispostaLabel.setTextColor(getResources().getColor(R.color.thirdAntartide));
-                riproduciAudioLabel.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                rispostaLabel.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                riproduciAudioLabel.setTextColor(getResources().getColor(R.color.secondaryAntartide));
 
                 coloreSfondoPopup = R.color.secondaryAntartide;
                 coloreTestoPopup = R.color.primaryAntartide;
@@ -413,6 +413,9 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
         TextView txtPunteggio = view.findViewById(R.id.txt_punteggio_esercizio_completato);
         txtPunteggio.setTextColor(getResources().getColor(coloreTestoPopup));
         txtPunteggio.setText(String.valueOf(punteggioEsercizio));
+
+        TextView labelPiu = view.findViewById(R.id.txt_piu_esercizio_completato);
+        labelPiu.setTextColor(getResources().getColor(coloreTestoPopup));
 
         Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_completato);
         btnContinua.setBackgroundColor(getResources().getColor(coloreTestoPopup));

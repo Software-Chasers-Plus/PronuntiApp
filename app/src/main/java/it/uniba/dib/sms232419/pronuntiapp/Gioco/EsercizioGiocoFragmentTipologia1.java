@@ -158,9 +158,9 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 textCorrezione.setTextColor(getResources().getColor(R.color.thirdAntartide));
                 esercizioGiocoTipologia1.setTextColor(getResources().getColor(R.color.secondaryAntartide));
                 cardView.setBackgroundTintList(getResources().getColorStateList(R.color.primaryAntartide));
-                titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdAntartide));
-                aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdAntartide));
-                risposta_lable.setTextColor(getResources().getColor(R.color.thirdAntartide));
+                titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                aiutiUtilizzati.setTextColor(getResources().getColor(R.color.secondaryAntartide));
+                risposta_lable.setTextColor(getResources().getColor(R.color.secondaryAntartide));
                 coloreSfondoPopup = R.color.secondaryAntartide;
                 coloreTestoPopup = R.color.primaryAntartide;
                 break;
@@ -527,6 +527,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         TextView txtPunteggio = view.findViewById(R.id.txt_punteggio_esercizio_completato);
         txtPunteggio.setTextColor(getResources().getColor(coloreTestoPopup));
         txtPunteggio.setText(String.valueOf(punteggioEsercizio));
+        TextView labelPiu = view.findViewById(R.id.txt_piu_esercizio_completato);
+        labelPiu.setTextColor(getResources().getColor(coloreTestoPopup));
 
         Button btnContinua = view.findViewById(R.id.btn_continua_esercizio_completato);
         btnContinua.setBackgroundColor(getResources().getColor(coloreTestoPopup));

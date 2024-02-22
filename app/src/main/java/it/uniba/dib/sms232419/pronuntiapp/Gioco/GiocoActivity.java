@@ -68,6 +68,7 @@ public class GiocoActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("scheda", scheda);
+        bundle.putParcelable("figlio", figlio);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.avvio_gioco_fragment, AvvioGiocoFragment.class, bundle)
