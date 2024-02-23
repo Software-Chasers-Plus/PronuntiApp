@@ -127,6 +127,7 @@ public class AggiungiPazienteFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar_aggiunta_paziente);
 
         cardView = view.findViewById(R.id.cardView_info_paziente_aggiunta);
+        cardView.setVisibility(View.GONE);
 
         avatarPaziente = view.findViewById(R.id.avatar_paziente_aggiunta);
 
@@ -166,6 +167,7 @@ public class AggiungiPazienteFragment extends Fragment {
                                                         if (document1.exists()) {
                                                             emailGenitore.setText(document1.get("Email").toString());
                                                             mHandler.sendEmptyMessage(PAZIENTE_TROVATO);
+                                                            cardView.setVisibility(View.VISIBLE);
                                                         } else {
                                                             Log.e("AggiungiPazienteFragment", "Errore nella ricerca del genitore");
                                                         }

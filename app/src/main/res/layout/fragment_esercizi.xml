@@ -31,7 +31,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/secondaryGenitore"
+        android:backgroundTint="@color/secondaryLogopedista"
         android:contentDescription="@string/crea_esercizio"
         android:text="@string/aggiungi_esercizio"
         app:icon="@drawable/piu_icon_white"

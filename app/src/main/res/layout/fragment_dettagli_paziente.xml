@@ -236,7 +236,7 @@
         android:contentDescription="@string/creazione_scheda"
         android:text="@string/crea_scheda"
         app:icon="@drawable/piu_icon_white"
-        android:backgroundTint="@color/secondaryGenitore"
+        android:backgroundTint="@color/secondaryLogopedista"
         />
 
 </RelativeLayout>
