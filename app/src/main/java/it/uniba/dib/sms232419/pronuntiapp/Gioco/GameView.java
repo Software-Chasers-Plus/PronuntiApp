@@ -87,16 +87,16 @@ public class GameView extends View {
         personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
         switch (giocoActivity.personaggioSelezionato){
             case 0:
-                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.pinguino);
                 break;
             case 1:
-                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.husky);
-                break;
-            case 2:
                 personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.serpente);
                 break;
+            case 2:
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.husky);
+                break;
             case 3:
-                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.pinguino);
+                personaggioImage = BitmapFactory.decodeResource(getResources(), R.drawable.leone);
                 break;
         }
         xPersonaggio = checkpointXPositions[0];

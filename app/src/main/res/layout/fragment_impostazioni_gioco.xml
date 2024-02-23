@@ -173,11 +173,21 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/transparent">
-                <ImageView
-                    android:id="@+id/personaggio_selezionato_immagine"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"/>
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/lock_icon_selezione_personaggio"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/lock_icon_24"
+                        android:layout_margin="10dp"/>
+                    <ImageView
+                        android:id="@+id/personaggio_selezionato_immagine"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"/>
+                </FrameLayout>
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

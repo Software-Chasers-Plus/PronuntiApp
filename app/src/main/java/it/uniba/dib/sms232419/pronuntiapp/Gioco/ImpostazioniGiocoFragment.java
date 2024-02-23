@@ -43,7 +43,7 @@ public class ImpostazioniGiocoFragment extends Fragment{
     private ImageView audioImageView;
     private boolean isAudioOn = true;
     private GiocoActivity giocoActivity;
-
+    int personaggioSelezionatoInt;
     int previousVolume;
 
     ContentObserver volumeObserver;
@@ -203,10 +203,14 @@ public class ImpostazioniGiocoFragment extends Fragment{
 
         // Inizializza la lista di personaggi del gioco
         ArrayList<Integer> personaggiGioco = new ArrayList<>();
-        personaggiGioco.add(R.drawable.leone);
-        personaggiGioco.add(R.drawable.husky);
-        personaggiGioco.add(R.drawable.serpente);
         personaggiGioco.add(R.drawable.pinguino);
+        personaggiGioco.add(R.drawable.serpente);
+        personaggiGioco.add(R.drawable.husky);
+        personaggiGioco.add(R.drawable.leone);
+
+        int[] moneteRichieste = {0, 150 , 300, 450};
+        personaggioSelezionatoInt = giocoActivity.personaggioSelezionato;
+
 
         ImageView personaggio = view.findViewById(R.id.personaggio_selezionato_immagine);
         // Imposta l'immagine del personaggio selezionato
@@ -214,18 +218,21 @@ public class ImpostazioniGiocoFragment extends Fragment{
         // Imposta il nome del personaggio selezionato
         switch (giocoActivity.personaggioSelezionato) {
             case 0:
-                personaggioSelezionato.setText(R.string.leone);
-                break;
-            case 1:
-                personaggioSelezionato.setText(R.string.husky);
-                break;
-            case 2:
-                personaggioSelezionato.setText(R.string.serpente);
-                break;
-            case 3:
                 personaggioSelezionato.setText(R.string.pinguino);
                 break;
+            case 1:
+                personaggioSelezionato.setText(R.string.serpente);
+                break;
+            case 2:
+                personaggioSelezionato.setText(R.string.husky);
+                break;
+            case 3:
+                personaggioSelezionato.setText(R.string.leone);
+                break;
         }
+
+        ImageView lucchetto = view.findViewById(R.id.lock_icon_selezione_personaggio);
+        lucchetto.setVisibility(View.GONE);
 
         // Oggetto Animation per lo scorrimento in entrata da sinistra verso il centro
         Animation enterSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.enter_slide_left);
@@ -240,27 +247,39 @@ public class ImpostazioniGiocoFragment extends Fragment{
             @Override
             public void onAnimationEnd(Animation animation) {
                 //cambio immagine del personaggio
-                if(giocoActivity.personaggioSelezionato != personaggiGioco.size() - 1) {
-                    giocoActivity.personaggioSelezionato++;
-                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                if(personaggioSelezionatoInt != personaggiGioco.size() - 1) {
+                    if(giocoActivity.figlio.getPunteggioGioco() >= moneteRichieste[personaggioSelezionatoInt + 1]) {
+                        //modifica personaggio selezionato e cambia immagine
+                        personaggioSelezionatoInt++;
+                        giocoActivity.personaggioSelezionato = personaggioSelezionatoInt;
+                        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                        lucchetto.setVisibility(View.GONE);
+                    }else{
+                        //cambio solo immagine senza modificare il personaggio selezionato
+                        personaggioSelezionatoInt++;
+                        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(personaggioSelezionatoInt)));
+                        lucchetto.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     giocoActivity.personaggioSelezionato = 0;
+                    personaggioSelezionatoInt = 0;
                     personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                    lucchetto.setVisibility(View.GONE);
                 }
                 //avvio animazione di entrata
                 personaggio.startAnimation(enterSlideLeft);
                 switch (giocoActivity.personaggioSelezionato) {
                     case 0:
-                        personaggioSelezionato.setText(R.string.leone);
+                        personaggioSelezionato.setText(R.string.pinguino);
                         break;
                     case 1:
-                        personaggioSelezionato.setText(R.string.husky);
-                        break;
-                    case 2:
                         personaggioSelezionato.setText(R.string.serpente);
                         break;
+                    case 2:
+                        personaggioSelezionato.setText(R.string.husky);
+                        break;
                     case 3:
-                        personaggioSelezionato.setText(R.string.pinguino);
+                        personaggioSelezionato.setText(R.string.leone);
                         break;
                 }
             }
@@ -283,28 +302,47 @@ public class ImpostazioniGiocoFragment extends Fragment{
             @Override
             public void onAnimationEnd(Animation animation) {
                 //cambio immagine del personaggio
-                if(giocoActivity.personaggioSelezionato == 0) {
-                    giocoActivity.personaggioSelezionato = personaggiGioco.size() - 1;
-                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                if(personaggioSelezionatoInt == 0) {
+                    if (giocoActivity.figlio.getPunteggioGioco() >= moneteRichieste[personaggiGioco.size() - 1]) {
+                        //modifica personaggio selezionato e cambia immagine
+                        personaggioSelezionatoInt = personaggiGioco.size() - 1;
+                        giocoActivity.personaggioSelezionato = personaggioSelezionatoInt;
+                        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                        lucchetto.setVisibility(View.GONE);
+                    } else {
+                        //cambio solo immagine senza modificare il personaggio selezionato
+                        personaggioSelezionatoInt = personaggiGioco.size() - 1;
+                        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(personaggioSelezionatoInt)));
+                        lucchetto.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    giocoActivity.personaggioSelezionato--;
-
-                    personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                    if (giocoActivity.figlio.getPunteggioGioco() >= moneteRichieste[personaggioSelezionatoInt - 1]) {
+                        //modifica personaggio selezionato e cambia immagine
+                        personaggioSelezionatoInt--;
+                        giocoActivity.personaggioSelezionato = personaggioSelezionatoInt;
+                        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
+                        lucchetto.setVisibility(View.GONE);
+                    } else {
+                        //cambio solo immagine senza modificare il personaggio selezionato
+                        personaggioSelezionatoInt--;
+                        personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(personaggioSelezionatoInt)));
+                        lucchetto.setVisibility(View.VISIBLE);
+                    }
                 }
                 //avvio animazione di entrata
                 personaggio.startAnimation(enterSlideRight);
                 switch (giocoActivity.personaggioSelezionato) {
                     case 0:
-                        personaggioSelezionato.setText(R.string.leone);
+                        personaggioSelezionato.setText(R.string.pinguino);
                         break;
                     case 1:
-                        personaggioSelezionato.setText(R.string.husky);
-                        break;
-                    case 2:
                         personaggioSelezionato.setText(R.string.serpente);
                         break;
+                    case 2:
+                        personaggioSelezionato.setText(R.string.husky);
+                        break;
                     case 3:
-                        personaggioSelezionato.setText(R.string.pinguino);
+                        personaggioSelezionato.setText(R.string.leone);
                         break;
                 }
             }
