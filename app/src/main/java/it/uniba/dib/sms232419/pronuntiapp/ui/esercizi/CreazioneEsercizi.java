@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
@@ -20,10 +24,14 @@ public class CreazioneEsercizi extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_creazione_esercizio);
+        setContentView(R.layout.fragment_creazione_esercizio_tablayout);
 
         // Inizializza i componenti UI e gestisci gli eventi
-        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        //RadioGroup radioGroup = findViewById(R.id.radioGroup);
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        TabAdapter tabAdapter = new TabAdapter(this);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -34,9 +42,26 @@ public class CreazioneEsercizi extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        viewPager.setAdapter(tabAdapter);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText("Denominazione Immagine");
+                            break;
+                        case 1:
+                            tab.setText("Ripetizione Parole");
+                            break;
+                        case 2:
+                            tab.setText("Riconoscimento Coppie");
+                            break;
+                    }
+                }
+        ).attach();
 
 
 
+        /*
         // Puoi aggiungere qui la logica per inizializzare i componenti UI o gestire gli eventi
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -67,6 +92,9 @@ public class CreazioneEsercizi extends AppCompatActivity {
                 transaction.commit();
 
             }});
+         */
+
+
     }
 
 

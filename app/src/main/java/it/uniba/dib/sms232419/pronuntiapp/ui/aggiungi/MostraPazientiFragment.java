@@ -73,7 +73,9 @@ public class MostraPazientiFragment extends Fragment implements ClickFigliListen
                                         figlioData.get("dataNascita").toString(),
                                         Integer.parseInt(figlioData.get("idAvatar").toString()),
                                         figlioData.get("token").toString(),
-                                        (long)figlioData.get("punteggioGioco")
+                                        (long)figlioData.get("punteggioGioco"),
+                                        Integer.parseInt(figlioData.get("sfondoSelezionato").toString()),
+                                        Integer.parseInt(figlioData.get("personaggioSelezionato").toString())
                                 );
 
                                 pazientiDisponibili.add(nuovoPaziente);

@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -160,6 +161,8 @@ public class ImpostazioniGiocoFragment extends Fragment{
         FloatingActionButton fab_successivo = view.findViewById(R.id.bottone_personaggio_successivo);
         FloatingActionButton fab_precedente = view.findViewById(R.id.bottone_personaggio_precedente);
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         //listener che si attiva quando l'utente seleziona un'immagine modifica lo sfondo del gioco e il tema delle impostazioni
         adapter.setOnItemClickListener(new sfondoAdapter.OnItemClickListener() {
             @Override
@@ -175,6 +178,16 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryDeserto));
                         fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryDeserto));
                         giocoActivity.sfondoSelezionato = 0;
+                        giocoActivity.figlio.setSfondoSelezionato(0);
+                        //Aggiorna la scelta su Firebase
+                        db.collection("figli")
+                                .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        task.getResult().getDocuments().get(0).getReference().update("sfondoSelezionato", 0);
+                                    }
+                                });
                         break;
                     case 1:
                         fragmentLayout.setBackgroundResource(R.drawable.antartide);
@@ -186,6 +199,16 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryAntartide));
                         fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryAntartide));
                         giocoActivity.sfondoSelezionato = 1;
+                        giocoActivity.figlio.setSfondoSelezionato(1);
+                        //Aggiorna la scelta su Firebase
+                        db.collection("figli")
+                                .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        task.getResult().getDocuments().get(0).getReference().update("sfondoSelezionato", 1);
+                                    }
+                                });
                         break;
                     case 2:
                         fragmentLayout.setBackgroundResource(R.drawable.giungla);
@@ -197,6 +220,16 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         fab_precedente.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryGiungla));
                         fab_successivo.setBackgroundTintList(getResources().getColorStateList(R.color.secondaryGiungla));
                         giocoActivity.sfondoSelezionato = 2;
+                        giocoActivity.figlio.setSfondoSelezionato(2);
+                        //Aggiorna la scelta su Firebase
+                        db.collection("figli")
+                                .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        task.getResult().getDocuments().get(0).getReference().update("sfondoSelezionato", 2);
+                                    }
+                                });
                         break;
                 }
             }
@@ -256,11 +289,21 @@ public class ImpostazioniGiocoFragment extends Fragment{
                 //cambio immagine del personaggio
                 if(personaggioSelezionatoInt != personaggiGioco.size() - 1) {
                     if(giocoActivity.figlio.getPunteggioGioco() >= moneteRichieste[personaggioSelezionatoInt + 1]) {
-                        //modifica personaggio selezionato e cambia immagine
+                        //modifica personaggio selezionato, cambia immagine e aggiorna il dato su firebase
                         personaggioSelezionatoInt++;
                         giocoActivity.personaggioSelezionato = personaggioSelezionatoInt;
+                        giocoActivity.figlio.setPersonaggioSelezionato(personaggioSelezionatoInt);
                         personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
                         lucchetto.setVisibility(View.GONE);
+
+                        db.collection("figli")
+                                .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        task.getResult().getDocuments().get(0).getReference().update("personaggioSelezionato", personaggioSelezionatoInt);
+                                    }
+                                });
                     }else{
                         //cambio solo immagine senza modificare il personaggio selezionato
                         personaggioSelezionatoInt++;
@@ -272,6 +315,15 @@ public class ImpostazioniGiocoFragment extends Fragment{
                     personaggioSelezionatoInt = 0;
                     personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
                     lucchetto.setVisibility(View.GONE);
+
+                    db.collection("figli")
+                            .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    task.getResult().getDocuments().get(0).getReference().update("personaggioSelezionato", personaggioSelezionatoInt);
+                                }
+                            });
                 }
                 //avvio animazione di entrata
                 personaggio.startAnimation(enterSlideLeft);
@@ -316,6 +368,15 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         giocoActivity.personaggioSelezionato = personaggioSelezionatoInt;
                         personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
                         lucchetto.setVisibility(View.GONE);
+
+                        db.collection("figli")
+                                .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        task.getResult().getDocuments().get(0).getReference().update("personaggioSelezionato", personaggioSelezionatoInt);
+                                    }
+                                });
                     } else {
                         //cambio solo immagine senza modificare il personaggio selezionato
                         personaggioSelezionatoInt = personaggiGioco.size() - 1;
@@ -329,6 +390,15 @@ public class ImpostazioniGiocoFragment extends Fragment{
                         giocoActivity.personaggioSelezionato = personaggioSelezionatoInt;
                         personaggio.setImageDrawable(getResources().getDrawable(personaggiGioco.get(giocoActivity.personaggioSelezionato)));
                         lucchetto.setVisibility(View.GONE);
+
+                        db.collection("figli")
+                                .whereEqualTo("codiceFiscale", giocoActivity.figlio.getCodiceFiscale())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        task.getResult().getDocuments().get(0).getReference().update("personaggioSelezionato", personaggioSelezionatoInt);
+                                    }
+                                });
                     } else {
                         //cambio solo immagine senza modificare il personaggio selezionato
                         personaggioSelezionatoInt--;

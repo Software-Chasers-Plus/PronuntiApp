@@ -160,7 +160,9 @@ public class SplashActivity extends AppCompatActivity {
                                             currentUser.getUid(),
                                             Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
                                             nuovoFiglio.get("token").toString(),
-                                            (long)nuovoFiglio.get("punteggioGioco")
+                                            (long)nuovoFiglio.get("punteggioGioco"),
+                                            Integer.parseInt(nuovoFiglio.get("sfondoSelezionato").toString()),
+                                            Integer.parseInt(nuovoFiglio.get("personaggioSelezionato").toString())
                                     ));
                                 }else{
                                     figli.add(new Figlio(
@@ -172,7 +174,9 @@ public class SplashActivity extends AppCompatActivity {
                                             currentUser.getUid(),
                                             Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
                                             nuovoFiglio.get("token").toString(),
-                                            (long)nuovoFiglio.get("punteggioGioco")
+                                            (long)nuovoFiglio.get("punteggioGioco"),
+                                            Integer.parseInt(nuovoFiglio.get("sfondoSelezionato").toString()),
+                                            Integer.parseInt(nuovoFiglio.get("personaggioSelezionato").toString())
                                     ));
                                 }
 
@@ -236,7 +240,9 @@ public class SplashActivity extends AppCompatActivity {
                                         nuovoFiglio.get("genitore").toString(),
                                         Integer.parseInt(nuovoFiglio.get("idAvatar").toString()), // Conversione da String a int
                                         nuovoFiglio.get("token").toString(),
-                                        (long)nuovoFiglio.get("punteggioGioco")
+                                        (long)nuovoFiglio.get("punteggioGioco"),
+                                        Integer.parseInt(nuovoFiglio.get("sfondoSelezionato").toString()),
+                                        Integer.parseInt(nuovoFiglio.get("personaggioSelezionato").toString())
                                 ));
                             }
                             logopedista = true;

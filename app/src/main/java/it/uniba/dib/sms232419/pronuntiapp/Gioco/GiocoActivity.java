@@ -36,7 +36,7 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 public class GiocoActivity extends AppCompatActivity {
 
     public MediaPlayer mediaPlayer;
-    public Integer sfondoSelezionato = 0,personaggioSelezionato = 0;
+    public Integer sfondoSelezionato, personaggioSelezionato;
     public Scheda scheda;
     public Figlio figlio;
     FirebaseFirestore db;
@@ -58,11 +58,26 @@ public class GiocoActivity extends AppCompatActivity {
 
         // Recupera la scheda selezionata dall'utente
         if(getIntent().getParcelableExtra("scheda") != null) {
-            scheda = (Scheda) getIntent().getParcelableExtra("scheda");
+            scheda = getIntent().getParcelableExtra("scheda");
             Log.d("GiocoActivity", "Scheda: " + scheda.getNome() + " caricata");
 
-            figlio = (Figlio) getIntent().getParcelableExtra("figlio");
+            figlio = getIntent().getParcelableExtra("figlio");
             Log.d("GiocoActivity", "Figlio: " + figlio.getNome() + " caricato");
+            //Assegniamo i valori di sfondo e personaggio selezionato recuperandoli da firebase
+            db = FirebaseFirestore.getInstance();
+            db.collection("figli")
+                    .whereEqualTo("codiceFiscale", figlio.getCodiceFiscale())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                sfondoSelezionato = Integer.parseInt(Objects.requireNonNull(document.get("sfondoSelezionato")).toString());
+                                personaggioSelezionato = Integer.parseInt(Objects.requireNonNull(document.get("personaggioSelezionato")).toString());
+                            }
+                        } else {
+                            Log.d("GiocoActivity", "Errore nel recupero del figlio");
+                        }
+                    });
         }
 
 

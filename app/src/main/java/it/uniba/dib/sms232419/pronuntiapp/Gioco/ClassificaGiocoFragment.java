@@ -193,7 +193,9 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
                 nuovoFiglio.get("dataNascita").toString(),
                 Integer.parseInt(nuovoFiglio.get("idAvatar").toString()),
                 nuovoFiglio.get("token").toString(),
-                (long)nuovoFiglio.get("punteggioGioco")
+                (long)nuovoFiglio.get("punteggioGioco"),
+                Integer.parseInt(nuovoFiglio.get("sfondoSelezionato").toString()),
+                Integer.parseInt(nuovoFiglio.get("personaggioSelezionato").toString())
         ));
     }
 

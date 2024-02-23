@@ -14,8 +14,10 @@ public class Figlio implements Parcelable {
     private final int idAvatar;
     private final String token;
     private long punteggioGioco;
+    private int sfondoSelezionato;
+    private int personaggioSelezionato;
 
-    public Figlio(String nome, String cognome, String codiceFiscale, String dataNascita, String logopedista, String emailGenitore, int idAvatar, String token, long punteggioGioco) {
+    public Figlio(String nome, String cognome, String codiceFiscale, String dataNascita, String logopedista, String emailGenitore, int idAvatar, String token, long punteggioGioco, int sfondoSelezionato, int personaggioSelezionato) {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = codiceFiscale;
@@ -25,6 +27,8 @@ public class Figlio implements Parcelable {
         this.idAvatar = idAvatar;
         this.token = token;
         this.punteggioGioco = punteggioGioco;
+        this.sfondoSelezionato = sfondoSelezionato;
+        this.personaggioSelezionato = personaggioSelezionato;
     }
 
     protected Figlio(Parcel in) {
@@ -82,6 +86,10 @@ public class Figlio implements Parcelable {
     public String getToken() {
         return token;
     }
+    public int getSfondoSelezionato() {return sfondoSelezionato;}
+    public void setSfondoSelezionato(int sfondoSelezionato) {this.sfondoSelezionato = sfondoSelezionato;}
+    public int getPersonaggioSelezionato() {return personaggioSelezionato;}
+    public void setPersonaggioSelezionato(int personaggioSelezionato) {this.personaggioSelezionato = personaggioSelezionato;}
 
     public long getPunteggioGioco() {
         return punteggioGioco;

@@ -257,7 +257,9 @@ public class LoginFragment extends Fragment {
                                         userId,
                                         Integer.parseInt(childData.get("idAvatar").toString()),
                                         childData.get("token").toString(),
-                                        (long) childData.get("punteggioGioco")
+                                        (long) childData.get("punteggioGioco"),
+                                        Integer.parseInt(childData.get("sfondoSelezionato").toString()),
+                                        Integer.parseInt(childData.get("personaggioSelezionato").toString())
                                 ));
                             } else {
                                 childrenList.add(new Figlio(
@@ -269,7 +271,9 @@ public class LoginFragment extends Fragment {
                                         userId,
                                         Integer.parseInt(childData.get("idAvatar").toString()),
                                         childData.get("token").toString(),
-                                        (long) childData.get("punteggioGioco")
+                                        (long) childData.get("punteggioGioco"),
+                                        Integer.parseInt(childData.get("sfondoSelezionato").toString()),
+                                        Integer.parseInt(childData.get("personaggioSelezionato").toString())
                                 ));
                             }
                         }
@@ -299,7 +303,9 @@ public class LoginFragment extends Fragment {
                                     patientData.get("genitore").toString(),
                                     Integer.parseInt(patientData.get("idAvatar").toString()),
                                     patientData.get("token").toString(),
-                                    (long)patientData.get("punteggioGioco")
+                                    (long)patientData.get("punteggioGioco"),
+                                    Integer.parseInt(patientData.get("sfondoSelezionato").toString()),
+                                    Integer.parseInt(patientData.get("personaggioSelezionato").toString())
                             ));
                         }
                         startMainActivityLogopedista(patientsList, MainActivityLogopedista.class);

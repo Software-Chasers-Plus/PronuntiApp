@@ -145,13 +145,15 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
                 figlio.put("idAvatar", selectedImageId);
                 figlio.put("token", token);
                 figlio.put("punteggioGioco", 0);
+                figlio.put("personaggioSelezionato", 0);
+                figlio.put("sfondoSelezionato", 0);
                 db.collection("figli")
                         .add(figlio)
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if (task.isSuccessful()) {
-                                    figli.add(new Figlio(nome, cognome, codiceFiscale, dataNascita, genitoreUid, "", selectedImageId, token, 0));
+                                    figli.add(new Figlio(nome, cognome, codiceFiscale, dataNascita, genitoreUid, "", selectedImageId, token, 0, 0, 0));
                                     Toasty.success(mActivity, R.string.figlio_aggiunto_con_successo, Toast.LENGTH_SHORT, true).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_home);

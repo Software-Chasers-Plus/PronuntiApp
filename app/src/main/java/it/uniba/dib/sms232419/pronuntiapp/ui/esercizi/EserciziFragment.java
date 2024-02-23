@@ -65,6 +65,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
         recyclerView = view.findViewById(R.id.recycler_view_esercizi);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+
         MaterialButton aggiungi_esercizio_bottone = view.findViewById(R.id.raised_button);
         TextView textView = view.findViewById(R.id.text_dashboard);
 
@@ -124,7 +125,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
     @Override
     public void onItemClick(int position) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("esercizio", (Parcelable) eserciziList.get(position));
+        bundle.putParcelable("esercizio", eserciziList.get(position));
         Log.d("EserciziFragment", "Esercizio passato: " + eserciziList.get(position).getNome());
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
 
