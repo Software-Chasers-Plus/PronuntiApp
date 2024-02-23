@@ -151,7 +151,7 @@ public class AggiungiFiglioFragment extends Fragment implements ImageAdapter.OnI
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if (task.isSuccessful()) {
-                                    figli.add(new Figlio(nome, cognome, codiceFiscale, "", genitoreUid, dataNascita, selectedImageId, token, 0));
+                                    figli.add(new Figlio(nome, cognome, codiceFiscale, dataNascita, genitoreUid, "", selectedImageId, token, 0));
                                     Toasty.success(mActivity, R.string.figlio_aggiunto_con_successo, Toast.LENGTH_SHORT, true).show();
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
                                     navController.navigate(R.id.navigation_home);
