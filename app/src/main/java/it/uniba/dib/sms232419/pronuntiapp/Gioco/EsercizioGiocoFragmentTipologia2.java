@@ -36,6 +36,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.FirebaseHelper;
@@ -43,6 +48,7 @@ import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.RecordAudio;
 import it.uniba.dib.sms232419.pronuntiapp.model.EsercizioTipologia2;
+import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 public class EsercizioGiocoFragmentTipologia2 extends Fragment {
 
@@ -66,6 +72,8 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
     private CircularProgressIndicator progressBar;
     private TextView textCorrezione;
     private ConstraintLayout layoutEsercizio;
+    String dataEsercizio;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +110,7 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
         TextView titoloEsercizio = view.findViewById(R.id.esercizioGiocoTipologia2);
         TextView rispostaLabel = view.findViewById(R.id.risposta_lable_tipologia2);
         TextView riproduciAudioLabel = view.findViewById(R.id.riproduci_audio_lable_tipologia2);
+        TextView dataEsercizioTextView = view.findViewById(R.id.dataEsercizioTipologia2);
 
         storage = FirebaseStorage.getInstance();
 
@@ -146,6 +155,16 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                 coloreTestoPopup = R.color.primaryGiungla;
                 break;
         }
+        //Recupero della data
+        Scheda scheda = giocoActivity.scheda;
+        ArrayList<ArrayList<String>> esercizi = scheda.getEsercizi();
+        for(int i = 0; i < esercizi.size(); i++){
+            if(esercizi.get(i).get(0).equals(esercizioTipologia2.getEsercizioId())){
+                dataEsercizio = esercizi.get(i).get(2);
+            }
+        }
+        dataEsercizioTextView.setText(dataEsercizioTextView.getText() + " " + dataEsercizio);
+
         layoutCorrezione.setVisibility(View.GONE);
         layoutEsercizio.setVisibility(View.VISIBLE);
         return view;
@@ -224,13 +243,11 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                             public void run() {
                                 String risposta = FirebaseHelper.audioToText(audioDownloadUrl).orElse("Default");
                                 Log.d("EsercizioGiocoFragmentTipologia2", "Risposta: " + risposta);
-                                Log.d("EsercizioGiocoFragmentTipologia2", "Trascrizione: " + esercizioTipologia2.getTrascrizione_audio());
-                                Log.d("EsercizioGiocoFragmentTipologia2", "Corretto: " + esercizioTipologia2.correzioneEsercizio(risposta));
 
                                 // Calcola il punteggio dell'esercizio
                                 if(esercizioTipologia2.correzioneEsercizio(risposta)){
                                     // Calcola il punteggio dell'esercizio
-                                    punteggioEsercizio = calcolaPunteggio(esercizioTipologia2.correzioneEsercizio(risposta));
+                                    punteggioEsercizio = calcolaPunteggio(esercizioTipologia2.correzioneEsercizio(risposta), dataEsercizio);
                                     giocoActivity.figlio.setPunteggioGioco(punteggioEsercizio);
 
                                     // Aggiorna il punteggio del figlio nel database
@@ -261,12 +278,12 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
 
                                                                 })
                                                                 .addOnFailureListener(e -> {
-                                                                    Log.e("EsercizioGiocoFragmentTipologia1", "Errore nell'aggiornare il punteggio: " + e.getMessage());
+                                                                    Log.e("EsercizioGiocoFragmentTipologia2", "Errore nell'aggiornare il punteggio: " + e.getMessage());
 
                                                                 });
                                                     }
                                                 } else {
-                                                    Log.e("EsercizioGiocoFragmentTipologia1", "Errore nell'ottenere i documenti: ", task.getException());
+                                                    Log.e("EsercizioGiocoFragmentTipologia2", "Errore nell'ottenere i documenti: ", task.getException());
                                                 }
                                             });
                                 }else{
@@ -389,11 +406,26 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                 });
     }
 
-    public static int calcolaPunteggio(boolean corretto) {
-        int punteggio = 8;
+    public static int calcolaPunteggio(boolean corretto, String dataEsercizio) {
+        int punteggio = 10; // Initial score
 
-        if(corretto) {
-            punteggio = 1;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date exerciseDateObj = formatter.parse(dataEsercizio);
+            Date oggi = Calendar.getInstance().getTime();
+            oggi = formatter.parse(formatter.format(oggi));
+
+            if (corretto) {
+                // If the exercise date is in the past, deduct additional points
+                if (exerciseDateObj.before(oggi)) {
+                    punteggio -= 2;
+                }
+            }
+            else {
+                punteggio = 1;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         return punteggio;
@@ -413,7 +445,6 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
         TextView txtPunteggio = view.findViewById(R.id.txt_punteggio_esercizio_completato);
         txtPunteggio.setTextColor(getResources().getColor(coloreTestoPopup));
         txtPunteggio.setText(String.valueOf(punteggioEsercizio));
-
         TextView labelPiu = view.findViewById(R.id.txt_piu_esercizio_completato);
         labelPiu.setTextColor(getResources().getColor(coloreTestoPopup));
 
@@ -495,28 +526,25 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
                 posizioneEsercizio = i;
             }
         }
-
-        if(posizioneEsercizio != -1){
-            String nomeCampoEsercizio = "esercizio" + posizioneEsercizio;
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("schede")
-                    .document(giocoActivity.scheda.getUid())
-                    .update(nomeCampoEsercizio, giocoActivity.scheda.getEsercizi().get(posizioneEsercizio))
-                    .addOnSuccessListener(aVoid -> {
-                        if(completato){
-                            mostraPopupEsercizioCorretto();
-                        }else{
-                            mostraPopupEsercizioSbagliato();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        if(completato){
-                            mostraPopupEsercizioCorretto();
-                        }else{
-                            mostraPopupEsercizioSbagliato();
-                        }
-                    });
-        }
+        String nomeCampoEsercizio = "esercizio" + posizioneEsercizio;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("schede")
+                .document(giocoActivity.scheda.getUid())
+                .update(nomeCampoEsercizio, giocoActivity.scheda.getEsercizi().get(posizioneEsercizio))
+                .addOnSuccessListener(aVoid -> {
+                    if(completato){
+                        mostraPopupEsercizioCorretto();
+                    }else{
+                        mostraPopupEsercizioSbagliato();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if(completato){
+                        mostraPopupEsercizioCorretto();
+                    }else{
+                        mostraPopupEsercizioSbagliato();
+                    }
+                });
     }
 
 }

@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/esercizio_tipologia3">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/esercizio_tipologia3"
+        android:id="@+id/esercizio_tipologia3_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -23,6 +25,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/linear_layout_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/esercizioGiocoTipologia3"
+            >
+            <TextView
+                android:id="@+id/dataEsercizioTipologia3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dataEserciziGioco"
+                android:textSize="16dp"
+                android:fontFamily="@font/font_game"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/titoloImmagine1"
@@ -39,7 +62,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.09"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/esercizioGiocoTipologia3"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_data"
             app:layout_constraintVertical_bias="1.0" />
 
         <androidx.cardview.widget.CardView
@@ -106,7 +129,7 @@
             tools:layout_editor_absoluteX="0dp">
 
             <TextView
-                android:id="@+id/titoloEsercizioTipologia3"
+                android:id="@+id/riproduci_audio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

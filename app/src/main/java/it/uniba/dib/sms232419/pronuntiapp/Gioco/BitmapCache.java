@@ -4,20 +4,14 @@ import android.graphics.Bitmap;
 import android.util.LruCache;
 
 public class BitmapCache {
-    private static LruCache<String, Bitmap> mMemoryCache;
+    private static final LruCache<String, Bitmap> mMemoryCache;
 
-    public BitmapCache() {
+    static  {
         // Inizializza la cache
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8; // Usa 1/8 della memoria disponibile
 
-        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                // La cache sarà misurata in kilobytes invece di numero di elementi
-                return bitmap.getByteCount() / 1024;
-            }
-        };
+        mMemoryCache = new LruCache<>(cacheSize);
     }
 
     public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {

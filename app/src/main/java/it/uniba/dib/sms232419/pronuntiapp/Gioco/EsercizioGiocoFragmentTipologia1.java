@@ -91,6 +91,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     private CircularProgressIndicator progressBar;
     private TextView textCorrezione;
     private ConstraintLayout layoutEsercizio;
+    String dataEsercizio;
 
 
     @Override
@@ -133,6 +134,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         TextView aiutiUtilizzati = view.findViewById(R.id.aiutiUtilizzati);
         TextView risposta_lable = view.findViewById(R.id.risposta_lable);
         textCorrezione = view.findViewById(R.id.txt_correzione_esercizio_tipologia1);
+        TextView dataEsercizioTextView = view.findViewById(R.id.dataEsercizioTipologia1);
 
         progressBar = view.findViewById(R.id.progressIndicator_esercizio_tipologia1);
 
@@ -173,8 +175,20 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
                 titoloEsercizioTipologia1.setTextColor(getResources().getColor(R.color.thirdGiungla));
                 aiutiUtilizzati.setTextColor(getResources().getColor(R.color.thirdGiungla));
                 risposta_lable.setTextColor(getResources().getColor(R.color.thirdGiungla));
+                coloreSfondoPopup = R.color.secondaryGiungla;
+                coloreTestoPopup = R.color.primaryGiungla;
                 break;
         }
+        //Recupero della data
+        Scheda scheda = giocoActivity.scheda;
+        ArrayList<ArrayList<String>> esercizi = scheda.getEsercizi();
+        for(int i = 0; i < esercizi.size(); i++){
+            if(esercizi.get(i).get(0).equals(esercizioTipologia1.getEsercizioId())){
+                dataEsercizio = esercizi.get(i).get(2);
+            }
+        }
+        dataEsercizioTextView.setText(dataEsercizioTextView.getText() + " " + dataEsercizio);
+
         layoutCorrezione.setVisibility(View.GONE);
         layoutEsercizio.setVisibility(View.VISIBLE);
         return view;
@@ -318,7 +332,7 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
 
                                 if(esercizioTipologia1.correzioneEsercizio(risposta)){
                                     // Calcola il punteggio dell'esercizio
-                                    punteggioEsercizio = calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto);
+                                    punteggioEsercizio = calcolaPunteggio(esercizioTipologia1.correzioneEsercizio(risposta), countAiuto, dataEsercizio);
                                     giocoActivity.figlio.setPunteggioGioco(punteggioEsercizio);
 
                                     // Aggiorna il punteggio del figlio nel database
@@ -483,10 +497,9 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         return audioUri;
     }
 
-    public static int calcolaPunteggio(boolean corretto, int aiutiUsati) {
+    public static int calcolaPunteggio(boolean corretto, int aiutiUsati, String dataEsercizio) {
         int punteggio = 10; // Initial score
 
-        /*
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date exerciseDateObj = formatter.parse(dataEsercizio);
@@ -508,7 +521,6 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-         */
 
         return punteggio;
     }

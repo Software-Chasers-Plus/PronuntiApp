@@ -215,4 +215,5 @@
     <string name="stato_esercizio">Stato esercizio</string>
     <string name="data_esercizio">Data esercizio</string>
     <string name="dettaglio_scheda">Dettaglio Scheda</string>
+    <string name="dataEserciziGioco">Per ricevere punti bonus completare l\'esercizio entro il:</string>
 </resources>

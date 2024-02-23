@@ -42,7 +42,7 @@ public class GiocoActivity extends AppCompatActivity {
     FirebaseFirestore db;
     AlertDialog dialogPopupCaricamentoEsercizio;
 
-    private static BitmapCache bitmapCache = new BitmapCache();
+    Map<String, Object> nuovoEsercizio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +120,7 @@ public class GiocoActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d("GiocoActivity", "Esercizio Trovato");
-                                Map<String, Object> nuovoEsercizio = document.getData();
+                                nuovoEsercizio = document.getData();
                                 if(nuovoEsercizio.get("tipologia").toString().equals("1")){
                                     mostraPopupCaricamentoImmagine();
                                     Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
@@ -198,12 +198,18 @@ public class GiocoActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                     // Add the bitmap to the cache
-                    bitmapCache.addBitmapToMemoryCache(key, bitmap);
+                    BitmapCache.addBitmapToMemoryCache(key, bitmap);
 
                     Log.d("GiocoActivity", key + " scaricata");
 
                     // Set the Bitmap to the ImageView
-                    aggiungiFragmentGioco(fragmentClass, bundle_esercizio);
+                    if(!key.equals("immagine1")){
+                        aggiungiFragmentGioco(fragmentClass, bundle_esercizio);
+                    }
+                    else {
+                        Log.d("GiocoActivity", "Immagine 2: " + nuovoEsercizio.get("immagine2").toString());
+                        eseguiDownloadImmagine(nuovoEsercizio.get("immagine2").toString(), "immagine2", bundle_esercizio, EsercizioGiocoFragmentTipologia3.class);
+                    }
 
                 })
                 .addOnFailureListener(exception -> {
