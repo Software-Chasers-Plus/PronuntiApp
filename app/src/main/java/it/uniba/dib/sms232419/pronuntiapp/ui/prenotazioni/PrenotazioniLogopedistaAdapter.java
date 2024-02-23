@@ -67,18 +67,18 @@ public class PrenotazioniLogopedistaAdapter extends RecyclerView.Adapter<Prenota
                 });
 
 
-        db.collection("logopedisti")
-                .document(prenotazione.getLogopedista())
+        db.collection("genitori")
+                .document(prenotazione.getGenitore())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            String emailLogopedista = documentSnapshot.getString("Email");
-                            if (emailLogopedista != null) {
-                                holder.textViewLogopedistaFiglio.setText(emailLogopedista);
+                            String emailGenitore = documentSnapshot.getString("Email");
+                            if (emailGenitore != null) {
+                                holder.textViewGenitorePrenotazione.setText(emailGenitore);
                             } else {
-                                holder.textViewLogopedistaFiglio.setText("Email logopedista");
+                                holder.textViewGenitorePrenotazione.setText("Email genitore");
 
                             }
                         } else {

@@ -18,24 +18,24 @@
         <!-- TextView per il logopedista -->
 
         <TextView
-            android:id="@+id/email_logopedista_label_prenotazione"
+            android:id="@+id/email_genitore_label_prenotazione"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="6dp"
-            android:text="@string/logopedista_label"
+            android:text="@string/email_genitore_label"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/logopedista_prenotazione"
+            android:id="@+id/genitore_prenotazione"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/black"
-            android:text="@string/logopedista"
-            android:layout_below="@id/email_logopedista_label_prenotazione"
+            android:text="@string/genitore"
+            android:layout_below="@id/email_genitore_label_prenotazione"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"/>
 
@@ -48,7 +48,7 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/black"
-            android:layout_below="@id/logopedista_prenotazione"
+            android:layout_below="@id/genitore_prenotazione"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"/>
 

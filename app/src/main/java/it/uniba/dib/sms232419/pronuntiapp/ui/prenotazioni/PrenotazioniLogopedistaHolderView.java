@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class PrenotazioniLogopedistaHolderView extends RecyclerView.ViewHolder implements View.OnClickListener {
-    TextView textViewLogopedistaFiglio, textViewDataPrenotazione, textViewOraPrenotazione,textViewNotePrenotazione;
+    TextView textViewGenitorePrenotazione, textViewDataPrenotazione, textViewOraPrenotazione,textViewNotePrenotazione;
     ImageView imageViewNonConfermato,imageViewConfermato;
 
     Button confermaButton,eliminaButton;
@@ -24,7 +24,7 @@ public class PrenotazioniLogopedistaHolderView extends RecyclerView.ViewHolder i
 
         this.clickPrenotazioniLogopedistaListener = listener;
 
-        textViewLogopedistaFiglio = itemView.findViewById(R.id.logopedista_prenotazione);
+        textViewGenitorePrenotazione = itemView.findViewById(R.id.genitore_prenotazione);
         textViewDataPrenotazione = itemView.findViewById(R.id.data_prenotazione);
         textViewOraPrenotazione = itemView.findViewById(R.id.ora_prenotazione);
         textViewNotePrenotazione = itemView.findViewById(R.id.informazioni_prenotazione);
