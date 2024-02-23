@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -273,6 +275,10 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
     @Override
     public void onItemClick(int position) {
         //TODO: implementare la visualizzazione dei dettagli scheda
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("scheda", schedaList.get(position));
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.navigation_dettaglio_scheda, bundle);
     }
 
     @Override

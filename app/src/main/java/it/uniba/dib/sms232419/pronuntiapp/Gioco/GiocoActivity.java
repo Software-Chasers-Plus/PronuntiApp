@@ -166,7 +166,6 @@ public class GiocoActivity extends AppCompatActivity {
                                     bundle.putParcelable("esercizio3", esercizioTipologia3);
                                     Log.d("GiocoActivity", "Immagine 1: " + nuovoEsercizio.get("immagine1").toString());
                                     eseguiDownloadImmagine(nuovoEsercizio.get("immagine1").toString(), "immagine1", bundle, EsercizioGiocoFragmentTipologia3.class);
-                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine2").toString(), "immagine2", bundle, EsercizioGiocoFragmentTipologia3.class);
                                 }
                             } else {
                                 // Stampa nel log un messaggio di errore

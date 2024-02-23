@@ -85,7 +85,6 @@
     <string name="parent_answer">genitore ?</string>
     <string name="inserisci_il_tuo_nome">Inserisci il tuo nome</string>
     <string name="inserisci_il_tuo_cognome">Inserisci il tuo cognome</string>
-    <string name="inserisci_la_tua_email">Inserisci la tua email</string>
     <string name="ripeti_la_tua_password">Ripeti la tua password</string>
     <string name="inserisci_la_tua_matricola">Inserisci la tua matricola</string>
     <string name="registrati">Registrati</string>
@@ -212,4 +211,8 @@
     <string name="correzione_in_corso">Correzione in corso</string>
     <string name="esercizio_gioco_tipologia_3">esercizio gioco tipologia 3</string>
     <string name="le_tue_monete">Le tue monete</string>
+    <string name="categoria_esercizio">Categoria Esercizio</string>
+    <string name="stato_esercizio">Stato esercizio</string>
+    <string name="data_esercizio">Data esercizio</string>
+    <string name="dettaglio_scheda">Dettaglio Scheda</string>
 </resources>

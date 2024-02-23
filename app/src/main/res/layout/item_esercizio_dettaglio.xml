@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/cardView_scheda"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp"
+    android:checkable="false"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="3dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/materialCardViewElevatedStyle"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                >
+
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:id="@+id/nome_esercizio_dettaglio_scheda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nome_esercizio"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    />
+                <TextView
+                    android:id="@+id/categoria_esercizio_dettaglio_scheda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/categoria_esercizio"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+
+                <TextView
+                    android:id="@+id/data_esercizio_dettaglio_scheda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/data_esercizio"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+
+                <TextView
+                    android:id="@+id/stato_esercizio_dettaglio_scheda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/stato_esercizio"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

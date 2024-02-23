@@ -11,6 +11,7 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
+
     <fragment
         android:id="@+id/navigation_aggiungi_figlio"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.AggiungiFiglioFragment"
@@ -22,6 +23,12 @@
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.info.InfoFiglioFragment"
         android:label="@string/info_child"
         tools:layout="@layout/fragment_dettaglio_figlio" />
+
+    <fragment
+        android:id="@+id/navigation_dettaglio_scheda"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.info.dettaglioScheda.DettaglioSchedaFragment"
+        android:label="@string/dettaglio_scheda"
+        tools:layout="@layout/fragment_dettaglio_scheda" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
