@@ -34,6 +34,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class ImpostazioniGiocoFragment extends Fragment{
@@ -232,6 +233,12 @@ public class ImpostazioniGiocoFragment extends Fragment{
         }
 
         ImageView lucchetto = view.findViewById(R.id.lock_icon_selezione_personaggio);
+        lucchetto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toasty.custom(getContext(), "Devi raccogliere almeno " + abs(moneteRichieste[personaggioSelezionatoInt]) + " monete per sbloccare questo personaggio", R.drawable.coin_icon_24, R.color.yellow_pop_up_personaggio, 3000, false, true).show();
+            }
+        });
         lucchetto.setVisibility(View.GONE);
 
         // Oggetto Animation per lo scorrimento in entrata da sinistra verso il centro
