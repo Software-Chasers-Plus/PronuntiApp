@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean genitore = false;
     private boolean logopedista = false;
     private FirebaseUser currentUser;
+    private boolean mainActivityStarted = false;
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -78,7 +79,6 @@ public class SplashActivity extends AppCompatActivity {
         lottieAnimationView.setAnimation(R.raw.animation_splash);
         lottieAnimationView.playAnimation();
 
-        // The TypeWriterView is a simple extension of the TextView class that provides a typing animation.
         TypeWriterView typeWriterView = findViewById(R.id.text_pronuntiapp);
         typeWriterView.setCharacterDelay(70);
         typeWriterView.animateText("PronuntiApp");
@@ -333,36 +333,42 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-
     private void startMainActivity() {
+        // Se il metodo è già stato chiamato, esce per evitare chiamate multiple
+        if (mainActivityStarted) {
+            return;
+        }
+
+        mainActivityStarted = true;
+
+        // Se l'utente è loggato come genitore
         if (loggato && genitore) {
-            // Creo il bundle da passare all'activity principale
+            // Creazione del bundle e lancio dell'activity MainActivityGenitore
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
             bundle.putParcelableArrayList("prenotazioni",(ArrayList<? extends Parcelable>) prenotazioni);
-
             Intent intent = new Intent(this, MainActivityGenitore.class);
             intent.putExtras(bundle);
-
-            // Faccio partire l'activity principale
             startActivity(intent);
             finish();
-        } else if (loggato && logopedista) {
-            // Creo il bundle da passare all'activity principale
+        }
+        // Se l'utente è loggato come logopedista
+        else if (loggato && logopedista) {
+            // Creazione del bundle e lancio dell'activity MainActivityLogopedista
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("figli", (ArrayList<? extends Parcelable>) figli);
             bundle.putParcelableArrayList("prenotazioni",(ArrayList<? extends Parcelable>) prenotazioni);
-
-            Log.d("Accessoactivity", "Figli grandezza" + figli.size());
             Intent intent = new Intent(this, MainActivityLogopedista.class);
             intent.putExtras(bundle);
-
-            // Faccio partire l'activity principale del logopedista
             startActivity(intent);
             finish();
-        } else {
+        }
+        // Se l'utente non è né genitore né logopedista
+        else {
+            // Lancio dell'activity AccessoActivity
             startActivity(new Intent(this, AccessoActivity.class));
             finish();
         }
     }
+
 }
