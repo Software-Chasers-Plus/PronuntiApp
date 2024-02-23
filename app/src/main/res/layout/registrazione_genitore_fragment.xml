@@ -114,7 +114,7 @@
                 android:background="@null"
                 android:drawableLeft="@drawable/baseline_email_24"
                 android:drawablePadding="8dp"
-                android:hint="@string/inesrisci_la_tua_email"
+                android:hint="@string/inserisci_la_tua_email"
                 android:inputType="textEmailAddress"
                 android:padding="12dp"
                 android:textColor="@color/black"
