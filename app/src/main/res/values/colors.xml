@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="grey">#FF808080</color>
-    <color name="primaryGenitore">#92C7CF</color>
-    <color name="secondaryGenitore">#AAD7D9</color>
+    <color name="primaryGenitore">#7ED6E0</color>
+    <color name="secondaryGenitore">#B8E8EB</color>
     <color name="thirdGenitore">#FBF9F1</color>
     <color name="fourthGenitore">#E5E1DA</color>
     <color name="red">#FF0000</color>\
@@ -10,8 +10,8 @@
     <color name="blue_pressed">#448AFF</color>
     <color name="blue_normal">#2196F3</color>
 
-    <color name="primaryLogopedista">#88AB8E</color>
-    <color name="secondaryLogopedista">#AFC8AD</color>
+    <color name="primaryLogopedista">#7FC19B</color>
+    <color name="secondaryLogopedista">#C8E8CA</color>
     <color name="thirdLogopedista">#EEE7DA</color>
     <color name="fourthLogopedista">#F2F1EB</color>
     <color name="purple_200">#FFBB86FC</color>
