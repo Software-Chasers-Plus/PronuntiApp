@@ -349,120 +349,22 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             pathFile.add(path_audio1);
             pathFile.add(path_audio2);
             pathFile.add(path_audio3);
+
             ArrayList<Uri> uriFile = new ArrayList<>();
             uriFile.add(imageUri);
             uriFile.add(audioUri1);
             uriFile.add(audioUri2);
             uriFile.add(audioUri3);
+
             FILE_CARICATO_NELLO_STORAGE = 0;
             FILE_DA_CARICARE_NELLO_STORAGE = 4;
             dialogCaricamentoEsercizio = new ProgressDialog(getContext());
             dialogCaricamentoEsercizio.setMessage("Caricamento in corso...");
             dialogCaricamentoEsercizio.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
             dialogCaricamentoEsercizio.show();
+
             caricaFileSulloStorage(pathFile, uriFile);
 
-            /*
-            // Carica l'immagine su Firebase Storage
-            Log.d("EsercizioDenominazioneImmagine", imageUri.toString() + " " + path_img);
-            uploadFileToFirebaseStorage(imageUri, path_img, (success, id_img) -> {
-                if (success) {
-                    ID_immagine = id_img;
-                }else {
-                    esito[0] = false;
-                }
-            });
-
-            // Carica l'audio 1 su Firebase Storage
-            uploadFileToFirebaseStorage(audioUri1, path_audio1, (success, id_audio1) -> {
-                if (success) {
-                    ID_audio1 = id_audio1;
-
-                    // Se l'ID dell'audio 1 è nullo, imposta il percorso su null
-                    if (ID_audio1 == null) {
-                        path_audio1 = "null";
-                    }
-                }else {
-                    esito[0] = false;
-                }
-            });
-
-            // Carica l'audio 2 su Firebase Storage
-            uploadFileToFirebaseStorage(audioUri2, path_audio2, (success, id_audio2) -> {
-                if (success) {
-                    ID_audio2 = id_audio2;
-
-                    // Se l'ID dell'audio 2 è nullo, imposta il percorso su null
-                    if(ID_audio2 == null) {
-                        path_audio2 = "null";
-                    }
-                }else {
-                    esito[0] = false;
-                }
-            });
-
-            // Carica l'audio 3 su Firebase Storage
-            uploadFileToFirebaseStorage(audioUri3, path_audio3, (success, id_audio3) -> {
-                if (success) {
-                    ID_audio3 = id_audio3;
-
-                    // Se l'ID dell'audio 3 è nullo, imposta il percorso su null
-                    if(ID_audio3 == null) {
-                        path_audio3 = "null";
-                    }
-                }else {
-                    esito[0] = false;
-                }
-            });
-
-            if(esito[0]) {
-                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
-                // Creazione di una raccolta su firebase con i dati dell'esercizio
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
-                String userId = null;
-                if (currentUser != null) {
-                    userId = currentUser.getUid();
-                    Log.d("EsercizioDenominazioneImmagine", "ID dell'utente attualmente loggato: " + userId);
-                } else {
-                    Log.d("EsercizioDenominazioneImmagine", "Nessun utente attualmente loggato");
-                }
-
-                // Crea un oggetto Map per contenere i dati da inserire nel documento
-                Map<String, Object> data = new HashMap<>();
-                data.put("tipologia", 1);
-                data.put("logopedista", userId);
-                data.put("nome", nome_esercizio);
-                data.put("immagine", path_img);
-                data.put("descrizioneImmagine", descrizione_immagine);
-                data.put("audio1", path_audio1);
-                data.put("audio2", path_audio2);
-                data.put("audio3", path_audio3);
-
-                // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
-                db.collection("esercizi")
-                        .add(data)
-                        .addOnSuccessListener(documentReference -> {
-                            Log.d("EsercizioDenominazioneImmagine", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.w("EsercizioDenominazioneImmagine", "Errore durante l'aggiunta del documento", e);
-                        });
-
-                // Navigazione alla lista degli esercizi
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                navController.navigate(R.id.navigation_esercizi);
-
-            } else {
-                // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
-            }
-
-             */
         });
 
     }
