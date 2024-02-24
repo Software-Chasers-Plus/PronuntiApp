@@ -155,7 +155,7 @@ public class EsercizioRipetizioneParole extends Fragment {
                 return;
             }
 
-            //Creazione dei percorsi per Firebase Storage
+            // Creazione dei percorsi per Firebase Storage
             String path_audio = "esercizio2/" + nome_esercizio + trascrizione_audio + "_audio.mp3";
 
             // Carica l'audio su Firebase Storage
@@ -173,8 +173,8 @@ public class EsercizioRipetizioneParole extends Fragment {
 
             if(esito[0]) {
                 // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                //Toast.makeText(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT).show();
-                //Creazione di una raccolta su firebase con i dati dell'esercizio
+                Toasty.success(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT, true).show();
+                // Creazione di una raccolta su firebase con i dati dell'esercizio
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();

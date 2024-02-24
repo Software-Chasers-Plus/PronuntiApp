@@ -29,6 +29,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -203,7 +205,7 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
             }
 
 
-            //Creazione dei percorsi per Firebase Storage
+            // Creazione dei percorsi per Firebase Storage
             String path_img1 = "esercizio3/" + nome_esercizio +"immagine1"+ ".jpg";
             String path_img2 = "esercizio3/" + nome_esercizio + "immagine2" + ".jpg";
             String path_audio = "esercizio3/" + nome_esercizio + "_audio.mp3";
@@ -242,9 +244,7 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
             });
 
             if(esito[0]) {
-                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                //Toast.makeText(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT).show();
-                //Creazione di una raccolta su firebase con i dati dell'esercizio
+                // Creazione di una raccolta su firebase con i dati dell'esercizio
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -273,19 +273,21 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                         .add(data)
                         .addOnSuccessListener(documentReference -> {
                             Log.d("EsercizioRiconoscimentoCoppie", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
-                            //Navigazione alla lista degli esercizi
+                            // Navigazione alla lista degli esercizi
 
                         })
                         .addOnFailureListener(e -> {
                             Log.w("EsercizioRiconoscimentoCoppie", "Errore durante l'aggiunta del documento", e);
                         });
 
-                //NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                //navController.navigate(R.id.navigation_esercizi);
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                navController.navigate(R.id.navigation_esercizi);
+                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
+                Toasty.success(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT, true).show();
 
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                //Toast.makeText(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT).show();
+                 Toasty.error(getContext(), "Errore durante il caricamento dei file", Toast.LENGTH_SHORT, true).show();
             }
         });
 

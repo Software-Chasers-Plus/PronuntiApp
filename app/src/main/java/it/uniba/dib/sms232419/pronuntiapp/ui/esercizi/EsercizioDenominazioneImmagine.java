@@ -28,6 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -301,7 +303,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             mStartPlaying = !mStartPlaying;
         });
 
-        //Gestione bottone conferma
+        // Gestione bottone conferma
         conferma_button.setOnClickListener(v -> {
 
             final boolean[] esito = {true};
@@ -382,8 +384,8 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
             if(esito[0]) {
                 // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                //Toast.makeText(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT).show();
-                //Creazione di una raccolta su firebase con i dati dell'esercizio
+                Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
+                // Creazione di una raccolta su firebase con i dati dell'esercizio
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -418,9 +420,9 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                             Log.w("EsercizioDenominazioneImmagine", "Errore durante l'aggiunta del documento", e);
                         });
 
-                //Navigazione alla lista degli esercizi
-                //NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                //navController.navigate(R.id.navigation_esercizi);
+                // Navigazione alla lista degli esercizi
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                navController.navigate(R.id.navigation_esercizi);
 
             } else {
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
