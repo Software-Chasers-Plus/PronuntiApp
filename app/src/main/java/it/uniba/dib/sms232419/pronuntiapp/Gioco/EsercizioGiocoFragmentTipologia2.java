@@ -313,6 +313,16 @@ public class EsercizioGiocoFragmentTipologia2 extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        // Riprendi la riproduzione del MediaPlayer se era in pausa quando l'attività è entrata in pausa
+        if(giocoActivity.mediaPlayer != null && !giocoActivity.mediaPlayer.isPlaying()){
+            giocoActivity.mediaPlayer.pause();
+        }
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mediaPlayerEsercizio != null) {

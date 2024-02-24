@@ -67,6 +67,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
     // List to store the positions of checked CardViews
     private final List<Integer> checkedPositions = new ArrayList<>();
+    private Map<Integer, String> esercizioDataSelezionata = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -275,6 +276,9 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
             }
 
             dataEsercizio.setText(dataSelezionata);
+            Log.d(TAG, "Data esercizio: " + dataSelezionata);
+            Log.d(TAG, "Posizione: " + position);
+            esercizioDataSelezionata.put(new Integer(position), dataSelezionata);
         });
 
     }
@@ -318,8 +322,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
         return null;
     }
 
-    private void caricaSchedaFirebase(String nomeScheda, String userId, String pazienteId, ArrayList<String> eserciziSelezionati, RecyclerView recyclerView, List<Integer> checkedPositions, FirebaseFirestore db){
-
+    private void caricaSchedaFirebase(String nomeScheda, String userId, String pazienteId, ArrayList<String> eserciziSelezionati, RecyclerView recyclerView, List<Integer> checkedPositions, FirebaseFirestore db) {
         LinearProgressIndicator progressIndicator = getView().findViewById(R.id.progressBarCreazioneScheda);
         progressIndicator.setVisibility(View.VISIBLE);
 
@@ -329,27 +332,33 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
         data.put("logopedista", userId);
         data.put("figlio", pazienteId);
 
+        for (int i = 0; i < checkedPositions.size(); i++) {
+            int checkedPosition = checkedPositions.get(i);
+            if (checkedPosition != RecyclerView.NO_POSITION && checkedPosition < eserciziSelezionati.size()) {
+                ArrayList<String> eserciziSchedaCompleti = new ArrayList<>();
 
-        Log.d(TAG, "Esercizi selezionati ehrthrhr: " + eserciziSelezionati);
-        for (int i = 0; i < eserciziSelezionati.size(); i++) {
-            ArrayList<String> eserciziSchedaCompleti = new ArrayList<>();
-
-            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(checkedPositions.get(i));
-            TextInputEditText giornoEsercizio = viewHolder.itemView.findViewById(R.id.giorno_esercizio);
-            TextInputLayout textInputLayoutGiornoEsercizio = viewHolder.itemView.findViewById(R.id.giorno_esercizio_layout);
-            if(giornoEsercizio.getText().toString().isEmpty()){
-                textInputLayoutGiornoEsercizio.setErrorIconDrawable(null);
-                textInputLayoutGiornoEsercizio.setError("Inserisci una data");
-                return;
+                // Get the ViewHolder for the checked position
+                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(checkedPosition);
+                if (viewHolder != null) {
+                    TextInputLayout textInputLayoutGiornoEsercizio = viewHolder.itemView.findViewById(R.id.giorno_esercizio_layout);
+                    String dataEsercizio = esercizioDataSelezionata.get(checkedPosition);
+                    if (dataEsercizio == null || dataEsercizio.isEmpty()) {
+                        textInputLayoutGiornoEsercizio.setErrorIconDrawable(null);
+                        textInputLayoutGiornoEsercizio.setError("Inserisci una data");
+                        return;
+                    }
+                    eserciziSchedaCompleti.add(eserciziSelezionati.get(checkedPosition));
+                    eserciziSchedaCompleti.add("non completato");
+                    eserciziSchedaCompleti.add(dataEsercizio);
+                    data.put("esercizio" + i, eserciziSchedaCompleti);
+                } else {
+                    // Handle null ViewHolder or itemView
+                    Log.e(TAG, "ViewHolder or itemView is null for position: " + checkedPosition);
+                }
+            } else {
+                // Handle invalid checked position
+                Log.e(TAG, "Invalid checked position: " + checkedPosition);
             }
-
-
-            eserciziSchedaCompleti.add(eserciziSelezionati.get(i));
-            eserciziSchedaCompleti.add("non completato");
-            eserciziSchedaCompleti.add(giornoEsercizio.getText().toString());
-
-            Log.d(TAG, "Esercizio: " + eserciziSchedaCompleti);
-            data.put("esercizio" + i, eserciziSchedaCompleti);
         }
 
         // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
@@ -365,8 +374,8 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                     Toasty.error(getContext(), "Errore durante il caricamento della scheda", Toast.LENGTH_SHORT, true).show();
                     Log.w(TAG, "Errore durante l'aggiunta del documento", e);
                 });
-
     }
+
 
     private void addScheda(FirebaseFirestore db, String nomeScheda, String userId) {
         //Creo un array per salvare gli esercizi selezionati

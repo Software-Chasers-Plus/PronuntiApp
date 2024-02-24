@@ -138,8 +138,8 @@ public class GiocoActivity extends AppCompatActivity {
                                 nuovoEsercizio = document.getData();
                                 if(nuovoEsercizio.get("tipologia").toString().equals("1")){
                                     mostraPopupCaricamentoImmagine();
-                                    Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
-                                    Log.d("PopUp_Fragmnet", "Popup: " + dialogPopupCaricamentoEsercizio);
+                                    Log.d("PopUp_Fragmnet", "PopUp1 Fragmnet visulizzato");
+                                    Log.d("PopUp_Fragmnet", "Popup1: " + dialogPopupCaricamentoEsercizio);
                                     // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia1 e lo aggiunge al back stack
                                     EsercizioTipologia1 esercizioTipologia1 = new EsercizioTipologia1(document.getId(),
                                             nuovoEsercizio.get("nome").toString(),
@@ -154,8 +154,8 @@ public class GiocoActivity extends AppCompatActivity {
                                     eseguiDownloadImmagine(nuovoEsercizio.get("immagine").toString(), "immagine", bundle, EsercizioGiocoFragmentTipologia1.class);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("2")){
                                     mostraPopupCaricamentoImmagine();
-                                    Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
-                                    Log.d("PopUp_Fragmnet", "Popup: " + dialogPopupCaricamentoEsercizio);
+                                    Log.d("PopUp_Fragmnet", "PopUp2 Fragmnet visulizzato");
+                                    Log.d("PopUp_Fragmnet", "Popup2: " + dialogPopupCaricamentoEsercizio);
                                     // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia2 e lo aggiunge al back stack
                                     EsercizioTipologia2 esercizioTipologia2 = new EsercizioTipologia2(document.getId(),
                                             nuovoEsercizio.get("nome").toString(),
@@ -167,8 +167,8 @@ public class GiocoActivity extends AppCompatActivity {
                                     aggiungiFragmentGioco(EsercizioGiocoFragmentTipologia2.class, bundle);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("3")){
                                     mostraPopupCaricamentoImmagine();
-                                    Log.d("PopUp_Fragmnet", "PopUp Fragmnet visulizzato");
-                                    Log.d("PopUp_Fragmnet", "Popup: " + dialogPopupCaricamentoEsercizio);
+                                    Log.d("PopUp_Fragmnet", "PopUp3 Fragmnet visulizzato");
+                                    Log.d("PopUp_Fragmnet", "Popup3: " + dialogPopupCaricamentoEsercizio);
                                     // Avvia la transizione al fragment EsercizioGiocoFragmentTipologia1 e lo aggiunge al back stack
                                     EsercizioTipologia3 esercizioTipologia3 = new EsercizioTipologia3(document.getId(),
                                             nuovoEsercizio.get("nome").toString(),

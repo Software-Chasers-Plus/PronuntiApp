@@ -112,6 +112,8 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
         }
 
         giocoActivity.dialogPopupCaricamentoEsercizio.dismiss();
+        giocoActivity.dialogPopupCaricamentoEsercizio.dismiss();
+
         Log.d("PopUp_Fragmnet", "PopUp Fragmnet svisulizzato");
         Log.d("PopUp_Fragmnet", "Popup: " + giocoActivity.dialogPopupCaricamentoEsercizio);
 
@@ -402,7 +404,9 @@ public class EsercizioGiocoFragmentTipologia1 extends Fragment {
     public void onResume() {
         super.onResume();
         // Riprendi la riproduzione del MediaPlayer se era in pausa quando l'attività è entrata in pausa
-        giocoActivity.mediaPlayer.pause();
+        if(giocoActivity.mediaPlayer != null && !giocoActivity.mediaPlayer.isPlaying()){
+            giocoActivity.mediaPlayer.pause();
+        }
 
     }
 
