@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
@@ -371,32 +372,34 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
 
     private void addScheda(FirebaseFirestore db, String nomeScheda, String userId) {
-        //Creo un array per salvare gli esercizi selezionati
         ArrayList<String> eserciziSelezionati = new ArrayList<>();
 
-        Log.d(TAG, "Esercizi ricevuti: " + checkedPositions);
+        AtomicInteger completedQueries = new AtomicInteger(0); // Counter for completed queries
+
         for (int i = 0; i < checkedPositions.size(); i++) {
-            final int finalI = i; // Make a final copy of i for use inside the lambda expression
-            //Recupero l'id dell'esercizio selezionato
+            final int finalI = i;
             db.collection("esercizi")
                     .whereEqualTo("nome", eserciziList.get(checkedPositions.get(finalI)).getNome())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "Esercizio ID: " + document.getId());
                                 eserciziSelezionati.add(document.getId());
-                                Log.d(TAG, "Esercizi selezionati: " + eserciziSelezionati);
-                                // Check if this is the last iteration, then call caricaSchedaFirebase
-                                if (finalI == checkedPositions.size() - 1) {
-                                    caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
-                                }
                             }
                         } else {
                             Log.e(TAG, "Errore durante la query per gli esercizi", task.getException());
                         }
+
+                        // Increment the counter
+                        int count = completedQueries.incrementAndGet();
+
+                        // Check if all queries have completed
+                        if (count == checkedPositions.size()) {
+                            caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
+                        }
                     });
         }
     }
+
 
 }
