@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
-public class EserciziHolderView extends RecyclerView.ViewHolder{
+public class EserciziDettaglioSchedaHolderView extends RecyclerView.ViewHolder{
     TextView textViewNomeEsercizio, textViewTipologiaEsercizio, textDataEsercizio, textCompletamentoEsercizio;
 
     // Costruttore che riceve un'istanza di ClickListener
-    public EserciziHolderView(View itemView) {
+    public EserciziDettaglioSchedaHolderView(View itemView) {
         super(itemView);
 
         textViewNomeEsercizio = itemView.findViewById(R.id.nome_esercizio_dettaglio_scheda);

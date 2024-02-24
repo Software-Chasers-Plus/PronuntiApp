@@ -2,8 +2,11 @@ package it.uniba.dib.sms232419.pronuntiapp.Gioco;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +43,9 @@ public class GiocoActivity extends AppCompatActivity {
     public Integer sfondoSelezionato, personaggioSelezionato;
     public Scheda scheda;
     public Figlio figlio;
+    private static final int FETCH_TERMINATO = 1;
+    private static int NUMERO_IMMAGINI;
+    private static int NUMERO_IMMAGINI_SCARICATI;
     FirebaseFirestore db;
     AlertDialog dialogPopupCaricamentoEsercizio;
 
@@ -48,6 +55,8 @@ public class GiocoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gioco);
+
+        Log.d("GiocoActivityInizio", "Activity avviata");
 
         // Inizializza il MediaPlayer con il file audio desiderato
         mediaPlayer = MediaPlayer.create(this, R.raw.audio_sottofondo);
@@ -151,7 +160,18 @@ public class GiocoActivity extends AppCompatActivity {
                                             nuovoEsercizio.get("audio2").toString(),
                                             nuovoEsercizio.get("audio3").toString());
                                     bundle.putParcelable("esercizio", esercizioTipologia1);
-                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine").toString(), "immagine", bundle, EsercizioGiocoFragmentTipologia1.class);
+
+                                    NUMERO_IMMAGINI = 1;
+                                    NUMERO_IMMAGINI_SCARICATI = 0;
+
+                                    ArrayList<String> key = new ArrayList<>();
+                                    key.add("immagine");
+
+                                    ArrayList<String> immagini = new ArrayList<>();
+                                    immagini.add(nuovoEsercizio.get("immagine").toString());
+
+                                    Log.d("GiocoActivityAvvioEsercizio", "Avvio download immagini per esercizio tipologia 3");
+                                    eseguiDownloadImmagine(immagini, key, bundle, EsercizioGiocoFragmentTipologia1.class);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("2")){
                                     mostraPopupCaricamentoImmagine();
                                     Log.d("PopUp_Fragmnet", "PopUp2 Fragmnet visulizzato");
@@ -179,8 +199,20 @@ public class GiocoActivity extends AppCompatActivity {
                                             nuovoEsercizio.get("immagine2").toString(),
                                             (long)nuovoEsercizio.get("immagine_corretta"));
                                     bundle.putParcelable("esercizio3", esercizioTipologia3);
-                                    Log.d("GiocoActivity", "Immagine 1: " + nuovoEsercizio.get("immagine1").toString());
-                                    eseguiDownloadImmagine(nuovoEsercizio.get("immagine1").toString(), "immagine1", bundle, EsercizioGiocoFragmentTipologia3.class);
+
+                                    NUMERO_IMMAGINI = 2;
+                                    NUMERO_IMMAGINI_SCARICATI = 0;
+
+                                    ArrayList<String> key = new ArrayList<>();
+                                    key.add("immagine1");
+                                    key.add("immagine2");
+
+                                    ArrayList<String> immagini = new ArrayList<>();
+                                    immagini.add(nuovoEsercizio.get("immagine1").toString());
+                                    immagini.add(nuovoEsercizio.get("immagine2").toString());
+
+                                    Log.d("GiocoActivityAvvioEsercizio", "Avvio download immagini per esercizio tipologia 3");
+                                    eseguiDownloadImmagine(immagini, key, bundle, EsercizioGiocoFragmentTipologia3.class);
                                 }
                             } else {
                                 // Stampa nel log un messaggio di errore
@@ -200,30 +232,33 @@ public class GiocoActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void eseguiDownloadImmagine(String pathImmagine, String key, Bundle bundle_esercizio, Class fragmentClass) {
+    private void eseguiDownloadImmagine(ArrayList<String> pathImmagine, ArrayList<String> key, Bundle bundle_esercizio, Class fragmentClass) {
         // Create a storage reference from our app
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child(pathImmagine);
+        StorageReference storageRef = storage.getReference().child(pathImmagine.get(NUMERO_IMMAGINI_SCARICATI));
 
         // Download directly from StorageReference using Glide
         final long MAX_DOWNLOAD_SIZE = 2048 * 2048; // 1MB max download size
         storageRef.getBytes(MAX_DOWNLOAD_SIZE)
                 .addOnSuccessListener(bytes -> {
+                    Log.d("GiocoActivityDownload", "NUMERO_IMMAGINI_SCARICATI: " + NUMERO_IMMAGINI_SCARICATI);
+                    Log.d("GiocoActivityDownload", pathImmagine.get(NUMERO_IMMAGINI_SCARICATI) + " scaricata");
                     // Decode the byte array into a Bitmap
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                     // Add the bitmap to the cache
-                    BitmapCache.addBitmapToMemoryCache(key, bitmap);
+                    BitmapCache.addBitmapToMemoryCache(key.get(NUMERO_IMMAGINI_SCARICATI), bitmap);
+                    Log.d("GiocoActivityDownload", key.get(NUMERO_IMMAGINI_SCARICATI) + " aggiunta in cash");
+                    NUMERO_IMMAGINI_SCARICATI++;
 
-                    Log.d("GiocoActivity", key + " scaricata");
 
-                    // Set the Bitmap to the ImageView
-                    if(!key.equals("immagine1")){
+                    if(NUMERO_IMMAGINI_SCARICATI == NUMERO_IMMAGINI){
+                        Log.d("GiocoActivityDownload", "Tutte le immagini scaricate");
                         aggiungiFragmentGioco(fragmentClass, bundle_esercizio);
-                    }
-                    else {
-                        Log.d("GiocoActivity", "Immagine 2: " + nuovoEsercizio.get("immagine2").toString());
-                        eseguiDownloadImmagine(nuovoEsercizio.get("immagine2").toString(), "immagine2", bundle_esercizio, EsercizioGiocoFragmentTipologia3.class);
+                        dialogPopupCaricamentoEsercizio.dismiss();
+                    }else{
+                        Log.d("GiocoActivityDownload", "Tutte le immagini non scaricate");
+                        eseguiDownloadImmagine(pathImmagine, key, bundle_esercizio, fragmentClass);
                     }
 
                 })

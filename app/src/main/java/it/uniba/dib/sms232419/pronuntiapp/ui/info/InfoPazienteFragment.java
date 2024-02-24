@@ -190,12 +190,11 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
 
     @Override
     public void onItemClick(int position) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("scheda", (Parcelable) schedaList.get(position));
-        Log.d(TAG, "Scheda passata: " + schedaList.get(position).getNome());
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-
         //TODO: implementarte il dettaglio della scheda
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("scheda", schedaList.get(position));
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+        navController.navigate(R.id.navigation_dettaglio_scheda_logopedista, bundle);
     }
 
     @Override

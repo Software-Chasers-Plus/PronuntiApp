@@ -80,6 +80,7 @@ public class AvvioGiocoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Avvia la transizione al fragment GiocoFragment e lo aggiunge al back stack
+
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("scheda", scheda);
                 getActivity().getSupportFragmentManager().beginTransaction()

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import es.dmoral.toasty.Toasty;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
@@ -55,6 +56,7 @@ public class GameView extends View {
     public GameView(Context context, AttributeSet attrs, Scheda scheda) {
         super(context, attrs);
         giocoActivity = (GiocoActivity) context;
+        Log.d("GameViewF", "Scheda: " + scheda.getNome() + " caricata");
         //seleziona l'immagine di sfondo
         switch (giocoActivity.sfondoSelezionato){
             case 0:
@@ -184,6 +186,9 @@ public class GameView extends View {
             canvas.drawCircle(centerX, centerY, checkpointWidth / 2 + 5, paintCircle); // Aggiungi 5 per compensare lo spessore del contorno
 
             if((!personaggioInMovimento && i == checkPointAttuale) && !scheda.getEsercizi().get(i).get(1).equals("completato")){
+                Log.d("GameViewF", "Checkpoint attuale: "+checkPointAttuale);
+                Log.d("GameViewF", "i: "+i);
+
                 // Disegna l'immagine solo se il checkpoint è stato raggiunto
                 int imageWidth = 100; // Larghezza dell'immagine
                 int imageHeight = 100; // Altezza dell'immagine
@@ -192,6 +197,7 @@ public class GameView extends View {
                 Bitmap playButtonLevel = BitmapFactory.decodeResource(getResources(), R.drawable.bottone_avvia_gioco);
                 Bitmap scaledImage = Bitmap.createScaledBitmap(playButtonLevel, imageWidth, imageHeight, true);
                 canvas.drawBitmap(scaledImage, xBottone, yBottone, null);
+                Log.d("GameViewF", "Bottone disegnato");
             }
 
         }
@@ -208,32 +214,58 @@ public class GameView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            float touchX = event.getX();
-            float touchY = event.getY();
+            //se il personaggio è in movimento non è possibile toccare i checkpoint
+            if(!personaggioInMovimento) {
+                float touchX = event.getX();
+                float touchY = event.getY();
 
-            // Controlla se il tocco è avvenuto su un checkpoint
-            for (int i = 0; i < checkpointXPositions.length; i++) {
-                if (touchX >= checkpointXPositions[i] && touchX <= checkpointXPositions[i] + checkpointWidth
-                        && touchY >= checkpointYPositions[i] && touchY <= checkpointYPositions[i] + checkpointHeight) {
-                    if(i == checkPointAttuale + 1 || i == checkPointAttuale - 1) {
-                        checkPointAttuale = i;
-                        // Esegui un'azione quando viene toccato un checkpoint
-                        ObjectAnimator animX = ObjectAnimator.ofFloat(this, "personaggioX", xPersonaggio, checkpointXPositions[i]);
-                        ObjectAnimator animY = ObjectAnimator.ofFloat(this, "personaggioY", yPersonaggio, checkpointYPositions[i]);
-                        AnimatorSet animSetXY = new AnimatorSet();
-                        animSetXY.playTogether(animX, animY);
-                        animSetXY.setDuration(1000); // Imposta la durata dell'animazione in millisecondi (1 secondo)
-                        personaggioInMovimento = true;
-                        mInizioAnimazione = SystemClock.uptimeMillis();
-                        final Message goAheadMessage = mHandler.obtainMessage(DISEGNA_BOTTONE);
-                        mHandler.sendMessageAtTime(goAheadMessage, mInizioAnimazione + DURATA_ANIMAZIONE);
-                        animSetXY.start();
-                        break;
-                    }
-                } else if (touchX >= xBottone && touchX <= xBottone + 170
-                        && touchY >= yBottone && touchY <= yBottone + 170) {
-                    if(!scheda.getEsercizi().get(checkPointAttuale).get(1).equals("completato")){
-                        giocoActivity.avviaEsercizio(scheda.getEsercizi().get(checkPointAttuale));
+                // Controlla se il tocco è avvenuto su un checkpoint
+                for (int i = 0; i < checkpointXPositions.length; i++) {
+                    if (touchX >= checkpointXPositions[i] && touchX <= checkpointXPositions[i] + checkpointWidth
+                            && touchY >= checkpointYPositions[i] && touchY <= checkpointYPositions[i] + checkpointHeight) {
+                        if(i == checkPointAttuale -1 ) {
+                            checkPointAttuale = i;
+                            // Esegui un'azione quando viene toccato un checkpoint
+                            ObjectAnimator animX = ObjectAnimator.ofFloat(this, "personaggioX", xPersonaggio, checkpointXPositions[i]);
+                            ObjectAnimator animY = ObjectAnimator.ofFloat(this, "personaggioY", yPersonaggio, checkpointYPositions[i]);
+                            AnimatorSet animSetXY = new AnimatorSet();
+                            animSetXY.playTogether(animX, animY);
+                            animSetXY.setDuration(1000); // Imposta la durata dell'animazione in millisecondi (1 secondo)
+                            personaggioInMovimento = true;
+                            mInizioAnimazione = SystemClock.uptimeMillis();
+                            final Message goAheadMessage = mHandler.obtainMessage(DISEGNA_BOTTONE);
+                            mHandler.sendMessageAtTime(goAheadMessage, mInizioAnimazione + DURATA_ANIMAZIONE);
+                            animSetXY.start();
+                            break;
+                        }
+
+                        if(i == (checkPointAttuale + 1) && giocoActivity.scheda.getEsercizi().get(checkPointAttuale).get(1).equals("completato")){
+                                checkPointAttuale = i;
+                                // Esegui un'azione quando viene toccato un checkpoint
+                                ObjectAnimator animX = ObjectAnimator.ofFloat(this, "personaggioX", xPersonaggio, checkpointXPositions[i]);
+                                ObjectAnimator animY = ObjectAnimator.ofFloat(this, "personaggioY", yPersonaggio, checkpointYPositions[i]);
+                                AnimatorSet animSetXY = new AnimatorSet();
+                                animSetXY.playTogether(animX, animY);
+                                animSetXY.setDuration(1000); // Imposta la durata dell'animazione in millisecondi (1 secondo)
+                                personaggioInMovimento = true;
+                                mInizioAnimazione = SystemClock.uptimeMillis();
+                                final Message goAheadMessage = mHandler.obtainMessage(DISEGNA_BOTTONE);
+                                mHandler.sendMessageAtTime(goAheadMessage, mInizioAnimazione + DURATA_ANIMAZIONE);
+                                animSetXY.start();
+                                break;
+                        }else {
+                            Log.d("GameViewF", "Checkpoint attuale: "+checkPointAttuale);
+                            Log.d("GameViewF", "Checkpoint precedente: "+(checkPointAttuale-1));
+                            Log.d("GameViewF", "Esercizio completato precedente: "+scheda.getEsercizi().get(checkPointAttuale).get(1));
+                            Toasty.error(getContext(), "Devi completare l'esercizio per passare al checkpoint successivo", Toasty.LENGTH_SHORT).show();
+                        }
+                    } else if (touchX >= xBottone && touchX <= xBottone + 170
+                            && touchY >= yBottone && touchY <= yBottone + 170) {
+                        if(!scheda.getEsercizi().get(checkPointAttuale).get(1).equals("completato")){
+                            Log.d("GameViewAvvioLivello", "Livello numero: "+checkPointAttuale+"avviato");
+                            giocoActivity.avviaEsercizio(scheda.getEsercizi().get(checkPointAttuale));
+                            break;
+                        }
                     }
                 }
             }

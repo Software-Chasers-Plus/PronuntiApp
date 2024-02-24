@@ -25,7 +25,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="180dp"
                         android:layout_gravity="bottom"
                         android:background="@drawable/game_wallpaper">
 
@@ -45,26 +45,35 @@
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- Aggiungi qui la tua CardView e altre viste -->
-
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nested_scroll_view"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_marginTop="185dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressIndicator_dettaglio_scheda"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:indeterminate="true"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_esercizi_scheda"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
-            </androidx.core.widget.NestedScrollView>
+                    android:layout_height="match_parent" />
+            </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </FrameLayout>

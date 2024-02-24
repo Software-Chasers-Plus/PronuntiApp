@@ -36,6 +36,12 @@
         tools:layout="@layout/fragment_info_paziente" />
 
     <fragment
+        android:id="@+id/navigation_dettaglio_scheda_logopedista"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.info.dettaglioScheda.DettaglioSchedaFragment"
+        android:label="@string/dettaglio_scheda"
+        tools:layout="@layout/fragment_dettaglio_scheda" />
+
+    <fragment
         android:id="@+id/navigation_aggiungi_paziente"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.aggiungi.AggiungiPazienteFragment"
         android:label="@string/add_patient"

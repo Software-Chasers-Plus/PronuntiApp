@@ -24,7 +24,6 @@ public class GiocoFragment extends Fragment {
             Log.d("GiocoFragment", "Scheda: " + scheda.getNome() + " caricata");
         }
     }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
