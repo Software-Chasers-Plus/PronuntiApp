@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
@@ -39,6 +41,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +61,8 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
     boolean mStartRecording = true;
     boolean mStartPlaying = true;
+    boolean isRecording = false;
+    boolean isPlaying = false;
 
     Uri imageUri;
     Uri audioUri1;
@@ -79,7 +85,14 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
     String descrizione_immagine;
 
+    String nome_esercizio;
+
     private ImageView imageView;
+
+    private static int FILE_DA_CARICARE_NELLO_STORAGE = 4;
+    private static int FILE_CARICATO_NELLO_STORAGE = 0;
+    private static final int FETCH_TERMINATO = 1;
+    private ProgressDialog dialogCaricamentoEsercizio;
 
     @Nullable
     @Override
@@ -309,7 +322,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             final boolean[] esito = {true};
 
             // Ottieni il nome dell'esercizio
-            String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
+            nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
 
             if(nome_esercizio.isEmpty()) {
                 nome_esercizio_textView.setError("Il nome dell'esercizio è obbligatorio");
@@ -330,6 +343,26 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             path_audio2 = "esercizio1/" + nome_esercizio + "_audio2.mp3";
             path_audio3 = "esercizio1/" + nome_esercizio + "_audio3.mp3";
 
+            //modifica angelo
+            ArrayList<String> pathFile = new ArrayList<>();
+            pathFile.add(path_img);
+            pathFile.add(path_audio1);
+            pathFile.add(path_audio2);
+            pathFile.add(path_audio3);
+            ArrayList<Uri> uriFile = new ArrayList<>();
+            uriFile.add(imageUri);
+            uriFile.add(audioUri1);
+            uriFile.add(audioUri2);
+            uriFile.add(audioUri3);
+            FILE_CARICATO_NELLO_STORAGE = 0;
+            FILE_DA_CARICARE_NELLO_STORAGE = 4;
+            dialogCaricamentoEsercizio = new ProgressDialog(getContext());
+            dialogCaricamentoEsercizio.setMessage("Caricamento in corso...");
+            dialogCaricamentoEsercizio.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
+            dialogCaricamentoEsercizio.show();
+            caricaFileSulloStorage(pathFile, uriFile);
+
+            /*
             // Carica l'immagine su Firebase Storage
             Log.d("EsercizioDenominazioneImmagine", imageUri.toString() + " " + path_img);
             uploadFileToFirebaseStorage(imageUri, path_img, (success, id_img) -> {
@@ -428,6 +461,8 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                 // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
                 Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
             }
+
+             */
         });
 
     }
@@ -560,23 +595,12 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         // Crea un riferimento al file su Firebase Storage
         StorageReference fileRef = storageRef.child(path);
 
-        ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Caricamento in corso...");
-        progressDialog.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
-        progressDialog.show();
-
         // Carica il file su Firebase Storage
         if(fileUri == null) {
-            progressDialog.dismiss();
             callback.onUploadComplete(true, null);
             return;
         }
         fileRef.putFile(fileUri)
-                .addOnProgressListener(snapshot -> {
-                    // Aggiorna la percentuale di completamento
-                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                    progressDialog.setMessage("Caricamento in corso... " + (int) progress + "%");
-                })
                 .addOnSuccessListener(taskSnapshot -> {
                     // Ottieni l'URI del file caricato
                     fileRef.getDownloadUrl()
@@ -584,20 +608,17 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                                 // Ottieni l'URI del file caricato
                                 String downloadUri = uri.toString();
                                 Log.d("EsercizioDenominazioneImmagine", "File caricato con successo: " + downloadUri);
-                                progressDialog.dismiss();
                                 callback.onUploadComplete(true, downloadUri); // Notifica il chiamante che il caricamento è completato con successo
                             })
                             .addOnFailureListener(e -> {
                                 // Gestisci l'errore
                                 Log.e("EsercizioDenominazioneImmagine", "Errore nel caricare il file: " + e.getMessage());
-                                progressDialog.dismiss();
                                 callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                             });
                 })
                 .addOnFailureListener(e -> {
                     // Gestisci l'errore
                     Log.e("EsercizioDenominazioneImmagine", "Errore nel caricare il file: " + e.getMessage());
-                    progressDialog.dismiss();
                     callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                 });
     }
@@ -623,5 +644,76 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
         mStartRecording = !mStartRecording;
 
         return audioUri;
+    }
+
+
+    private void caricaFileSulloStorage(ArrayList<String> pathFile, ArrayList<Uri> uriFile){
+        uploadFileToFirebaseStorage(uriFile.get(FILE_CARICATO_NELLO_STORAGE), pathFile.get(FILE_CARICATO_NELLO_STORAGE), (success, id_audio1) -> {
+            double progress = (100.0 * FILE_CARICATO_NELLO_STORAGE) / FILE_CARICATO_NELLO_STORAGE;
+            dialogCaricamentoEsercizio.setMessage("Caricamento in corso... " + (int) progress + "%");
+            if (success) {
+                ID_audio1 = id_audio1;
+
+                // Se l'ID dell'audio 1 è nullo, imposta il percorso su null
+                if (ID_audio1 == null) {
+                    pathFile.add(FILE_CARICATO_NELLO_STORAGE, "null");
+                }
+
+                FILE_CARICATO_NELLO_STORAGE++;
+            }else {
+                FILE_CARICATO_NELLO_STORAGE++;
+                pathFile.add(FILE_CARICATO_NELLO_STORAGE, "null");
+            }
+
+            if(FILE_CARICATO_NELLO_STORAGE == FILE_DA_CARICARE_NELLO_STORAGE){
+                dialogCaricamentoEsercizio.dismiss();
+                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
+                Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
+                // Creazione di una raccolta su firebase con i dati dell'esercizio
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+                String userId = null;
+                if (currentUser != null) {
+                    userId = currentUser.getUid();
+                    Log.d("EsercizioDenominazioneImmagine", "ID dell'utente attualmente loggato: " + userId);
+                } else {
+                    Log.d("EsercizioDenominazioneImmagine", "Nessun utente attualmente loggato");
+                }
+
+                // Crea un oggetto Map per contenere i dati da inserire nel documento
+                Map<String, Object> data = new HashMap<>();
+                data.put("tipologia", 1);
+                data.put("logopedista", userId);
+                data.put("nome", nome_esercizio);
+                data.put("immagine", pathFile.get(0));
+                data.put("descrizioneImmagine", descrizione_immagine);
+                data.put("audio1", pathFile.get(1));
+                data.put("audio2", pathFile.get(2));
+                data.put("audio3", pathFile.get(3));
+
+                // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
+                db.collection("esercizi")
+                        .add(data)
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d("EsercizioDenominazioneImmagine", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+                            Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
+                            // Navigazione alla lista degli esercizi
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                            navController.navigate(R.id.navigation_esercizi);
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w("EsercizioDenominazioneImmagine", "Errore durante l'aggiunta del documento", e);
+                            Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
+                            // Navigazione alla lista degli esercizi
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                            navController.navigate(R.id.navigation_esercizi);
+                        });
+            }else{
+                caricaFileSulloStorage(pathFile, uriFile);
+            }
+        });
     }
 }

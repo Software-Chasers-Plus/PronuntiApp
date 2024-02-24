@@ -33,7 +33,7 @@ import it.uniba.dib.sms232419.pronuntiapp.ui.home.HomeViewModel;
 
 public class DettaglioSchedaFragment extends Fragment {
 
-    private static final String TAG = "DettaglioSchedaFragment";
+    private static final String TAG = "DettaglioSchedaFragmentF";
     private FragmentDettaglioSchedaBinding binding;
     private List<Esercizio> esercizi;
     private List<String> dateEsercizi;
@@ -87,17 +87,21 @@ public class DettaglioSchedaFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
+                            Log.d(TAG, "Esercizio scaricato");
+                            Log.d(TAG, "Numero esercizi scaricati: "+ NUMERO_ESERCIZI_SCARICATI);
+                            Log.d(TAG, "Numero esercizi: "+ NUMERO_ESERCIZI);
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                 Map<String, Object> esercizio = document.getData();
                                 Esercizio es = new Esercizio(document.getId(),
                                         esercizio.get("nome").toString(),
                                         esercizio.get("logopedista").toString(),
                                         esercizio.get("tipologia").toString());
                                 esercizi.add(es);
+                                Log.d(TAG, "Esercizio aggiunto "+ es.getNome());
                                 NUMERO_ESERCIZI_SCARICATI++;
                                 if(NUMERO_ESERCIZI_SCARICATI == NUMERO_ESERCIZI){
+                                    Log.d(TAG, "Tutti gli esercizi scaricati");
                                     Message msg = mHandler.obtainMessage(FETCH_TERMINATO);
                                     mHandler.sendMessage(msg);
                                 }
@@ -143,7 +147,7 @@ public class DettaglioSchedaFragment extends Fragment {
         // Creo l'adapter per la recycler view
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-
+        Log.d(TAG, "Mostro esercizi");
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setAdapter(new EserciziDettaglioSchedaAdapter(getActivity().getApplicationContext(), esercizi, dateEsercizi, completamentoEsercizi));
     }
