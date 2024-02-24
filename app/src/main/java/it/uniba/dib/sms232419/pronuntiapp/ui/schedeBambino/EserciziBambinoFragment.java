@@ -334,27 +334,20 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
         for (int i = 0; i < checkedPositions.size(); i++) {
             int checkedPosition = checkedPositions.get(i);
-            if (checkedPosition != RecyclerView.NO_POSITION && checkedPosition < eserciziSelezionati.size()) {
+            Log.d(TAG, "Posizione selezionata: " + checkedPosition);
+            if (checkedPosition != RecyclerView.NO_POSITION) {
                 ArrayList<String> eserciziSchedaCompleti = new ArrayList<>();
 
-                // Get the ViewHolder for the checked position
-                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(checkedPosition);
-                if (viewHolder != null) {
-                    TextInputLayout textInputLayoutGiornoEsercizio = viewHolder.itemView.findViewById(R.id.giorno_esercizio_layout);
-                    String dataEsercizio = esercizioDataSelezionata.get(checkedPosition);
-                    if (dataEsercizio == null || dataEsercizio.isEmpty()) {
-                        textInputLayoutGiornoEsercizio.setErrorIconDrawable(null);
-                        textInputLayoutGiornoEsercizio.setError("Inserisci una data");
-                        return;
-                    }
-                    eserciziSchedaCompleti.add(eserciziSelezionati.get(checkedPosition));
-                    eserciziSchedaCompleti.add("non completato");
-                    eserciziSchedaCompleti.add(dataEsercizio);
-                    data.put("esercizio" + i, eserciziSchedaCompleti);
-                } else {
-                    // Handle null ViewHolder or itemView
-                    Log.e(TAG, "ViewHolder or itemView is null for position: " + checkedPosition);
+                String dataEsercizio = esercizioDataSelezionata.get(checkedPosition);
+                if (dataEsercizio == null || dataEsercizio.isEmpty()) {
+                    Toasty.error(getContext(), "Inserisci una data per l'esercizio", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                eserciziSchedaCompleti.add(eserciziSelezionati.get(i));
+                eserciziSchedaCompleti.add("non completato");
+                eserciziSchedaCompleti.add(dataEsercizio);
+                Log.d(TAG, "Esercizi scheda completi: " + eserciziSchedaCompleti);
+                data.put("esercizio" + i, eserciziSchedaCompleti);
             } else {
                 // Handle invalid checked position
                 Log.e(TAG, "Invalid checked position: " + checkedPosition);
