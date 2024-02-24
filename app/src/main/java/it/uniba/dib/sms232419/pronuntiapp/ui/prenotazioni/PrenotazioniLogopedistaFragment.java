@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,10 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
     private RecyclerView recyclerView;
 
     private Button confermaButton;
+
+    TextView textViewNoBookings,textViewBookings;
+
+    private ClickPrenotazioniLogopedistaListener clickPrenotazioniLogopedistaListener;
     private Logopedista logopedista;
 
     FirebaseFirestore db;
@@ -54,6 +61,7 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
         super.onCreate(savedInstanceState);
         mainActivityLogopedista = (MainActivityLogopedista) getActivity();
         db = FirebaseFirestore.getInstance();
+        clickPrenotazioniLogopedistaListener=this;
 
 
                 // Creiamo un oggetto genitore con i dati dell'utente loggato
@@ -113,15 +121,62 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        textViewNoBookings = view.findViewById(R.id.no_prenotazioni_logopedista);
+        textViewBookings = view.findViewById(R.id.intestazione_prenotazioni_logopedista);
         confermaButton=view.findViewById(R.id.conferma_prenotazione_button);
         recyclerView = view.findViewById(R.id.prenotazioni_logopedista_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivityLogopedista.getApplicationContext()));
+        prenotazioni = new ArrayList<>();
 
 
+        db = FirebaseFirestore.getInstance();
+        db.collection("prenotazioni")
+                .whereEqualTo("logopedista", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-        // Ottieni gli ID degli avatar dai figli
-        recyclerView.setAdapter(new PrenotazioniLogopedistaAdapter(mainActivityLogopedista.getApplicationContext(), prenotazioni, db, this));
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> prenotazione = document.getData();
 
+
+                                if (prenotazione.get("logopedista") != null) {
+                                    prenotazioni.add(new Prenotazione(
+                                            document.getId(),
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                            prenotazione.get("genitore").toString(),
+                                            prenotazione.get("note").toString()
+                                    ));
+                                } else {
+                                    prenotazioni.add(new Prenotazione(
+                                            document.getId(),
+                                            prenotazione.get("data").toString(),
+                                            prenotazione.get("ora").toString(),
+                                            FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                                            "",
+                                            prenotazione.get("note").toString()
+                                    ));
+                                }
+                            }
+                            if(prenotazioni.isEmpty())
+                            {
+                                textViewNoBookings.setVisibility(View.VISIBLE);
+                                textViewBookings.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                textViewNoBookings.setVisibility(View.GONE);
+                                textViewBookings.setVisibility(View.VISIBLE);
+                            }
+                            Log.d("PrenotazioniLogopedistaFragment", "Prenotazioni:"+prenotazioni.size());
+                            recyclerView.setAdapter(new PrenotazioniLogopedistaAdapter(mainActivityLogopedista.getApplicationContext(), prenotazioni, db,clickPrenotazioniLogopedistaListener));
+                        }
+                    }
+                });
     }
 
 
@@ -172,6 +227,16 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
                     db.collection("prenotazioni").document(prenotazioni.get(position).getPrenotazioneId()).delete();
                     prenotazioni.remove(prenotazioni.get(position));
                     recyclerView.getAdapter().notifyDataSetChanged();
+                    if(prenotazioni.isEmpty())
+                    {
+                        textViewNoBookings.setVisibility(View.VISIBLE);
+                        textViewBookings.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        textViewNoBookings.setVisibility(View.GONE);
+                        textViewBookings.setVisibility(View.VISIBLE);
+                    }
                     dialogInterface.dismiss();
                 })
                 .setNegativeButton("No", (dialogInterface, which) -> {
@@ -183,6 +248,8 @@ public class PrenotazioniLogopedistaFragment extends Fragment implements ClickPr
 
         // Show Dialog
         mDialog.show();
+
+
 
     }
 
