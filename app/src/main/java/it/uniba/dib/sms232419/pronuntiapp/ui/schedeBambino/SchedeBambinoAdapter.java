@@ -59,6 +59,11 @@ public class SchedeBambinoAdapter extends RecyclerView.Adapter<SchedeBambinoHold
                         if (document.exists()) {
                             holder.avviaGiocoButton.setVisibility(View.VISIBLE);
                             holder.eliminaButton.setVisibility(View.GONE);
+
+                            // Verifica se è completata e nasconde i bottoni
+                            if(holder.textViewStatoScheda.getText().toString().equals("completata")){
+                                holder.avviaGiocoButton.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });

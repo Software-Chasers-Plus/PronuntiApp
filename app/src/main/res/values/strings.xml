@@ -148,7 +148,7 @@
     <string name="calendario">calendario</string>
     <string name="nome_scheda">Nome scheda</string>
     <string name="genitore">Genitore</string>
-    <string name="schede_del_bambino_da_completare">Schede del bambino da completare:</string>
+    <string name="schede_del_bambino_da_completare">Schede da completare:</string>
     <string name="permesso_negato">Permesso negato</string>
     <string name="per_favore_fornisci_il_permesso_per_accedere_alla_fotocamera_del_dispositivo">Per favore, fornisci il permesso per accedere alla fotocamera del dispositivo.</string>
     <string name="per_favore_fornisci_il_permesso_per_accedere_alla_galleria">Per favore, fornisci il permesso per accedere alla galleria.</string>
@@ -217,4 +217,6 @@
     <string name="dettaglio_scheda">Dettaglio Scheda</string>
     <string name="dataEserciziGioco">Per ricevere punti bonus completare l\'esercizio entro il:</string>
     <string name="no_bookings">Non ci sono prenotazioni!</string>
+    <string name="schede_del_bambino_completate">"Schede completate:"</string>
+    <string name="non_sono_state_completate_schede">Non sono state completate schede</string>
 </resources>

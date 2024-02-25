@@ -48,8 +48,8 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
     String TAG = "InfoFiglioFragment";
     private Figlio figlio;
     private FirebaseFirestore db;
-    private ArrayList<Scheda> schedaList;
-    private RecyclerView recyclerView;
+    private ArrayList<Scheda> schedeNonCompletateList, schedeCompletateList;
+    private RecyclerView recyclerViewSchedeNonCompletate, recyclerViewSchedeCompletate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +78,13 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.schede_recycler_view_paziente);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        // Inizializzazione della recycler view per le schede non completate
+        recyclerViewSchedeNonCompletate = view.findViewById(R.id.schede_recycler_view_paziente);
+        recyclerViewSchedeNonCompletate.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        // Inizializzazione della recycler view per le schede completate
+        recyclerViewSchedeCompletate = view.findViewById(R.id.schede_completate_recycler_view_paziente);
+        recyclerViewSchedeCompletate.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         TextView codiceFiscaleFiglio = null;
         if (figlio != null) {
@@ -148,6 +153,7 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
         }
 
         TextView schedeNonCreate = view.findViewById(R.id.text_dashboard);
+        TextView schedeCompletateNonCreate = view.findViewById(R.id.text_completate_dashboard);
 
 
         //Recupero delle schede e aggiornamento della recycler view
@@ -168,22 +174,36 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
                                             .get()
                                             .addOnCompleteListener(task2 -> {
                                                 if (task2.isSuccessful()) {
-                                                    schedaList = new ArrayList<>();
+                                                    schedeNonCompletateList = new ArrayList<>();
+                                                    schedeCompletateList = new ArrayList<>();
 
                                                     for (QueryDocumentSnapshot document2 : task2.getResult()) {
                                                         Log.d(TAG, "Scheda prima della conversione: " + document2.getString("nome"));
-                                                        schedaList.add(FirebaseHelper.creazioneScheda(document2));
+                                                        Scheda schedaHolder = FirebaseHelper.creazioneScheda(document2);
+                                                        if(schedaHolder.checkIsCompletata()){
+                                                            schedeCompletateList.add(schedaHolder);
+                                                        } else {
+                                                            schedeNonCompletateList.add(schedaHolder);
+                                                        }
                                                     }
 
-                                                    Log.d(TAG, "Schede disponibili: " + schedaList.size());
+                                                    Log.d(TAG, "Schede disponibili: " + schedeNonCompletateList.size());
 
-                                                    if (!schedaList.isEmpty()) {
-                                                        Log.d(TAG, "Scheda dopo la conversione: " + schedaList.get(0).getNome());
-                                                        recyclerView.setAdapter(new SchedeBambinoAdapter(requireContext(), schedaList, InfoFiglioFragment.this));
-                                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                                    if (!schedeNonCompletateList.isEmpty()) {
+                                                        Log.d(TAG, "Scheda dopo la conversione: " + schedeNonCompletateList.get(0).getNome());
+                                                        recyclerViewSchedeNonCompletate.setAdapter(new SchedeBambinoAdapter(requireContext(), schedeNonCompletateList, InfoFiglioFragment.this));
+                                                        recyclerViewSchedeNonCompletate.getAdapter().notifyDataSetChanged();
                                                     } else {
                                                         schedeNonCreate.setVisibility(View.VISIBLE);
                                                         Log.d(TAG, "Nessun scheda disponibile");
+                                                    }
+
+                                                    if (!schedeCompletateList.isEmpty()) {
+                                                        recyclerViewSchedeCompletate.setAdapter(new SchedeBambinoAdapter(requireContext(), schedeCompletateList, InfoFiglioFragment.this));
+                                                        recyclerViewSchedeCompletate.getAdapter().notifyDataSetChanged();
+                                                    }else {
+                                                        schedeCompletateNonCreate.setVisibility(View.VISIBLE);
+                                                        Log.d(TAG, "Nessuna scheda completata");
                                                     }
 
                                                 } else {
@@ -273,21 +293,28 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, boolean completata) {
         //TODO: implementare la visualizzazione dei dettagli scheda
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("scheda", schedaList.get(position));
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-        navController.navigate(R.id.navigation_dettaglio_scheda, bundle);
+        if (completata) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", schedeCompletateList.get(position));
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+            navController.navigate(R.id.navigation_dettaglio_scheda, bundle);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", schedeNonCompletateList.get(position));
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+            navController.navigate(R.id.navigation_dettaglio_scheda, bundle);
+        }
     }
 
     @Override
-    public void onEliminaClick(int position) {
+    public void onEliminaClick(int position, boolean completata) {
         //Non e' necessario implementarlo poiche' non e' possibile eliminare le schede da parte del genitore
     }
 
     @Override
-    public void onAvviaGiocoClick(int position) {
+    public void onAvviaGiocoClick(int position, boolean completata) {
         // Creo dialog di conferma
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Conferma avvio gioco");
@@ -298,11 +325,11 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
         // Aggiunta dei pulsanti
         builder.setPositiveButton("Si", (dialog, which) -> {
             Bundle bundle = new Bundle();
-            bundle.putParcelable("scheda", schedaList.get(position));
+            bundle.putParcelable("scheda", schedeNonCompletateList.get(position));
             bundle.putParcelable("figlio", figlio);
             Intent intent = new Intent(getActivity(), GiocoActivity.class);
             intent.putExtras(bundle);
-            Log.d(TAG, "Avvio gioco con la scheda: " + schedaList.get(position).getNome());
+            Log.d(TAG, "Avvio gioco con la scheda: " + schedeNonCompletateList.get(position).getNome());
             startActivity(intent);
         });
 

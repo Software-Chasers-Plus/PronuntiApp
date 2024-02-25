@@ -14,6 +14,7 @@ public class SchedeBambinoHolderView extends RecyclerView.ViewHolder implements 
     TextView textViewNomeScheda, textViewNumeroEsercizi, textViewStatoScheda, textViewEserciziCompletati;
     MaterialButton eliminaButton, avviaGiocoButton;
     MaterialCardView cardView;
+    Boolean completata;
 
     private final ClickSchedeBambinoListener clickSchedeBambinoListener;
 
@@ -33,15 +34,21 @@ public class SchedeBambinoHolderView extends RecyclerView.ViewHolder implements 
         avviaGiocoButton = itemView.findViewById(R.id.avvia_gioco_button);
         cardView = itemView.findViewById(R.id.cardView_scheda);
 
+        if(textViewStatoScheda.getText().toString().equals("completata")){
+            completata = true;
+        } else {
+            completata = false;
+        }
+
         eliminaButton.setOnClickListener(v -> {
             if(clickSchedeBambinoListener != null){
-                clickSchedeBambinoListener.onEliminaClick(getAdapterPosition());
+                clickSchedeBambinoListener.onEliminaClick(getAdapterPosition(), completata);
             }
         });
 
         avviaGiocoButton.setOnClickListener(v -> {
             if(clickSchedeBambinoListener != null){
-                clickSchedeBambinoListener.onAvviaGiocoClick(getAdapterPosition());
+                clickSchedeBambinoListener.onAvviaGiocoClick(getAdapterPosition(), completata);
             }
         });
     }
@@ -49,10 +56,15 @@ public class SchedeBambinoHolderView extends RecyclerView.ViewHolder implements 
     // Metodo chiamato quando un elemento della RecyclerView viene cliccato
     @Override
     public void onClick(View view) {
+        if(textViewStatoScheda.getText().toString().equals("completata")){
+            completata = true;
+        } else {
+            completata = false;
+        }
         // Verifica se il ClickListener è stato assegnato
         if (clickSchedeBambinoListener != null) {
             // Passa la posizione dell'elemento cliccato al ClickListener
-            clickSchedeBambinoListener.onItemClick(getAdapterPosition());
+            clickSchedeBambinoListener.onItemClick(getAdapterPosition(), completata);
         }
     }
 }

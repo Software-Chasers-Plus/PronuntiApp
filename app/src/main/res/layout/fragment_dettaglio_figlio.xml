@@ -242,10 +242,48 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/label_schede_paziente"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:maxHeight="690dp" />
+
+                        <TextView
+                            android:id="@+id/label_schede_completate_paziente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="@string/schede_del_bambino_completate"
+                            android:textSize="20dp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/text_completate_dashboard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:visibility="gone"
+                            android:text="@string/non_sono_state_completate_schede"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/schede_completate_recycler_view_paziente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:maxHeight="690dp" />
+                            android:maxHeight="690dp"
+                            android:layout_marginBottom="10dp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.core.widget.NestedScrollView>

@@ -5,9 +5,9 @@ import android.widget.EditText;
 import com.google.android.material.card.MaterialCardView;
 
 public interface ClickSchedeBambinoListener {
-    void onItemClick(int position);
+    void onItemClick(int position, boolean completata);
 
-    void onEliminaClick(int position);
+    void onEliminaClick(int position, boolean completata);
 
-    void onAvviaGiocoClick(int position);
+    void onAvviaGiocoClick(int position, boolean completata);
 }

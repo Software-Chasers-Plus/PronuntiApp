@@ -45,13 +45,13 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
     //in questo caso rappresenta il paziente e non il figlio
     private Figlio paziente;
 
-    private ArrayList<Scheda> schedaList;
+    private ArrayList<Scheda> schedeNonCompletateList, schedeCompletateList;
 
     private static final String TAG = "InfoPazienteFragment";
 
     String pazienteId;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewSchedeNonCompletate, recyclerViewSchedeCompletate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +78,13 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.schede_recycler_view_paziente);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        //Inizializzazione recyclerView per le schede non completate
+        recyclerViewSchedeNonCompletate = view.findViewById(R.id.schede_recycler_view_paziente);
+        recyclerViewSchedeNonCompletate.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        //Inizializzazione recyclerView per le schede completate
+        recyclerViewSchedeCompletate = view.findViewById(R.id.schede_completate_recycler_view_paziente);
+        recyclerViewSchedeCompletate.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         TextView nomepaziente = view.findViewById(R.id.nome_paziente);
         nomepaziente.setText(paziente.getNome());
@@ -93,9 +98,8 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
         TextView dataNascitapaziente = view.findViewById(R.id.data_nascita_paziente);
         dataNascitapaziente.setText(paziente.getDataNascita());
 
-
-
         TextView schedeNonCreate = view.findViewById(R.id.text_dashboard);
+        TextView schedeCompletateNonCreate = view.findViewById(R.id.text_completate_dashboard);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -147,22 +151,36 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
                                     .get()
                                     .addOnCompleteListener(task2 -> {
                                         if (task2.isSuccessful()) {
-                                            schedaList = new ArrayList<>();
+                                            schedeNonCompletateList = new ArrayList<>();
+                                            schedeCompletateList = new ArrayList<>();
 
                                             for (QueryDocumentSnapshot document2 : task2.getResult()) {
                                                 Log.d(TAG, "Scheda prima della conversione: " + document2.getString("nome"));
-                                                schedaList.add(FirebaseHelper.creazioneScheda(document2));
+                                                Scheda schedaHolder = FirebaseHelper.creazioneScheda(document2);
+                                                if(schedaHolder.checkIsCompletata()){
+                                                    schedeCompletateList.add(schedaHolder);
+                                                } else {
+                                                    schedeNonCompletateList.add(schedaHolder);
+                                                }
                                             }
 
-                                            Log.d(TAG, "Schede disponibili: " + schedaList.size());
+                                            Log.d(TAG, "Schede disponibili: " + schedeNonCompletateList.size());
 
-                                            if (!schedaList.isEmpty()) {
-                                                Log.d(TAG, "Scheda dopo la conversione: " + schedaList.get(0).getNome());
-                                                recyclerView.setAdapter(new SchedeBambinoAdapter(requireContext(), schedaList, InfoPazienteFragment.this));
-                                                recyclerView.getAdapter().notifyDataSetChanged();
+                                            if (!schedeNonCompletateList.isEmpty()) {
+                                                Log.d(TAG, "Scheda dopo la conversione: " + schedeNonCompletateList.get(0).getNome());
+                                                recyclerViewSchedeNonCompletate.setAdapter(new SchedeBambinoAdapter(requireContext(), schedeNonCompletateList, InfoPazienteFragment.this));
+                                                recyclerViewSchedeNonCompletate.getAdapter().notifyDataSetChanged();
                                             } else {
                                                 schedeNonCreate.setVisibility(View.VISIBLE);
                                                 Log.d(TAG, "Nessun scheda disponibile");
+                                            }
+
+                                            if (!schedeCompletateList.isEmpty()) {
+                                                recyclerViewSchedeCompletate.setAdapter(new SchedeBambinoAdapter(requireContext(), schedeCompletateList, InfoPazienteFragment.this));
+                                                recyclerViewSchedeCompletate.getAdapter().notifyDataSetChanged();
+                                            }else {
+                                                schedeCompletateNonCreate.setVisibility(View.VISIBLE);
+                                                Log.d(TAG, "Nessuna scheda completata");
                                             }
 
                                         } else {
@@ -189,31 +207,56 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, boolean completata) {
         //TODO: implementarte il dettaglio della scheda
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("scheda", schedaList.get(position));
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-        navController.navigate(R.id.navigation_dettaglio_scheda_logopedista, bundle);
+        if(completata){
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", schedeCompletateList.get(position));
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+            navController.navigate(R.id.navigation_dettaglio_scheda_logopedista, bundle);
+        }else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("scheda", schedeNonCompletateList.get(position));
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+            navController.navigate(R.id.navigation_dettaglio_scheda_logopedista, bundle);
+        }
     }
 
     @Override
-    public void onEliminaClick(int position) {
+    public void onEliminaClick(int position, boolean completata) {
+        final Scheda[] scheda = {null};
+
         ConfirmationDialog.showConfirmationDialog(getContext(), "Sei sicuro di voler eliminare questo elemento?", new ConfirmationDialog.ConfirmationListener() {
             @Override
             public void onConfirm() {
-                Scheda scheda = schedaList.get(position);
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("schede")
-                                .whereEqualTo("nomeScheda", scheda.getNome())
-                                .whereEqualTo("logopedista", scheda.getLogopedista())
-                        .get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            db.collection("schede").document(document.getId()).delete();
-                    }
-                        });
-                schedaList.remove(position);
-                recyclerView.getAdapter().notifyDataSetChanged();
+                if (completata) {
+                    scheda[0] = schedeCompletateList.get(position);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("schede")
+                            .whereEqualTo("nomeScheda", scheda[0].getNome())
+                            .whereEqualTo("logopedista", scheda[0].getLogopedista())
+                            .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                    db.collection("schede").document(document.getId()).delete();
+                                }
+                            });
+                    schedeCompletateList.remove(position);
+                    recyclerViewSchedeCompletate.getAdapter().notifyDataSetChanged();
+                }
+                else{
+                    scheda[0] = schedeNonCompletateList.get(position);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("schede")
+                            .whereEqualTo("nomeScheda", scheda[0].getNome())
+                            .whereEqualTo("logopedista", scheda[0].getLogopedista())
+                            .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                    db.collection("schede").document(document.getId()).delete();
+                                }
+                            });
+                    schedeNonCompletateList.remove(position);
+                    recyclerViewSchedeNonCompletate.getAdapter().notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -225,7 +268,7 @@ public class InfoPazienteFragment extends Fragment implements ClickSchedeBambino
     }
 
     @Override
-    public void onAvviaGiocoClick(int position) {
+    public void onAvviaGiocoClick(int position, boolean completata) {
         //Non è necessario implementaro poichè il logopedista non può avviare il gioco
     }
 }
