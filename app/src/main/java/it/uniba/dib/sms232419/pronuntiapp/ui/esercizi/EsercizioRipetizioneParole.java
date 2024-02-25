@@ -55,6 +55,8 @@ public class EsercizioRipetizioneParole extends Fragment {
 
     boolean mStartRecording = true;
     boolean mStartPlaying = true;
+    String nome_esercizio;
+    String path_audio;
 
     @Nullable
     @Override
@@ -84,7 +86,7 @@ public class EsercizioRipetizioneParole extends Fragment {
             if (!hasFocus) {
                 // Quando l'EditText perde il focus, controlla se è vuoto e ripristina il suggerimento
                 if (editText.getText().toString().isEmpty()) {
-                    editText.setHint("@string/inserisci_la_sequenza_di_parole_contenuta_nell_audio"); // Imposta il suggerimento desiderato
+                    editText.setHint(R.string.inserisci_la_sequenza_di_parole_contenuta_nell_audio); // Imposta il suggerimento desiderato
                 }
             } else {
                 // Quando l'EditText ottiene il focus, rimuovi il suggerimento
@@ -92,7 +94,7 @@ public class EsercizioRipetizioneParole extends Fragment {
             }
         });
 
-        //Gestione bottone audio 1
+        //Gestione bottone audio
         upload_audio_button.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("audio/*"); // Specifica che stai cercando file audio
@@ -142,7 +144,7 @@ public class EsercizioRipetizioneParole extends Fragment {
             final boolean[] esito = {true};
 
             // Ottieni il nome dell'esercizio
-            String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
+            nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
             if(nome_esercizio.isEmpty()) {
                 nome_esercizio_textView.setError("Il nome dell'esercizio è obbligatorio");
                 return;
@@ -156,7 +158,7 @@ public class EsercizioRipetizioneParole extends Fragment {
             }
 
             // Creazione dei percorsi per Firebase Storage
-            String path_audio = "esercizio2/" + nome_esercizio + trascrizione_audio + "_audio.mp3";
+            path_audio = "esercizio2/" + nome_esercizio + trascrizione_audio + "_audio.mp3";
 
             // Carica l'audio su Firebase Storage
             if(audioUri == null) {
@@ -166,54 +168,10 @@ public class EsercizioRipetizioneParole extends Fragment {
             uploadFileToFirebaseStorage(audioUri, path_audio, (success, id_audio) -> {
                 if (success) {
                     ID_audio = id_audio;
-                }else {
-                    esito[0] = false;
+                    creaRaccoltaFirebase();
                 }
             });
 
-            if(esito[0]) {
-                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                Toasty.success(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT, true).show();
-                // Creazione di una raccolta su firebase con i dati dell'esercizio
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
-                String userId = null;
-                if (currentUser != null) {
-                    userId = currentUser.getUid();
-                    Log.d("EsercizioRipetizioneParole", "ID dell'utente attualmente loggato: " + userId);
-                } else {
-                    Log.d("EsercizioRipetizioneParole", "Nessun utente attualmente loggato");
-                }
-
-                // Crea un oggetto Map per contenere i dati da inserire nel documento
-                Map<String, Object> data = new HashMap<>();
-                data.put("tipologia", 2);
-                data.put("logopedista", userId);
-                data.put("nome", nome_esercizio);
-                data.put("audio", path_audio);
-                data.put("trascrizione_audio", trascrizione_audio);
-
-                // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
-                db.collection("esercizi")
-                        .add(data)
-                        .addOnSuccessListener(documentReference -> {
-                            Log.d("EsercizioRipetizioneParole", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
-
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.w("EsercizioRipetizioneParole", "Errore durante l'aggiunta del documento", e);
-                        });
-
-                //Navigazione alla lista degli esercizi
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                navController.navigate(R.id.navigation_esercizi);
-            } else {
-                // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
-            }
         });
 
     }
@@ -345,5 +303,50 @@ public class EsercizioRipetizioneParole extends Fragment {
         Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
+    }
+
+    private void creaRaccoltaFirebase(){
+        // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
+        Toasty.success(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT, true).show();
+        // Creazione di una raccolta su firebase con i dati dell'esercizio
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        String userId = null;
+        if (currentUser != null) {
+            userId = currentUser.getUid();
+            Log.d("EsercizioRipetizioneParole", "ID dell'utente attualmente loggato: " + userId);
+        } else {
+            Log.d("EsercizioRipetizioneParole", "Nessun utente attualmente loggato");
+        }
+
+        // Crea un oggetto Map per contenere i dati da inserire nel documento
+        Map<String, Object> data = new HashMap<>();
+        data.put("tipologia", 2);
+        data.put("logopedista", userId);
+        data.put("nome", nome_esercizio);
+        data.put("audio", path_audio);
+        data.put("trascrizione_audio", trascrizione_audio);
+
+        // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
+        db.collection("esercizi")
+                .add(data)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("EsercizioRipetizioneParole", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+                    Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
+                    // Navigazione alla lista degli esercizi
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                    navController.navigate(R.id.navigation_esercizi);
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("EsercizioRipetizioneParole", "Errore durante l'aggiunta del documento", e);
+                    Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
+                    // Navigazione alla lista degli esercizi
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                    navController.navigate(R.id.navigation_esercizi);
+                });
     }
 }

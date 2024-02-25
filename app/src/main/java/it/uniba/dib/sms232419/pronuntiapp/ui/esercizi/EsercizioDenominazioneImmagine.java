@@ -176,7 +176,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
             if (!hasFocus) {
                 // Quando l'EditText perde il focus, controlla se è vuoto e ripristina il suggerimento
                 if (editText.getText().toString().isEmpty()) {
-                    editText.setHint("Contenuto dell'immagine"); // Imposta il suggerimento desiderato
+                    editText.setHint(R.string.contenuto_dell_immagine); // Imposta il suggerimento desiderato
                 }
             } else {
                 // Quando l'EditText ottiene il focus, rimuovi il suggerimento
@@ -318,8 +318,6 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
 
         // Gestione bottone conferma
         conferma_button.setOnClickListener(v -> {
-
-            final boolean[] esito = {true};
 
             // Ottieni il nome dell'esercizio
             nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
@@ -603,7 +601,7 @@ public class EsercizioDenominazioneImmagine extends Fragment implements Activity
                             Log.d("EsercizioDenominazioneImmagine", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
                             Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
                             // Navigazione alla lista degli esercizi
-                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                           NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
                             navController.navigate(R.id.navigation_esercizi);
                         })
                         .addOnFailureListener(e -> {

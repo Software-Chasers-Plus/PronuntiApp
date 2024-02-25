@@ -18,6 +18,8 @@ import it.uniba.dib.sms232419.pronuntiapp.databinding.ActivityMainLogopedistaBin
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Genitore;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
+import it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.CreazioneEsercizi;
+import it.uniba.dib.sms232419.pronuntiapp.ui.esercizi.EserciziFragment;
 
 public class MainActivityLogopedista extends AppCompatActivity{
 
@@ -76,6 +78,4 @@ public class MainActivityLogopedista extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_logopedista);
         return navController.navigateUp();
     }
-
-
 }

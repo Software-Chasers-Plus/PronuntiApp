@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +75,17 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
     boolean mStartPlaying = true;
 
     int riferimento_immagine_audio = 0;
+
+    String path_img1;
+    String path_img2;
+    String path_audio;
+
+    private static int FILE_DA_CARICARE_NELLO_STORAGE = 4;
+    private static int FILE_CARICATO_NELLO_STORAGE = 0;
+
+    private ProgressDialog dialogCaricamentoEsercizio;
+
+    String nome_esercizio;
 
     @Nullable
     @Override
@@ -193,7 +205,7 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
             final boolean[] esito = {true};
 
             // Ottieni il nome dell'esercizio
-            String nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
+            nome_esercizio = nome_esercizio_textView.getEditText().getText().toString();
             if(nome_esercizio.isEmpty()) {
                 nome_esercizio_textView.setError("Il nome dell'esercizio è obbligatorio");
                 return;
@@ -204,11 +216,42 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                 return;
             }
 
+            if (audioUri == null) {
+                Toasty.error(getContext(), "Seleziona un file audio", Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
 
             // Creazione dei percorsi per Firebase Storage
-            String path_img1 = "esercizio3/" + nome_esercizio +"immagine1"+ ".jpg";
-            String path_img2 = "esercizio3/" + nome_esercizio + "immagine2" + ".jpg";
-            String path_audio = "esercizio3/" + nome_esercizio + "_audio.mp3";
+            path_img1 = "esercizio3/" + nome_esercizio +"immagine1"+ ".jpg";
+            path_img2 = "esercizio3/" + nome_esercizio + "immagine2" + ".jpg";
+            path_audio = "esercizio3/" + nome_esercizio + "_audio.mp3";
+
+            //Array per contenere i path dei file da caricare nello storage
+            ArrayList<String> pathFile = new ArrayList<>();
+            pathFile.add(path_img1);
+            pathFile.add(path_img2);
+            pathFile.add(path_audio);
+
+            //Array per contenere gli uri dei file da caricare nello storage
+            ArrayList<Uri> uriFile = new ArrayList<>();
+            uriFile.add(image1Uri);
+            uriFile.add(image2Uri);
+            uriFile.add(audioUri);
+
+            //Costanti per il caricamento dei file nello storage
+            FILE_DA_CARICARE_NELLO_STORAGE = 3;
+            FILE_CARICATO_NELLO_STORAGE = 0;
+
+            dialogCaricamentoEsercizio = new ProgressDialog(getContext());
+            dialogCaricamentoEsercizio.setMessage("Caricamento in corso...");
+            dialogCaricamentoEsercizio.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
+            dialogCaricamentoEsercizio.show();
+
+            caricaFileSulloStorage(pathFile, uriFile);
+
+            /*
+
 
             // Carica l'immagine su Firebase Storage
             uploadFileToFirebaseStorage(image1Uri, path_img1, (success, id_img1) -> {
@@ -243,52 +286,7 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                 }
             });
 
-            if(esito[0]) {
-                // Creazione di una raccolta su firebase con i dati dell'esercizio
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
-                String userId = null;
-                if (currentUser != null) {
-                    userId = currentUser.getUid();
-                    Log.d("EsercizioRiconoscimentoCoppie", "ID dell'utente attualmente loggato: " + userId);
-                } else {
-                    Log.d("EsercizioRiconoscimentoCoppie", "Nessun utente attualmente loggato");
-                }
-
-                // Crea un oggetto Map per contenere i dati da inserire nel documento
-                Map<String, Object> data = new HashMap<>();
-                data.put("tipologia", 3);
-                data.put("logopedista", userId);
-                data.put("nome", nome_esercizio);
-                data.put("immagine1", path_img1);
-                data.put("immagine2", path_img2);
-                data.put("audio", path_audio);
-                data.put("immagine_corretta", riferimento_immagine_audio);
-
-                // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
-                db.collection("esercizi")
-                        .add(data)
-                        .addOnSuccessListener(documentReference -> {
-                            Log.d("EsercizioRiconoscimentoCoppie", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
-                            // Navigazione alla lista degli esercizi
-
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.w("EsercizioRiconoscimentoCoppie", "Errore durante l'aggiunta del documento", e);
-                        });
-
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
-                navController.navigate(R.id.navigation_esercizi);
-                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
-                Toasty.success(getContext(), "Esercizio creato con successo", Toast.LENGTH_SHORT, true).show();
-
-            } else {
-                // Se c'è stato un errore nel caricare i file, mostra un messaggio di errore
-                 Toasty.error(getContext(), "Errore durante il caricamento dei file", Toast.LENGTH_SHORT, true).show();
-            }
+             */
         });
 
     }
@@ -362,25 +360,14 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
         // Crea un riferimento al file su Firebase Storage
         StorageReference fileRef = storageRef.child(path);
 
-        ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Caricamento in corso...");
-        progressDialog.setCancelable(false); // Impedisci all'utente di chiudere la finestra di dialogo
-        progressDialog.show();
-
         // Carica il file su Firebase Storage
         if(fileUri == null) {
-            progressDialog.dismiss();
             callback.onUploadComplete(true, null);
             return;
         }
 
         // Carica il file su Firebase Storage
         fileRef.putFile(fileUri)
-                .addOnProgressListener(snapshot -> {
-                    // Aggiorna la percentuale di completamento
-                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                    progressDialog.setMessage("Caricamento in corso... " + (int) progress + "%");
-                })
                 .addOnSuccessListener(taskSnapshot -> {
                     // Ottieni l'URI del file caricato
                     fileRef.getDownloadUrl()
@@ -388,20 +375,17 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
                                 // Ottieni l'URI del file caricato
                                 String downloadUri = uri.toString();
                                 Log.d("EsercizioRiconoscimentoCoppie", "File caricato con successo: " + downloadUri);
-                                progressDialog.dismiss();
                                 callback.onUploadComplete(true, downloadUri); // Notifica il chiamante che il caricamento è completato con successo
                             })
                             .addOnFailureListener(e -> {
                                 // Gestisci l'errore
                                 Log.e("EsercizioRiconoscimentoCoppie", "Errore nel caricare il file: " + e.getMessage());
-                                progressDialog.dismiss();
                                 callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                             });
                 })
                 .addOnFailureListener(e -> {
                     // Gestisci l'errore
                     Log.e("EsercizioRiconoscimentoCoppie", "Errore nel caricare il file: " + e.getMessage());
-                    progressDialog.dismiss();
                     callback.onUploadComplete(false, null); // Notifica il chiamante che si è verificato un errore durante il caricamento
                 });
     }
@@ -435,6 +419,74 @@ public class EsercizioRiconoscimentoCoppie extends Fragment {
         Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
+    }
+
+    private void caricaFileSulloStorage(ArrayList<String> pathFile, ArrayList<Uri> uriFile){
+        uploadFileToFirebaseStorage(uriFile.get(FILE_CARICATO_NELLO_STORAGE), pathFile.get(FILE_CARICATO_NELLO_STORAGE), (success, id_audio) -> {
+            double progress = (100.0 * FILE_CARICATO_NELLO_STORAGE) / FILE_CARICATO_NELLO_STORAGE;
+            dialogCaricamentoEsercizio.setMessage("Caricamento in corso... " + (int) progress + "%");
+            if (success) {
+                ID_audio = id_audio;
+                FILE_CARICATO_NELLO_STORAGE++;
+
+            }else {
+                FILE_CARICATO_NELLO_STORAGE++;
+                pathFile.add(FILE_CARICATO_NELLO_STORAGE, "null");
+            }
+
+            if(FILE_CARICATO_NELLO_STORAGE == FILE_DA_CARICARE_NELLO_STORAGE){
+                dialogCaricamentoEsercizio.dismiss();
+
+                // Se tutti i file sono stati caricati con successo, mostra un messaggio di successo
+                Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
+                // Creazione di una raccolta su firebase con i dati dell'esercizio
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+                String userId = null;
+                if (currentUser != null) {
+                    userId = currentUser.getUid();
+                    Log.d("EsercizioRiconoscimentoCoppie", "ID dell'utente attualmente loggato: " + userId);
+                } else {
+                    Log.d("EsercizioRiconoscimentoCoppie", "Nessun utente attualmente loggato");
+                }
+
+                // Crea un oggetto Map per contenere i dati da inserire nel documento
+                Map<String, Object> data = new HashMap<>();
+                data.put("tipologia", 3);
+                data.put("logopedista", userId);
+                data.put("nome", nome_esercizio);
+                data.put("immagine1", pathFile.get(0));
+                data.put("immagine2", pathFile.get(1));
+                data.put("audio", pathFile.get(2));
+                data.put("immagine_corretta", riferimento_immagine_audio);
+
+                // Aggiungi i dati a una nuova raccolta con un ID generato automaticamente
+                db.collection("esercizi")
+                        .add(data)
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d("EsercizioRiconoscimentoCoppie", "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+                            // Navigazione alla lista degli esercizi
+                            Toasty.success(getContext(), "Esercizio creato con successo", Toasty.LENGTH_LONG, true).show();
+                            // Navigazione alla lista degli esercizi
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                            navController.navigate(R.id.navigation_esercizi);
+
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w("EsercizioRiconoscimentoCoppie", "Errore durante l'aggiunta del documento", e);
+                            Toasty.error(getContext(), "Errore nel creare l'esercizio", Toast.LENGTH_SHORT, true).show();
+                            // Navigazione alla lista degli esercizi
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                            navController.navigate(R.id.navigation_esercizi);
+                        });
+
+            } else {
+                caricaFileSulloStorage(pathFile, uriFile);
+            }
+        });
     }
 }
 

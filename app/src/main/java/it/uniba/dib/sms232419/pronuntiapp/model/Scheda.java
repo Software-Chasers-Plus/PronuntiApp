@@ -11,7 +11,7 @@ public class Scheda implements Parcelable {
     private final String logopedista;
     private final String bambino;
     private final int numeroEsercizi;
-    private final String stato;
+    private String stato;
     private final int eserciziCompletati;
     private final ArrayList<ArrayList<String>> esercizi;
 
@@ -114,5 +114,23 @@ public class Scheda implements Parcelable {
 
     public String getUid() {
         return Uid;
+    }
+
+    public boolean checkIsCompletata() {
+        boolean completata = true;
+
+        for (ArrayList<String> esercizio : esercizi) {
+            if (esercizio.get(1).equals("non completato")) {
+                completata = false;
+            }
+        }
+
+        if (completata) {
+            this.stato = "completata";
+        } else {
+            this.stato = "non completata";
+        }
+
+        return completata;
     }
 }

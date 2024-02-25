@@ -42,7 +42,7 @@ public class EserciziFragment extends Fragment implements ClickEserciziListener{
     Map<String, Object> esercizi = null;
     ArrayList<Esercizio> eserciziList = new ArrayList<>();
 
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
 
     MainActivityLogopedista mainActivityLogopedista;
     public View onCreateView(@NonNull LayoutInflater inflater,
