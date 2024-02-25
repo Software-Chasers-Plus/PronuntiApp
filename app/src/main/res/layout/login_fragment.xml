@@ -154,5 +154,29 @@
                 android:textColor="@color/secondaryGenitore"
                 android:textSize="18dp"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/developed_with"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/software_chasers_easter_egg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:text="@string/software_chasers"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

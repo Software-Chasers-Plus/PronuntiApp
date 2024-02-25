@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class LoginFragment extends Fragment {
     private ImageView imageClockPassword;
 
     private Button loginButton;
+    private int counterSoftwareChasers = 0;
 
     boolean passwordVisible = false;
 
@@ -90,6 +92,17 @@ public class LoginFragment extends Fragment {
 
 
         imageClockPassword.setOnClickListener(v -> togglePasswordVisibility());
+
+
+        //TODO easter egg nome software chasers
+        TextView softwareChasers = view.findViewById(R.id.software_chasers_easter_egg);
+        softwareChasers.setOnClickListener(v -> {
+            counterSoftwareChasers++;
+            if (counterSoftwareChasers == 5) {
+                Toasty.info(mActivity, "Easter egg, da implementare!", Toast.LENGTH_SHORT).show();
+                counterSoftwareChasers = 0;
+            }
+        });
 
         return view;
     }
@@ -398,9 +411,6 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
-
-
-
 
 
     // Metodo per avviare l'activity principale

@@ -219,4 +219,6 @@
     <string name="no_bookings">Non ci sono prenotazioni!</string>
     <string name="schede_del_bambino_completate">"Schede completate:"</string>
     <string name="non_sono_state_completate_schede">Non sono state completate schede</string>
+    <string name="developed_with">Developed with ❤️</string>
+    <string name="software_chasers">Software Chasers</string>
 </resources>
