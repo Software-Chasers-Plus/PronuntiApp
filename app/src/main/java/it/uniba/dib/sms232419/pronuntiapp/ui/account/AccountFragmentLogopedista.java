@@ -101,16 +101,20 @@ public class AccountFragmentLogopedista extends Fragment {
                         if(documentSnapshot.getBoolean("Albo")){
                             LinearLayout alboLayout = view.findViewById(R.id.layoutInAlbo);
                             alboLayout.setVisibility(View.VISIBLE);
+                            // Setto il messaggio
                             TextView labelAlbo = view.findViewById(R.id.inAlboMessaggio);
                             labelAlbo.setText(R.string.la_matricola_contenuta_nell_albo_dei_logopedisti);
+                            // Setto l'icona
                             ImageView albo = view.findViewById(R.id.inAlboIcona);
                             albo.setImageResource(R.drawable.confirm_svgrepo_com);
                         }
                         else{
                             LinearLayout alboLayout = view.findViewById(R.id.layoutInAlbo);
                             alboLayout.setVisibility(View.VISIBLE);
+                            // Setto il messaggio
                             TextView labelAlbo = view.findViewById(R.id.inAlboMessaggio);
                             labelAlbo.setText(R.string.la_tua_matricola_non_contenuta_nell_albo_dei_logopedisti);
+                            // Setto l'icona
                             ImageView albo = view.findViewById(R.id.inAlboIcona);
                             albo.setVisibility(View.GONE);
                         }
