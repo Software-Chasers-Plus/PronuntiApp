@@ -52,7 +52,9 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import java.io.IOException;
 
 import es.dmoral.toasty.Toasty;
+import it.uniba.dib.sms232419.pronuntiapp.MainActivityLogopedista;
 import it.uniba.dib.sms232419.pronuntiapp.R;
+import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Logopedista;
 import it.uniba.dib.sms232419.pronuntiapp.PermissionManager;
 
@@ -67,6 +69,8 @@ public class AggiungiPazienteFragment extends Fragment {
     private String figlioUid;
     private MaterialCardView cardView;
     private FirebaseFirestore db;
+    private Figlio nuovoPaziente;
+    private MainActivityLogopedista mainActivityLogopedista;
     private static final int PAZIENTE_TROVATO = 1;
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_STORAGE_PERMISSION = 2;
@@ -93,6 +97,8 @@ public class AggiungiPazienteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mainActivityLogopedista = (MainActivityLogopedista) getActivity();
 
         // Recupero i figli dal bundle passato al fragment
         if (getArguments() != null) {
@@ -173,6 +179,20 @@ public class AggiungiPazienteFragment extends Fragment {
                                                         }
                                                     }
                                                 });
+
+                                        nuovoPaziente = new Figlio(
+                                                document.get("nome").toString(),
+                                                document.get("cognome").toString(),
+                                                document.get("codiceFiscale").toString(),
+                                                document.get("dataNascita").toString(),
+                                                logopedista.getUID(),
+                                                document.get("genitore").toString(),
+                                                Integer.parseInt(document.get("idAvatar").toString()), // Conversione da String a int
+                                                document.get("token").toString(),
+                                                (long)document.get("punteggioGioco"),
+                                                Integer.parseInt(document.get("sfondoSelezionato").toString()),
+                                                Integer.parseInt(document.get("personaggioSelezionato").toString())
+                                        );
                                     } else {
                                         Toasty.warning(getContext(), R.string.il_paziente_gi_associato_ad_un_logopedista, Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
@@ -201,6 +221,7 @@ public class AggiungiPazienteFragment extends Fragment {
                     db.collection("figli")
                             .document(figlioUid)
                             .update("logopedista", logopedista.getUID());
+                    mainActivityLogopedista.figli.add(nuovoPaziente);
                     Toasty.success(getContext(),"Paziente aggiunto correttamente", Toast.LENGTH_SHORT).show();
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
                     navController.navigate(R.id.navigation_home_logopedista);
