@@ -70,6 +70,9 @@
             android:theme="@style/Theme.Gioco">
         </activity>
 
+        <activity android:name=".EasterEgg.Spacewar"
+            android:theme="@style/Theme.Design.NoActionBar"/>
+        <service android:name=".EasterEgg.MusicService" android:enabled="true"/>
 
     </application>
 

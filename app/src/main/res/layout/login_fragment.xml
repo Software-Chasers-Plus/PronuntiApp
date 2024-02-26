@@ -117,7 +117,6 @@
             android:layout_marginStart="@dimen/_32pxh"
             android:layout_marginEnd="@dimen/_27pxh"
             android:layout_marginTop="@dimen/_13pxv"
-            android:layout_marginBottom="@dimen/_20pxv"
             android:orientation="vertical"
             android:gravity="center"
             android:padding="12dp"
@@ -156,7 +155,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -168,13 +166,12 @@
                 android:text="@string/developed_with"
                 android:layout_gravity="center"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/software_chasers_easter_egg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="italic"
-                android:text="@string/software_chasers"
-                android:layout_gravity="center"/>
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/software_chasers_logo" />
 
         </LinearLayout>
 

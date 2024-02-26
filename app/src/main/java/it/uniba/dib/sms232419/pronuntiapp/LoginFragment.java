@@ -4,6 +4,7 @@ package it.uniba.dib.sms232419.pronuntiapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
+import it.uniba.dib.sms232419.pronuntiapp.EasterEgg.Spacewar;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
 
@@ -94,12 +97,13 @@ public class LoginFragment extends Fragment {
         imageClockPassword.setOnClickListener(v -> togglePasswordVisibility());
 
 
-        //TODO easter egg nome software chasers
-        TextView softwareChasers = view.findViewById(R.id.software_chasers_easter_egg);
+        ImageView softwareChasers = view.findViewById(R.id.software_chasers_easter_egg);
         softwareChasers.setOnClickListener(v -> {
             counterSoftwareChasers++;
+            Toasty.custom(getContext(), "Hai fatto " + counterSoftwareChasers + " click, continua!", R.drawable.goal_aim_achievement_svgrepo_com, R.color.teal_200, Toast.LENGTH_SHORT, false, true).show();
             if (counterSoftwareChasers == 5) {
-                Toasty.info(mActivity, "Easter egg, da implementare!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), Spacewar.class);
+                startActivity(intent);
                 counterSoftwareChasers = 0;
             }
         });

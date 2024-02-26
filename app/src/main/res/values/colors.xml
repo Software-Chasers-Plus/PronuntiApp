@@ -61,4 +61,9 @@
     <color name="green">#00FF00</color>
 
     <color name="mint_cream">#F1F1F1</color>
+
+    <!-- Colori EasterEgg -->
+    <color name="dark">#0f0f0f</color>
+
+
 </resources>

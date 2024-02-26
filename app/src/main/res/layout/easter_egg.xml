@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EasterEgg.Spacewar"
+    android:background="@color/primaryLogopedista">
+
+
+
+    <it.uniba.dib.sms232419.pronuntiapp.EasterEgg.Spaceship
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_above="@+id/upBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/blue_sfondo_dettaglio"
+        tools:ignore="MissingClass" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:text="Software Chasers "
+        android:textSize="30dp"
+        android:textColor="@color/grey"
+        android:fontFamily="@font/font_game"/>
+
+    <Button
+        android:backgroundTint="@color/gray_900"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:text="Left"
+        android:id="@+id/leftBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/downBtn"
+        android:layout_toStartOf="@+id/downBtn" />
+
+    <Button
+        android:backgroundTint="@color/gray_900"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/rightBtn"
+        android:layout_below="@+id/upBtn"
+        android:layout_toRightOf="@+id/downBtn"
+        android:layout_toEndOf="@+id/downBtn" />
+
+    <Button
+        android:backgroundTint="@color/gray_900"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Down"
+        android:id="@+id/downBtn"
+        android:layout_alignTop="@+id/leftBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:backgroundTint="@color/gray_900"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Up"
+        android:id="@+id/upBtn"
+        android:layout_above="@+id/downBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/fireBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rightBtn"
+        android:layout_marginStart="-39dp"
+        android:layout_marginLeft="-39dp"
+        android:layout_marginBottom="1dp"
+        android:layout_toEndOf="@+id/rightBtn"
+        android:layout_toRightOf="@+id/rightBtn"
+        android:backgroundTint="@color/default_impostazioni"
+        android:text="FIRE!" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/upBtn"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="-19dp"
+        android:layout_marginLeft="-19dp"
+        android:layout_marginBottom="1dp"
+        android:paddingLeft="40dp"
+        android:text="@string/scoreEasterEgg"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white" />
+
+
+
+
+</RelativeLayout>

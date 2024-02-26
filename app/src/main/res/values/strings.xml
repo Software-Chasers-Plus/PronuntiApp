@@ -221,4 +221,5 @@
     <string name="non_sono_state_completate_schede">Non sono state completate schede</string>
     <string name="developed_with">Developed with ❤️</string>
     <string name="software_chasers">Software Chasers</string>
+    <string name="scoreEasterEgg">Score: 0</string>
 </resources>
