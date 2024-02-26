@@ -23,7 +23,6 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import es.dmoral.toasty.Toasty;
@@ -207,15 +207,17 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
         if (cardView.isChecked()) {
             checkedPositions.add(position);
+            eserciziList.get(position).setChcked(true);
         } else {
             checkedPositions.remove(Integer.valueOf(position));
+            eserciziList.get(position).setChcked(false);
         }
     }
 
     @Override
     public void onDettaglioClick(int position) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("esercizio", (Parcelable) eserciziList.get(position));
+        bundle.putParcelable("esercizio", eserciziList.get(position));
         Log.d(TAG, "Esercizio passato: " + eserciziList.get(position).getNome());
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
 
@@ -323,15 +325,20 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
         return null;
     }
 
-    private void caricaSchedaFirebase(String nomeScheda, String userId, String pazienteId, ArrayList<String> eserciziSelezionati, RecyclerView recyclerView, List<Integer> checkedPositions, FirebaseFirestore db) {
+    private void caricaSchedaFirebase(String nomeScheda, String userId, String pazienteId, ArrayList<String> eserciziSelezionati, List<Integer> checkedPositions, FirebaseFirestore db) {
         LinearProgressIndicator progressIndicator = getView().findViewById(R.id.progressBarCreazioneScheda);
         progressIndicator.setVisibility(View.VISIBLE);
+
+        //Selezione casuale dello sfondo
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(5) + 1;
 
         // Crea un oggetto Map per contenere i dati da inserire nel documento
         Map<String, Object> data = new HashMap<>();
         data.put("nomeScheda", nomeScheda);
         data.put("logopedista", userId);
         data.put("figlio", pazienteId);
+        data.put("sfondo", randomNumber);
 
         for (int i = 0; i < checkedPositions.size(); i++) {
             int checkedPosition = checkedPositions.get(i);
@@ -395,7 +402,7 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
                         // Check if all queries have completed
                         if (count == checkedPositions.size()) {
-                            caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, recyclerView, checkedPositions, db);
+                            caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, checkedPositions, db);
                         }
                     });
         }

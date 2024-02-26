@@ -1,6 +1,7 @@
 package it.uniba.dib.sms232419.pronuntiapp.ui.schedeBambino;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ public class SchedeBambinoHolderView extends RecyclerView.ViewHolder implements 
     TextView textViewNomeScheda, textViewNumeroEsercizi, textViewStatoScheda, textViewEserciziCompletati;
     MaterialButton eliminaButton, avviaGiocoButton;
     MaterialCardView cardView;
+    ImageView imageViewSfondo;
     Boolean completata;
 
     private final ClickSchedeBambinoListener clickSchedeBambinoListener;
@@ -33,6 +35,7 @@ public class SchedeBambinoHolderView extends RecyclerView.ViewHolder implements 
         eliminaButton = itemView.findViewById(R.id.elimina_button);
         avviaGiocoButton = itemView.findViewById(R.id.avvia_gioco_button);
         cardView = itemView.findViewById(R.id.cardView_scheda);
+        imageViewSfondo = itemView.findViewById(R.id.sfondoScheda);
 
         if(textViewStatoScheda.getText().toString().equals("completata")){
             completata = true;

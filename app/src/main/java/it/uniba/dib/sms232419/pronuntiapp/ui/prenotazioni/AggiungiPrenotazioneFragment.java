@@ -189,7 +189,8 @@ public class AggiungiPrenotazioneFragment extends Fragment {
                         return;
                     }
                 } catch (ParseException e) {
-                    Toasty.error(getContext(), "Inserisci una data valida (dd/mm//yyyy)", Toast.LENGTH_SHORT).show();;
+                    Toasty.error(getContext(), "Inserisci una data valida (dd/mm//yyyy)", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
 

@@ -30,7 +30,9 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.Design.NoActionBar" >
+            android:theme="@style/Theme.Design.NoActionBar"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,27 +49,33 @@
         <activity
             android:name=".MainActivityLogopedista"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Logopedista"/>
+            android:theme="@style/Theme.Logopedista"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
 
         <activity
             android:name=".MainActivityGenitore"
             android:exported="true"
-            android:label="@string/app_name" >
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <activity
             android:name=".ui.esercizi.CreazioneEsercizi"
             android:exported="true"
             android:label="@string/creazione_esercizio"
-            android:theme="@style/Theme.Logopedista">
+            android:theme="@style/Theme.Logopedista"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <activity
             android:name=".Gioco.GiocoActivity"
             android:exported="true"
-            android:theme="@style/Theme.Gioco">
+            android:theme="@style/Theme.Gioco"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <activity android:name=".EasterEgg.Spacewar"

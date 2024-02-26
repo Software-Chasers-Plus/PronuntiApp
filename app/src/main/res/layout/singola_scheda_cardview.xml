@@ -24,9 +24,10 @@
 
             <!-- Media -->
             <ImageView
+                android:id="@+id/sfondoScheda"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                app:srcCompat="@drawable/game_wallpaper"
+
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/descrizione_immagine"
                 />

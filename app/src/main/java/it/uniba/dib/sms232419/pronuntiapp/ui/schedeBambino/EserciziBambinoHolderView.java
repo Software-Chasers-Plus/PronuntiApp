@@ -60,14 +60,4 @@ public class EserciziBambinoHolderView extends RecyclerView.ViewHolder implement
 
         }
     }
-
-    // Method to get the text from the EditText
-    public String getDataEsercizioText() {
-        return dataEsercizio.getText().toString();
-    }
-
-    // Method to set the text of the EditText
-    public void setDataEsercizioText(String text) {
-        dataEsercizio.setText(text);
-    }
 }
