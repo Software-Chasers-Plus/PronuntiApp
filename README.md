@@ -1,15 +1,30 @@
 
 <body>
     <h1>🎙️👦🏻 PronuntiApp</h1>
-    <p>Benvenuti nel repository ufficiale di <strong><i>PronuntiApp</i></strong>, progetto del corso Sviluppo di Mobile Software, a.a. <i>2023/2024</i>.</p>
-    <p><strong>PronuntiApp</strong> è un'applicazione sviluppata per favorire la terapia a distanza per utenti con disturbi del linguaggio.
-    L'obiettivo dell'applicazione è facilitare gli esercizi logopedici attraverso meccaniche di gioco. È rivolta a tre tipologie di utenti:</p>
-    <ol>
-        <li>Logopedisti: creano e impostano le terapie.</li>
-        <li>Bambini: svolgono gli esercizi sotto forma di giochi.</li>
-        <li>Genitori: monitorano lo svolgimento delle terapie e correggono gli esercizi.</li>
-    </ol>
-
+    <p>Sei alla ricerca di un modo innovativo e divertente per supportare i bambini con disturbi del linguaggio nel loro percorso di apprendimento? Beh, <strong>PronuntiApp</strong> è qui per te!</p>
+    <h3>Cosa è PronuntiApp?🤔❓</h3>
+    <p>PronuntiApp è molto più di una semplice applicazione. È un compagno intelligente e coinvolgente progettato per aiutare i bambini con disturbi del linguaggio a migliorare le loro abilità comunicative attraverso l'uso di meccaniche di gioco stimolanti.</p>
+    <h3>Chi può beneficiare di PronuntiApp?👍🏻</h3>
+    <p>
+        <ul>
+            <li><strong>Esperti Logopedisti</strong>: Potete creare schede personalizzate di esercizi logopedici e monitorare i progressi dei vostri piccoli pazienti in modo efficace.</li>
+            <li><strong>Genitori Premurosi</strong>: Monitorate da vicino le terapie dei vostri figli, gestite gli account dei vostri bambini e avviate i giochi che li aiuteranno a crescere e imparare in modo divertente.</li>
+            <li><strong>Bambini Curiosi</strong>: Esplorate scenari affascinanti, completate esercizi coinvolgenti e guadagnate monete per sbloccare nuovi personaggi - il tutto mentre migliorate le vostre abilità linguistiche!</li>
+        </ul>
+    </p>
+    <h3>Cosa offre PronuntiApp?🏷️</h3>
+    <p>
+        <ul>
+            <li><strong>Esercizi Logopedici Stimolanti</strong>: Una vasta gamma di esercizi progettati appositamente per migliorare le abilità linguistiche dei bambini.</li>
+            <li><strong>Monitoraggio dei Progressi</strong>: Tracciate i progressi dei vostri bambini e osservate i loro successi giorno dopo giorno.</li>
+            <li><strong>Giochi Coinvolgenti</strong>: Esplorate diversi scenari e livelli, e divertitevi mentre imparate!</li>
+            <li><strong>Gestione Semplificata</strong>: Un'interfaccia intuitiva che permette agli esperti logopedisti di gestire le terapie e ai genitori di monitorare da vicino il percorso dei loro figli.</li>
+        </ul>
+    </p>
+    <h3>Come iniziare?🙌🏻▶</h3>
+    <p>È semplice! Basta scaricare PronuntiApp, creare un account e iniziare il vostro viaggio verso una comunicazione più fluida e divertente!<br>
+        Unitevi a noi e scoprite un nuovo modo di apprendere con PronuntiApp - dove il gioco e l'apprendimento si incontrano per fare la differenza nella vita dei bambini.</p>
+    
 <h1>🌐 Collaboratori:</h1>
 <h2>🎉 Benvenuti nel circo del codice dei Software Chasers! Siamo come una banda di folli artisti digitali pronti a stupirvi con i nostri trucchi e le nostre risate contagiose!</h2>
 <p></p> 🚀 Conosciuto come il "Magico Antonio", il nostro sviluppatore Java e designer straordinario! Con una bacchetta magica in una mano e un mouse nell'altra, trasforma linee di codice in capolavori digitali!<br><br>
