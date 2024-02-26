@@ -294,7 +294,6 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
 
     @Override
     public void onItemClick(int position, boolean completata) {
-        //TODO: implementare la visualizzazione dei dettagli scheda
         if (completata) {
             Bundle bundle = new Bundle();
             bundle.putParcelable("scheda", schedeCompletateList.get(position));
@@ -318,7 +317,7 @@ public class InfoFiglioFragment extends Fragment implements ClickSchedeBambinoLi
         // Creo dialog di conferma
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Conferma avvio gioco");
-        builder.setMessage("Sei sicuro di voler avviare il gioco?\n\nIl gioco non potrà essere interrotto senza il PIN.");
+        builder.setMessage("Sei sicuro di voler avviare il gioco?\n\nIl gioco verrà avviato con la scheda selezionata.");
         builder.setIcon(R.drawable.alert_avvio_gioco);
         builder.setCancelable(false); // L'utente non può chiudere il dialog cliccando fuori da esso
 
