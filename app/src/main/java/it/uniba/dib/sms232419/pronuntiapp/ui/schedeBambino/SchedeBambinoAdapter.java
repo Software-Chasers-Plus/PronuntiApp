@@ -45,6 +45,24 @@ public class SchedeBambinoAdapter extends RecyclerView.Adapter<SchedeBambinoHold
         holder.textViewStatoScheda.setText(items.get(position).getStato());
         holder.textViewEserciziCompletati.setText(context.getResources().getString(R.string.esercizi_completati_scheda) + ": "+ items.get(position).getEserciziCompletati());
 
+        //Imposta lo sfondo
+        switch (items.get(position).getSfondo()){
+            case 1:
+                holder.imageViewSfondo.setImageResource(R.drawable.schedawallpaper1);
+                break;
+            case 2:
+                holder.imageViewSfondo.setImageResource(R.drawable.schedawallpaper2);
+                break;
+            case 3:
+                holder.imageViewSfondo.setImageResource(R.drawable.schedawallpaper3);
+                break;
+            case 4:
+                holder.imageViewSfondo.setImageResource(R.drawable.schedawallpaper4);
+                break;
+            case 5:
+                holder.imageViewSfondo.setImageResource(R.drawable.schedawallpaper5);
+                break;
+        }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Ottenere l'istanza di FirebaseAuth

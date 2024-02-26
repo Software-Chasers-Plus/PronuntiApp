@@ -15,11 +15,14 @@ public class Scheda implements Parcelable {
     private final int eserciziCompletati;
     private final ArrayList<ArrayList<String>> esercizi;
 
-    public Scheda(String nome, String logopedista, String bambino, ArrayList<ArrayList<String>> esercizi, String Uid) {
+    private int sfondo;
+
+    public Scheda(String nome, String logopedista, String bambino, ArrayList<ArrayList<String>> esercizi, String Uid, Long sfondo) {
         this.nome = nome;
         this.logopedista = logopedista;
         this.bambino = bambino;
         this.esercizi = esercizi;
+        this.sfondo = sfondo.intValue();
 
         //Numero eseercizi
         this.numeroEsercizi = esercizi.size();
@@ -56,6 +59,7 @@ public class Scheda implements Parcelable {
         eserciziCompletati = in.readInt();
         esercizi = in.readArrayList(null);
         Uid = in.readString();
+        sfondo = in.readInt();
     }
 
 
@@ -81,6 +85,7 @@ public class Scheda implements Parcelable {
         dest.writeInt(eserciziCompletati);
         dest.writeList(esercizi);
         dest.writeString(Uid);
+        dest.writeInt(sfondo);
     }
 
     @Override
@@ -132,5 +137,13 @@ public class Scheda implements Parcelable {
         }
 
         return completata;
+    }
+
+    public void setSfondo(int sfondo) {
+        this.sfondo = sfondo;
+    }
+
+    public int getSfondo() {
+        return sfondo;
     }
 }

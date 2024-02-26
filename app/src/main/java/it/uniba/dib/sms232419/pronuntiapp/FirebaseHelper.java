@@ -140,13 +140,13 @@ public class FirebaseHelper {
     }
 
     public static Scheda creazioneScheda(QueryDocumentSnapshot document) {
-        Scheda scheda = new Scheda(document.getString("nomeScheda"),
+
+        return new Scheda(document.getString("nomeScheda"),
                 document.getString("logopedista"),
                 document.getString("figlio"),
                 FirebaseHelper.creaArrayListEsercizi(document),
-                document.getId());
-
-        return scheda;
+                document.getId(),
+                document.getLong("sfondo"));
     }
 
 

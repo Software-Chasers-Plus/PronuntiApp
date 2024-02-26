@@ -47,7 +47,12 @@ public class EserciziBambinoAdapter extends RecyclerView.Adapter<EserciziBambino
                 break;
         }
 
-        holder.cardView.setChecked(false);
+        //Controlla se l'esercizio è stato selezionato
+        if (items.get(position).isChcked()) {
+            holder.cardView.setChecked(true);
+        } else {
+            holder.cardView.setChecked(false);
+        }
     }
 
     @Override

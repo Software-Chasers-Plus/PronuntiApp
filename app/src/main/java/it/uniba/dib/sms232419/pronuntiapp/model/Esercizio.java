@@ -10,6 +10,7 @@ public class Esercizio implements Parcelable {
     private String nome;
     private String logopedista;
     private String tipologia;
+    boolean isChcked = false;
 
     public Esercizio(String esercizioId, String nome, String logopedista, String tipologia) {
         this.esercizioId = esercizioId;
@@ -54,6 +55,13 @@ public class Esercizio implements Parcelable {
 
     public String getEsercizioId() {
         return esercizioId;
+    }
+
+    public boolean isChcked() {
+        return isChcked;
+    }
+    public void setChcked(boolean chcked) {
+        isChcked = chcked;
     }
 
     public void eliminaFileDaStorage() {}
