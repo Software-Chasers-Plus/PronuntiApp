@@ -20,7 +20,7 @@ import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 
 public class AvvioGiocoFragment extends Fragment {
-
+    private GiocoActivity giocoActivity;
     private final boolean isMediaPlayerPaused = false;
     private Scheda scheda;
     private Figlio figlio;
@@ -28,6 +28,7 @@ public class AvvioGiocoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        giocoActivity = (GiocoActivity) getActivity();
         // Recupera la scheda selezionata dall'utente
         if(getArguments() != null && getArguments().getParcelable("scheda") != null) {
             scheda = getArguments().getParcelable("scheda");
@@ -103,5 +104,13 @@ public class AvvioGiocoFragment extends Fragment {
                         .commit();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!giocoActivity.mediaPlayer.isPlaying()){
+            giocoActivity.mediaPlayer.start();
+        }
     }
 }

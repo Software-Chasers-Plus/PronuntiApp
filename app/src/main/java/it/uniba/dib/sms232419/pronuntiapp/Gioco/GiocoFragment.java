@@ -15,6 +15,7 @@ import it.uniba.dib.sms232419.pronuntiapp.R;
 import it.uniba.dib.sms232419.pronuntiapp.model.Scheda;
 
 public class GiocoFragment extends Fragment {
+    private GiocoActivity giocoActivity;
     private Scheda scheda;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class GiocoFragment extends Fragment {
             scheda = getArguments().getParcelable("scheda");
             Log.d("GiocoFragment", "Scheda: " + scheda.getNome() + " caricata");
         }
+        giocoActivity = (GiocoActivity) getActivity();
     }
     @Nullable
     @Override
@@ -32,5 +34,13 @@ public class GiocoFragment extends Fragment {
         LinearLayout layout = view.findViewById(R.id.linearLayout_gioco);
         layout.addView(gameView);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!giocoActivity.mediaPlayer.isPlaying()){
+            giocoActivity.mediaPlayer.start();
+        }
     }
 }

@@ -338,7 +338,7 @@ public class EsercizioGiocoFragmentTipologia3 extends Fragment {
     public void onResume() {
         super.onResume();
         // Riprendi la riproduzione del MediaPlayer se era in pausa quando l'attività è entrata in pausa
-        if(giocoActivity.mediaPlayer != null && !giocoActivity.mediaPlayer.isPlaying()){
+        if(giocoActivity.mediaPlayer != null && giocoActivity.mediaPlayer.isPlaying()){
             giocoActivity.mediaPlayer.pause();
         }
     }

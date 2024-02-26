@@ -170,7 +170,7 @@ public class GiocoActivity extends AppCompatActivity {
                                     ArrayList<String> immagini = new ArrayList<>();
                                     immagini.add(nuovoEsercizio.get("immagine").toString());
 
-                                    Log.d("GiocoActivityAvvioEsercizio", "Avvio download immagini per esercizio tipologia 3");
+                                    Log.d("GiocoActivityAvvioEsercizio", "Avvio download immagini per esercizio tipologia 1");
                                     eseguiDownloadImmagine(immagini, key, bundle, EsercizioGiocoFragmentTipologia1.class);
                                 }else if(nuovoEsercizio.get("tipologia").toString().equals("2")){
                                     mostraPopupCaricamentoImmagine();

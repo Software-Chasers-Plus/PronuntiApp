@@ -61,11 +61,11 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
     Figlio paziente;
     String  pazienteId;
     ArrayList<Esercizio> eserciziList = new ArrayList<>();
-
     private RecyclerView recyclerView;
-
     MainActivityLogopedista mainActivityLogopedista;
-
+    private static int NUMERO_ESERCIZI_SCHEDA = 0;
+    private static int NUMERO_ESERCIZI_CARICATI = 0;
+    private ArrayList<String> eserciziSelezionati = new ArrayList<>();
     // List to store the positions of checked CardViews
     private final List<Integer> checkedPositions = new ArrayList<>();
     private Map<Integer, String> esercizioDataSelezionata = new HashMap<>();
@@ -176,7 +176,10 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                                             if (task2.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task2.getResult()) {
                                                     pazienteId = document.getId();
+                                                    NUMERO_ESERCIZI_CARICATI = 0;
+                                                    NUMERO_ESERCIZI_SCHEDA = checkedPositions.size();
                                                     addScheda(db, nomeScheda, userId);
+
                                                 }
                                             } else {
                                                 Log.e(TAG, "Errore durante la query per i figli", task2.getException());
@@ -379,8 +382,29 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
 
 
     private void addScheda(FirebaseFirestore db, String nomeScheda, String userId) {
-        ArrayList<String> eserciziSelezionati = new ArrayList<>();
+        db.collection("esercizi")
+                .whereEqualTo("nome", eserciziList.get(checkedPositions.get(NUMERO_ESERCIZI_CARICATI)).getNome())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            eserciziSelezionati.add(document.getId());
+                        }
+                    } else {
+                        Log.e(TAG, "Errore durante la query per gli esercizi", task.getException());
+                    }
 
+                    NUMERO_ESERCIZI_CARICATI++;
+
+                    // Check if all queries have completed
+                    if (NUMERO_ESERCIZI_CARICATI == NUMERO_ESERCIZI_SCHEDA) {
+                        caricaSchedaFirebase(nomeScheda, userId, pazienteId, eserciziSelezionati, checkedPositions, db);
+                    }else{
+                        addScheda(db, nomeScheda, userId);
+                    }
+                });
+
+        /*
         AtomicInteger completedQueries = new AtomicInteger(0); // Counter for completed queries
 
         for (int i = 0; i < checkedPositions.size(); i++) {
@@ -406,6 +430,8 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                         }
                     });
         }
+
+         */
     }
 
 
