@@ -22,13 +22,13 @@ import it.uniba.dib.sms232419.pronuntiapp.LoginFragment;
 import it.uniba.dib.sms232419.pronuntiapp.R;
 
 public class Spacewar extends AppCompatActivity implements View.OnTouchListener {
-    private boolean misPlaying = true;
-    private MusicService mServ = new MusicService();
-    int score = Spaceship.score;
-    MediaPlayer pewPlayer;
-    MediaPlayer boomPlayer;
-    int oldScore = 0;
-    int btn = 0;
+    private boolean misPlaying = true; // Stato del suono: true se è in riproduzione, altrimenti false
+    private MusicService mServ = new MusicService(); // Servizio musicale
+    int score = Spaceship.score; // Punteggio iniziale dell'astronave
+    MediaPlayer pewPlayer; // Lettore per il suono dello sparo
+    MediaPlayer boomPlayer; // Lettore per il suono dell'esplosione
+    int oldScore = 0; // Vecchio punteggio
+    int btn = 0; // Pulsante premuto (1=destro, 2=sinistro, 3=su, 4=giù)
 
 
     @Override
@@ -36,37 +36,39 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.easter_egg);
         Button up = (Button) findViewById(R.id.upBtn);
-        up.setOnTouchListener(this); // calling onClick() method
+        up.setOnTouchListener(this); // Attiva il controllo del tocco sul pulsante su
         Button down = (Button) findViewById(R.id.downBtn);
-        down.setOnTouchListener(this);
+        down.setOnTouchListener(this); // Attiva il controllo del tocco sul pulsante giù
         Button right = (Button) findViewById(R.id.rightBtn);
-        right.setOnTouchListener(this);
+        right.setOnTouchListener(this); // Attiva il controllo del tocco sul pulsante destro
         Button left = (Button) findViewById(R.id.leftBtn);
-        left.setOnTouchListener(this);
+        left.setOnTouchListener(this); // Attiva il controllo del tocco sul pulsante sinistro
         Button fire = (Button) findViewById(R.id.fireBtn);
-        fire.setOnTouchListener(this);
+        fire.setOnTouchListener(this); // Attiva il controllo del tocco sul pulsante di fuoco
 
-        // Start the threads
+        // Avvia i thread
         t.start();
         drawIt.start();
     }
 
 
 
-    // Updates the canvas, checks for updated score and checks for playing the explosion sound
+    // Aggiorna il canvas, controlla se ci sono aggiornamenti del punteggio e controlla se sta riproducendo il suono dell'esplosione
     Thread drawIt = new Thread() {
         @Override
         public void run() {
             try {
                 while (!isInterrupted()) {
-                    Thread.sleep(30); // DuH FPS
+                    Thread.sleep(30); // FPS
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // Do button stuff yeah boi
+                            // Aggiorna il canvas
                             View v = findViewById(R.id.table);
                             v.postInvalidate();
+                            // Aggiorna il punteggio
                             updateScore();
+                            // Riproduce il suono dell'esplosione se necessario
                             if (Spaceship.boomPlay){boom();};
                         }
                     });
@@ -77,9 +79,7 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
     };
 
 
-    // Checks for button pushes
-    // If a button is clicked it increases the x and y coordinates of
-    // the spaceship by the velocity variable
+    // Controlla i pulsanti premuti
     Thread t = new Thread() {
         @Override
         public void run() {
@@ -89,7 +89,7 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //Do button stuff yeah boi
+                            // Controlla i pulsanti premuti e aggiorna le coordinate dell'astronave
                             switch (btn) {
                                 case 1:
                                     Spaceship.cx += Spaceship.vl;
@@ -117,12 +117,12 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
     };
 
 
-    // Find what buttons are pushed
+    // Gestisce il tocco sugli elementi della UI
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
-            // Handle the touch event for each button
+            // Gestisce l'evento di tocco per ogni pulsante
             if (v.getId() == R.id.rightBtn) {
                 Log.d("Action", "Right button");
                 btn = 1;
@@ -137,52 +137,29 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
                 btn = 4;
             } else if (v.getId() == R.id.fireBtn) {
                 Log.d("Action", "Fire button");
-                pewPew();
-                Spaceship.dahFlag = true;
+                pewPew(); // Riproduce il suono dello sparo
+                Spaceship.dahFlag = true; // Imposta il flag del suono di sparatoria su true
             }
         } else {
-            // Handle the case when no button is pressed
+            // Gestisce il caso in cui nessun pulsante è premuto
             btn = 0;
         }
         return false;
     }
 
 
-    // Updates the score in the textview
+    // Aggiorna il punteggio nella textview
     public void updateScore() {
         score = Spaceship.score;
         if (score - oldScore >= 0 | score==0){
-            //setContentView(R.layout.activity_spacewar);
             TextView tv1 = (TextView) findViewById(R.id.score);
             String thescore = Integer.toString(score);
             tv1.setText(thescore);
             oldScore = score;
-            // isScoreOk(score);
-
         }
     }
 
-    /*
-    private void isScoreOk(int score){
-        // controllo se lo score è >= 10, lancio un dialog e chiudo l'activity
-        if (score >= 3) {
-            mServ.pauseMusic();
-            Toasty.custom(this, "Grazie per aver giocato! :)", R.drawable.spacecraft_spaceship_svgrepo_com, R.color.purple_500, 3000, true, true).show();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Intent intent = new Intent(this, LoginFragment.class);
-            startActivity(intent);
-
-        }
-    }
-    */
-
-
-
-    // Binds the music service
+    // Interfaccia per la connessione al servizio musicale
     private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -197,7 +174,7 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
 
     @Override
     protected void onPause() {
-        // Pause the sound
+        // Mette in pausa il suono
         super.onPause();
         if (misPlaying){mServ.pauseMusic(); misPlaying=false;}
         score = 0;
@@ -206,7 +183,7 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
 
     @Override
     protected void onResume() {
-        // Start the background sound
+        // Riproduce il suono di background
         super.onResume();
         Intent music = new Intent();
         music.setClass(this,MusicService.class);
@@ -214,7 +191,7 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
         if (!misPlaying){mServ.resumeMusic(); misPlaying=true;}
     }
 
-    // Plays the laser firing sound
+    // Riproduce il suono dello sparo
     void pewPew(){
         if(pewPlayer!=null){
             pewPlayer.release();
@@ -224,7 +201,7 @@ public class Spacewar extends AppCompatActivity implements View.OnTouchListener 
         pewPlayer.start();
     }
 
-    // Plays the explosion sound
+    // Riproduce il suono dell'esplosione
     void boom(){
         if(boomPlayer!=null){
             boomPlayer.release();
