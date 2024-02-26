@@ -83,5 +83,5 @@
         android:contentDescription="@string/creazione_scheda"
         android:text="@string/conferma"
         app:icon="@drawable/done_24px"
-        android:backgroundTint="@color/secondaryGenitore"/>
+        android:backgroundTint="@color/secondaryLogopedista"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
