@@ -229,9 +229,8 @@
             android:id="@+id/logout_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="horizontal"
-            >
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -239,8 +238,7 @@
                 android:text="@string/logout"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
-                android:fontFamily="@font/varelaround_regular"
-                >
+                android:fontFamily="@font/varelaround_regular">
             </TextView>
 
             <ImageView
