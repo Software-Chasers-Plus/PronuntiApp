@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -105,7 +107,7 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
         Log.d(TAG, "Riferimento al database creato");
 
         db.collection("figli")
-                .orderBy("punteggioGioco", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .whereEqualTo("logopedista", giocoActivity.figlio.getLogopedista())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -115,9 +117,12 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
                             bambiniList.add(createFiglio(document));
                         }
 
+                        //Ordina la lista dei bambini in base al punteggio
+                        bambiniList.sort((o1, o2) -> (int) (o2.getPunteggioGioco() - o1.getPunteggioGioco()));
+
                         Log.d(TAG, "bambiniList: " + bambiniList);
 
-                        if(!bambiniList.isEmpty()){
+                        if(!bambiniList.isEmpty()) {
                             // Setta i primi tre bambini
                             //Setta l'immagine, il nome e il punteggio del primo bambino
                             bambinoPosizione1 = bambiniList.get(0);
@@ -133,43 +138,55 @@ public class ClassificaGiocoFragment extends Fragment implements ClickClassifica
                             punteggioBambino1TextView = view.findViewById(R.id.punteggio1TextView);
                             punteggioBambino1TextView.setText(String.valueOf(bambinoPosizione1.getPunteggioGioco()));
 
+
                             //Setta l'immagine, il nome e il punteggio del secondo bambino
-                            bambinoPosizione2 = bambiniList.get(1);
-                            pathImmagineBambino = "bambino_" + bambinoPosizione2.getIdAvatar();
-                            resourceId = getResources().getIdentifier(pathImmagineBambino, "drawable", requireContext().getPackageName());
-                            if (resourceId != 0) {
-                                bambino2ImageView.setImageResource(resourceId);
-                            }
-                            nomeBambino2TextView = view.findViewById(R.id.nome2TextView);
-                            adjustTextDimension(nomeBambino2TextView, bambinoPosizione2.getNome());
+                            if (bambiniList.size() > 1) {
+                                bambinoPosizione2 = bambiniList.get(1);
+                                pathImmagineBambino = "bambino_" + bambinoPosizione2.getIdAvatar();
+                                resourceId = getResources().getIdentifier(pathImmagineBambino, "drawable", requireContext().getPackageName());
+                                if (resourceId != 0) {
+                                    bambino2ImageView.setImageResource(resourceId);
+                                }
+                                nomeBambino2TextView = view.findViewById(R.id.nome2TextView);
+                                adjustTextDimension(nomeBambino2TextView, bambinoPosizione2.getNome());
 
-                            punteggioBambino2TextView = view.findViewById(R.id.punteggio2TextView);
-                            punteggioBambino2TextView.setText(String.valueOf(bambinoPosizione2.getPunteggioGioco()));
-
-                            //Setta l'immagine, il nome e il punteggio del terzo bambino
-                            bambinoPosizione3 = bambiniList.get(2);
-                            pathImmagineBambino = "bambino_" + bambinoPosizione3.getIdAvatar();
-                            resourceId = getResources().getIdentifier(pathImmagineBambino, "drawable", requireContext().getPackageName());
-                            if (resourceId != 0) {
-                                bambino3ImageView.setImageResource(resourceId);
-                            }
-                            nomeBambino3TextView = view.findViewById(R.id.nome3TextView);
-                            adjustTextDimension(nomeBambino3TextView, bambinoPosizione3.getNome());
-
-                            punteggioBambino3TextView = view.findViewById(R.id.punteggio3TextView);
-                            punteggioBambino3TextView.setText(String.valueOf(bambinoPosizione3.getPunteggioGioco()));
-
-                            for (int i = 0; i < 3; i++) {
-                                bambiniList.remove(0);
+                                punteggioBambino2TextView = view.findViewById(R.id.punteggio2TextView);
+                                punteggioBambino2TextView.setText(String.valueOf(bambinoPosizione2.getPunteggioGioco()));
+                            } else {
+                                CardView cardView2 = view.findViewById(R.id.cardview_secondo_posto);
+                                cardView2.setVisibility(View.GONE);
                             }
 
-                            //Setta la recyclerView con i bambini rimanenti
-                            recyclerView.setAdapter(new ClassificaGiocoAdapter(requireContext(), bambiniList, ClassificaGiocoFragment.this, giocoActivity));
-                            recyclerView.getAdapter().notifyDataSetChanged();
+                            if (bambiniList.size() > 2) {
+                                //Setta l'immagine, il nome e il punteggio del terzo bambino
+                                bambinoPosizione3 = bambiniList.get(2);
+                                pathImmagineBambino = "bambino_" + bambinoPosizione3.getIdAvatar();
+                                resourceId = getResources().getIdentifier(pathImmagineBambino, "drawable", requireContext().getPackageName());
+                                if (resourceId != 0) {
+                                    bambino3ImageView.setImageResource(resourceId);
+                                }
+                                nomeBambino3TextView = view.findViewById(R.id.nome3TextView);
+                                adjustTextDimension(nomeBambino3TextView, bambinoPosizione3.getNome());
 
-                            //Modifca del colore negli elementi della recyclerView
-                            for (int i = 0; i < bambiniList.size(); i++) {
+                                punteggioBambino3TextView = view.findViewById(R.id.punteggio3TextView);
+                                punteggioBambino3TextView.setText(String.valueOf(bambinoPosizione3.getPunteggioGioco()));
+                            } else {
+                                CardView cardView3 = view.findViewById(R.id.cardview_terzo_posto);
+                                cardView3.setVisibility(View.GONE);
+                            }
 
+                            if (bambiniList.size() > 3) {
+                                for (int i = 0; i < 3; i++) {
+                                    bambiniList.remove(0);
+                                }
+                                //Setta la recyclerView con i bambini rimanenti
+                                recyclerView.setAdapter(new ClassificaGiocoAdapter(requireContext(), bambiniList, ClassificaGiocoFragment.this, giocoActivity));
+                                recyclerView.getAdapter().notifyDataSetChanged();
+
+                                //Modifca del colore negli elementi della recyclerView
+                                for (int i = 0; i < bambiniList.size(); i++) {
+
+                                }
                             }
                         }
                     } else {

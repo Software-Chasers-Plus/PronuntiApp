@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
+import firebase.com.protolitewrapper.BuildConfig;
 import it.uniba.dib.sms232419.pronuntiapp.EasterEgg.Spacewar;
 import it.uniba.dib.sms232419.pronuntiapp.model.Figlio;
 import it.uniba.dib.sms232419.pronuntiapp.model.Prenotazione;
@@ -164,6 +166,47 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        if(it.uniba.dib.sms232419.pronuntiapp.BuildConfig.IS_GUEST){
+            LinearLayout linearLayout = view.findViewById(R.id.layout_ospite);
+            linearLayout.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.ospite_logopedista).setOnClickListener(v -> {
+                auth.signInWithEmailAndPassword("logopedista@gmail.com", "testapp")
+                        .addOnSuccessListener(mActivity, authResult -> {
+                            checkUserType(authResult.getUser().getUid());
+                        })
+                        .addOnFailureListener(mActivity, e -> {
+
+                            // Animazione per la validazione della password
+                            YoYo.with(Techniques.Shake)
+                                    .duration(700)
+                                    .repeat(2)
+                                    .playOn(getActivity().findViewById(R.id.textInputLayoutPassword));
+
+                            Toasty.error(mActivity, R.string.login_fallito, Toast.LENGTH_SHORT, true).show();
+                        });
+            });
+
+            view.findViewById(R.id.ospite_genitore).setOnClickListener(v -> {
+                auth.signInWithEmailAndPassword("genitore@gmail.com", "testapp")
+                        .addOnSuccessListener(mActivity, authResult -> {
+                            checkUserType(authResult.getUser().getUid());
+                        })
+                        .addOnFailureListener(mActivity, e -> {
+
+                            // Animazione per la validazione della password
+                            YoYo.with(Techniques.Shake)
+                                    .duration(700)
+                                    .repeat(2)
+                                    .playOn(getActivity().findViewById(R.id.textInputLayoutPassword));
+
+                            Toasty.error(mActivity, R.string.login_fallito, Toast.LENGTH_SHORT, true).show();
+                        });
+            });
+
+        }else{
+            Log.d("LoginFragment", "GUEST MODE NON ATTIVO");
+        }
     }
 
     // Metodo per validare l'email

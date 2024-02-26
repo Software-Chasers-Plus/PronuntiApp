@@ -23,12 +23,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding true
+        buildConfig true
+    }
+
+    flavorDimensions 'mode'
+    productFlavors {
+        production {
+            dimension 'mode'
+            applicationId "it.uniba.dib.sms232419.pronuntiapp"
+            buildConfigField 'boolean', 'IS_GUEST', 'false'
+        }
+        guest {
+            dimension 'mode'
+            applicationId "it.uniba.dib.sms232419.pronuntiapp"
+            buildConfigField 'boolean', 'IS_GUEST', 'true'
+        }
     }
 }
 dependencies {
@@ -67,6 +84,5 @@ dependencies {
     // Material Design Library
     implementation 'com.google.android.material:material:1.0.0'
     // Lottie Animation Library
-    implementation 'com.airbnb.android:lottie:3.3.6'
-
+    implementation 'com.airbnb.android:lottie:3.4.0'
 }

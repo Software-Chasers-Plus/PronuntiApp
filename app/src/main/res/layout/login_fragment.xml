@@ -117,9 +117,9 @@
             android:layout_marginStart="@dimen/_32pxh"
             android:layout_marginEnd="@dimen/_27pxh"
             android:layout_marginTop="@dimen/_13pxv"
+            android:layout_marginBottom="@dimen/_20pxv"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="12dp"
             style="@style/groupStylecornerRadius">
 
             <com.google.android.material.button.MaterialButton
@@ -131,10 +131,10 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:paddingStart="@dimen/_30pxh"
-                android:paddingEnd="@dimen/_30pxh"
-                android:paddingTop="@dimen/_16pxv"
-                android:paddingBottom="@dimen/_16pxv"
+                android:paddingStart="@dimen/_25pxh"
+                android:paddingEnd="@dimen/_25pxh"
+                android:paddingTop="@dimen/_11pxv"
+                android:paddingBottom="@dimen/_11pxv"
                 android:backgroundTint="@color/blue_A200"
                 android:textColor="@color/white_A700"
                 android:fontFamily="@font/poppins"
@@ -148,10 +148,55 @@
                 android:id="@+id/scegli_registrazione"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/not_registered"
-                android:textColor="@color/secondaryGenitore"
+                android:textColor="@color/blue_A200"
                 android:textSize="18dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_ospite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:gravity="center_horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ospite_logopedista"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ospite Logopedista"
+                    android:textAllCaps="false"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:backgroundTint="@color/blue_A200"
+                    android:textColor="@color/white_A700"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="@dimen/_14pxv"
+                    tools:targetApi="p"
+                    android:elevation="2dp"
+                    style="@style/Widget.Material3.Button.Icon"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ospite_genitore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Ospite Genitore"
+                    android:textAllCaps="false"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:backgroundTint="@color/blue_A200"
+                    android:textColor="@color/white_A700"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="@dimen/_14pxv"
+                    tools:targetApi="p"
+                    android:elevation="2dp"
+                    style="@style/Widget.Material3.Button.Icon"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
