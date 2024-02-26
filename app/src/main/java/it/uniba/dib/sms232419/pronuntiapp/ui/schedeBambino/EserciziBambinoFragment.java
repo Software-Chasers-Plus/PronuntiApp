@@ -370,8 +370,17 @@ public class EserciziBambinoFragment extends Fragment implements ClickEserciziBa
                 .add(data)
                 .addOnSuccessListener(documentReference -> {
                     progressIndicator.setVisibility(View.GONE);
+                    //Navigazione al dettaglio del paziente
                     Toasty.success(getContext(), "Scheda creata con successo", Toast.LENGTH_SHORT, true).show();
                     Log.d(TAG, "DocumentSnapshot aggiunto con ID: " + documentReference.getId());
+
+                    //Navigazione al dettaglio del paziente
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("figlio", paziente);
+                    Log.d("HomeFragmentLogopedista", "Paziente passato: "+paziente.getNome());
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main_logopedista);
+                    navController.navigate(R.id.navigation_dettaglio_paziente, bundle);
+
                 })
                 .addOnFailureListener(e -> {
                     progressIndicator.setVisibility(View.GONE);

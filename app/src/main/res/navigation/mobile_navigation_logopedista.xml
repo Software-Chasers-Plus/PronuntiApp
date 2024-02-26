@@ -33,7 +33,7 @@
         android:id="@+id/navigation_info_paziente"
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.info.InfoPazienteFragment"
         android:label="@string/info_patient"
-        tools:layout="@layout/fragment_info_paziente" />
+        tools:layout="@layout/fragment_dettagli_paziente" />
 
     <fragment
         android:id="@+id/navigation_dettaglio_scheda_logopedista"
@@ -88,5 +88,11 @@
         android:name="it.uniba.dib.sms232419.pronuntiapp.ui.prenotazioni.PrenotazioniLogopedistaFragment"
         android:label="Prenotazioni"
         tools:layout="@layout/fragment_prenotazioni_logopedista"/>
+
+    <fragment
+        android:id="@+id/navigation_dettaglio_paziente"
+        android:name="it.uniba.dib.sms232419.pronuntiapp.ui.info.InfoPazienteFragment"
+        android:label="Dettaglio paziente"
+        tools:layout="@layout/fragment_dettagli_paziente"/>
 
 </navigation>
